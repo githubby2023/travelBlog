@@ -94,7 +94,7 @@ function IndexNavbar() {
             <NavItem>
               <NavLink
                 data-placement="bottom"
-                href="https://twitter.com/CreativeTim?ref=creativetim"
+                href="/register"
                 target="_blank"
                 title="Follow us on Twitter"
               >

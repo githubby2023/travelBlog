@@ -1,0 +1,35 @@
+@use "../../assets/scss/constant.scss" as c;
+
+.card-register {
+  background-color: c.$DARK_BLUE;
+  border-radius: 8px;
+  color: c.$WHITE;
+  max-width: 480px;
+  margin: 20px 0 70px;
+  min-height: 400px;
+  padding: 30px;
+
+  .title {
+    color: c.$WHITE;
+  }
+
+  label {
+    color: c.$WHITE;
+  }
+
+  .forgot {
+    color: c.$ORANGE;
+  }
+
+  .signinBtn {
+    background-color: c.$ORANGE;
+  }
+
+  .signin {
+    color: c.$WHITE;
+    
+    &:hover{
+        color: c.$ORANGE;
+    }
+  }
+}

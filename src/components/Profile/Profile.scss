@@ -1,0 +1,11 @@
+.main-container {
+  margin-top: 10vh;
+
+  .image-container {
+    background-repeat: "no-repeat";
+    width: 240px;
+    height: 240px;
+    border-radius: 20px;
+    background-image: url("../../assets/img/avatar.jpg");
+  }
+}
