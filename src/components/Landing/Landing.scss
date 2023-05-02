@@ -150,9 +150,8 @@
 
 //search bar
 .search-bar-container {
-  margin-top: 15px;
-  margin-bottom: 15px;
   padding: 15px;
+  padding-right: 50px;
 
   .search-bar-row {
     display: flex;
@@ -161,7 +160,7 @@
 
     .search-bar {
       width: 100%;
-      padding: 0 0.05rem;
+      padding: 0 0rem;
       border-radius: 10px;
       background-color: #fffdfd;
       color: #6a2222;

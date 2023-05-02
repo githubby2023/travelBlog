@@ -11,7 +11,7 @@ const SearchBar = () => {
     <>
       <div className="container" lg="12">
         <div classname="row">
-          <div className="search-bar-container mx-auto col-md-6">
+          <div className="search-bar-container mx-auto col-xs-4">
             <div className="search-bar-row">
               <InputGroup className="search-bar">
                 <InputGroupAddon addonType="prepend">

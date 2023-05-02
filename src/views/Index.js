@@ -38,7 +38,7 @@ function Index() {
           </div>
         </div>
         <div className="main">
-          <SearchBar />
+          {/* <SearchBar /> */}
           <LandingCreate />
           <LandingPost />
           <LandingPost />

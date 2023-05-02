@@ -14,6 +14,7 @@ import {
   Container,
   Button,
 } from "reactstrap";
+import SearchBar from "components/Landing/searchBar";
 
 function ExamplesNavbar({ isTransparent = true }) {
   const [navbarColor, setNavbarColor] = React.useState("navbar-transparent");
@@ -84,6 +85,10 @@ function ExamplesNavbar({ isTransparent = true }) {
           isOpen={navbarCollapse}
         >
           <Nav navbar>
+            <NavItem>
+              <SearchBar/>
+            </NavItem>
+          
             <NavItem>
               <NavLink href="/create">
                 <i className="nc-icon nc-simple-add" /> Create Post
