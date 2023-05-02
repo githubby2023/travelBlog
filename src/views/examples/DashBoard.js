@@ -6,11 +6,12 @@ import {
   PointElement,
   LineElement,
   Title,
+  BarElement,
   Tooltip,
   Legend,
   ArcElement,
 } from 'chart.js';
-import { Line , Pie} from 'react-chartjs-2';
+import { Line , Bar} from 'react-chartjs-2';
 
 // core components
 import IndexNavbar from "components/Navbars/IndexNavbar.js";
@@ -29,7 +30,8 @@ import {
     Container,
     Row,
     Col,
-    CardTitle
+    CardTitle,
+    CardFooter
   } from "reactstrap";
 
 
@@ -38,10 +40,9 @@ ChartJS.register(
   LinearScale,
   PointElement,
   LineElement,
-  Title,
+  BarElement,
   Tooltip,
   Legend,
-  ArcElement
 );
 
 export const options = {
@@ -57,9 +58,9 @@ export const options = {
   },
 };
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+let labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
-export const data = {
+export const dataYear = {
   labels,
   datasets: [
     {
@@ -83,167 +84,148 @@ export const data = {
   ],
 };
 
+labels = [];
 
-export const dataPie = {
-  labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+for (let i = 1; i <= 30; i++) {
+  labels.push(i.toString());
+}
+
+export const dataMonthly = {
+  labels,
   datasets: [
     {
-      label: '# of Votes',
-      data: [12, 19, 3, 5, 2, 3],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)',
-      ],
-      borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)',
-      ],
-      borderWidth: 1,
+      label: 'User Visits',
+      data: [...Array(30)].map(() => Math.floor(Math.random() * 1000)),
+      borderColor: 'rgb(255, 99, 132)',
+      backgroundColor: 'rgba(255, 99, 132, 0.5)',
+    },
+    {
+      label: 'Page Views',
+      data: [...Array(30)].map(() => Math.floor(Math.random() * 500)),
+      borderColor: 'rgb(53, 162, 235)',
+      backgroundColor: 'rgba(53, 162, 235, 0.5)',
+    },
+    {
+      label: 'Subscriptions',
+      data: [...Array(30)].map(() => Math.floor(Math.random() * 20)),
+      borderColor: 'rgb(255, 205, 86)',
+      backgroundColor: 'rgba(255, 205, 86, 0.5)',
     },
   ],
 };
 
 
 
+
+labels = ['Food', 'Transport', 'Attraction', 'Accomodation', 'Others'];
+
+const colors = ['rgba(255, 99, 132, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(255, 206, 86, 0.5)', 'rgba(75, 192, 192, 0.5)', 'rgba(153, 102, 255, 0.5)'];
+
+export const dataBar = {
+  labels,
+  datasets: [
+    {
+      label: 'View',
+      data: [300, 450, 250, 700, 150],
+      backgroundColor: colors,
+    },
+  ],
+};
+
+
+
+
+
+
 export function DashBoard() {
   return (
     <>
-     
-    <Container className="mt--7" fluid>
-        <Row className="mt-5" >
-              <Col lg="6" xl="3">
-                <Card className="card-stats mb-4 mb-xl-0">
-                  <CardBody>
-                    <Row>
-                      <div className="col">
-                        <CardTitle
-                          tag="h5"
-                          className="text-uppercase text-muted mb-0"
-                        >
-                          Highest Traffic
-                        </CardTitle>
-                        <span className="h2 font-weight-bold mb-0">
+
+<div className="main">
+
+        <div className="section section-dark text-center">
+          <Container>
+            <Row>
+              <Col md="3">
+                <div className="info">
+                  <div className="icon icon-info">
+                  <i className="nc-icon nc-chart-bar-32" />
+                  </div>
+                  <div className="description">
+                    <h4 className="info-title">Highest Traffic</h4>
+                    <span className="h2 font-weight-bold">
                           350,897
                         </span>
-                      </div>
-                      <Col className="col-auto">
-                        <div className="icon icon-shape bg-danger text-white rounded-circle shadow">
-                        <i class="nc-icon nc-chart-bar-32" />
-                        </div>
-                      </Col>
-                    </Row>
-                    <p className="mt-3 mb-0 text-muted text-sm">
-                      <span className="text-success mr-2">
-                        <i className="fa fa-arrow-up" /> 3.48%
-                      </span>{" "}
-                      <span className="text-nowrap">Since last month</span>
-                    </p>
-                  </CardBody>
-                </Card>
+                        <br></br>
+                    <span className="h5">
+                          per hour
+                        </span>
+              
+                  </div>
+                </div>
               </Col>
-              <Col lg="6" xl="3">
-                <Card className="card-stats mb-4 mb-xl-0">
-                  <CardBody>
-                    <Row>
-                      <div className="col">
-                        <CardTitle
-                          tag="h5"
-                          className="text-uppercase text-muted mb-0"
-                        >
-                          Total Traffic 
-                        </CardTitle>
-                        <span className="h2 font-weight-bold mb-0">2,356</span>
-                      </div>
-                      <Col className="col-auto">
-                        <div className="icon icon-shape bg-warning text-white rounded-circle shadow">
-                          <i className="fas fa-chart-pie" />
-                        </div>
-                      </Col>
-                    </Row>
-                    <p className="mt-3 mb-0 text-muted text-sm">
-                      <span className="text-danger mr-2">
-                        <i className="fas fa-arrow-down" /> 3.48%
-                      </span>{" "}
-                      <span className="text-nowrap">Since last week</span>
-                    </p>
-                  </CardBody>
-                </Card>
+              <Col md="3">
+                <div className="info">
+                  <div className="icon icon-info">
+                    <i className="nc-icon nc-alert-circle-i" />
+                  </div>
+                  <div className="description">
+                    <h4 className="info-title">Page Views</h4>
+                    <span className="h2 font-weight-bold mb-0">
+                          12045
+                        </span>
+                        <br></br>
+                    <span className="h5">
+                          for today
+                        </span>
+                   
+                  </div>
+                </div>
               </Col>
-              <Col lg="6" xl="3">
-                <Card className="card-stats mb-4 mb-xl-0">
-                  <CardBody>
-                    <Row>
-                      <div className="col">
-                        <CardTitle
-                          tag="h5"
-                          className="text-uppercase text-muted mb-0"
-                        >
-                          New Users
-                        </CardTitle>
-                        <span className="h2 font-weight-bold mb-0">924</span>
-                      </div>
-                      <Col className="col-auto">
-                        <div className="icon icon-shape bg-yellow text-white rounded-circle shadow">
-                          <i className="fas fa-users" />
-                        </div>
-                      </Col>
-                    </Row>
-                    <p className="mt-3 mb-0 text-muted text-sm">
-                      <span className="text-warning mr-2">
-                        <i className="fas fa-arrow-down" /> 1.10%
-                      </span>{" "}
-                      <span className="text-nowrap">Since yesterday</span>
-                    </p>
-                  </CardBody>
-                </Card>
+              <Col md="3">
+                <div className="info">
+                  <div className="icon icon-info">
+                    <i className="nc-icon nc-single-02" />
+                  </div>
+                  <div className="description">
+                    <h4 className="info-title">Subscribers</h4>
+                    <span className="h2 font-weight-bold mb-2">
+                          4023
+                        </span>
+                        <br></br>
+                  </div>
+                </div>
               </Col>
-              <Col lg="6" xl="3">
-                <Card className="card-stats mb-4 mb-xl-0">
-                  <CardBody>
-                    <Row>
-                      <div className="col">
-                        <CardTitle
-                          tag="h5"
-                          className="text-uppercase text-muted mb-0"
-                        >
-                          Overall rating
-                        </CardTitle>
-                        <span className="h2 font-weight-bold mb-0">4.5/5.0</span>
-                      </div>
-                      <Col className="col-auto">
-                        <div className="icon icon-shape bg-info text-white rounded-circle shadow">
-                          <i className="fas fa-percent" />
-                        </div>
-                      </Col>
-                    </Row>
-                    <p className="mt-3 mb-0 text-muted text-sm">
-                      <span className="text-success mr-2">
-                        <i className="fas fa-arrow-up" /> 12%
-                      </span>{" "}
-                      <span className="text-nowrap">Since last month</span>
-                    </p>
-                  </CardBody>
-                </Card>
+              <Col md="3">
+                <div className="info">
+                  <div className="icon icon-info">
+                    <i className="nc-icon nc-bulb-63" />
+                  </div>
+                  <div className="description">
+                    <h4 className="info-title">Overall Rating</h4>
+                    <span className="h2 font-weight-bold mb-0">
+                    4.5/5.0
+                        </span>
+                  </div>
+                </div>
               </Col>
+              
+              
             </Row>
+          </Container>
+        </div>
+
+        <Container className="mt--7" fluid>
         <Row  className="mt-5">
           <Col className="mb-5 mb-xl-0" xl="8">
             <Card className="bg-gradient-default shadow">
               <CardHeader className="bg-transparent">
                 <Row className="align-items-center">
                   <div className="col">
-                    <h6 className="text-uppercase text-light ls-1 mb-1">
+                    <h6 className="text-uppercase  ls-1 mb-1">
                       Overview
                     </h6>
-                    <h2 className="text-white mb-0">Sales value</h2>
+                    <h2 className=" mb-0">Blog Insight</h2>
                   </div>
                   <div className="col">
                     <Nav className="justify-content-end" pills>
@@ -251,7 +233,7 @@ export function DashBoard() {
                         <NavLink
                           
                         >
-                          <span className="d-none d-md-block">Month</span>
+                          <span className="d-none d-md-block">This Month</span>
                           <span className="d-md-none">M</span>
                         </NavLink>
                       </NavItem>
@@ -259,7 +241,7 @@ export function DashBoard() {
                         <NavLink
                           
                         >
-                          <span className="d-none d-md-block">Week</span>
+                          <span className="d-none d-md-block">This Year</span>
                           <span className="d-md-none">W</span>
                         </NavLink>
                       </NavItem>
@@ -268,7 +250,7 @@ export function DashBoard() {
                 </Row>
               </CardHeader>
               <CardBody>
-              <Line options={options} data={data} />
+              <Line options={options} data={dataMonthly} />
                 
               </CardBody>
             </Card>
@@ -279,11 +261,11 @@ export function DashBoard() {
                 <Row className="align-items-center">
                   <div className="col">
                     <h6 className="text-uppercase text-muted ls-1 mb-1">
-                      Performance
+                      Analysis
                     </h6>
-                    <h2 className="mb-0">Total orders</h2>
+                    <h2 className="mb-0">Topic Engagement </h2>
                   </div>
-                  <Pie  data={dataPie} />
+                  <Bar  data={dataBar} />
                 </Row>
               </CardHeader>
               <CardBody>
@@ -302,14 +284,7 @@ export function DashBoard() {
                     <h3 className="mb-0">Page visits</h3>
                   </div>
                   <div className="col text-right">
-                    <Button
-                      color="primary"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                      size="sm"
-                    >
-                      See all
-                    </Button>
+                   
                   </div>
                 </Row>
               </CardHeader>
@@ -378,14 +353,7 @@ export function DashBoard() {
                     <h3 className="mb-0">Social traffic</h3>
                   </div>
                   <div className="col text-right">
-                    <Button
-                      color="primary"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                      size="sm"
-                    >
-                      See all
-                    </Button>
+                    
                   </div>
                 </Row>
               </CardHeader>
@@ -480,6 +448,9 @@ export function DashBoard() {
           </Col>
         </Row>
       </Container>
+        
+        </div>
+        
     </>
   );
 }
