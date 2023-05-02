@@ -4,6 +4,8 @@ import ExamplesNavbar from "components/Navbars/ExamplesNavbar";
 import LandingPost from "components/Landing/LandingPost";
 import LandingCreate from "components/Landing/LandingCreate";
 
+import SearchBar from "components/Landing/searchBar";
+
 function Index() {
   document.documentElement.classList.remove("nav-open");
   React.useEffect(() => {
@@ -36,6 +38,7 @@ function Index() {
           </div>
         </div>
         <div className="main">
+          <SearchBar />
           <LandingCreate />
           <LandingPost />
           <LandingPost />
