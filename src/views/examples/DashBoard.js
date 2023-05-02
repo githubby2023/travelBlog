@@ -65,19 +65,19 @@ export const dataYear = {
   datasets: [
     {
       label: 'User Visits',
-      data: [100, 233, 69, 87, 150, 200, 250],
+      data: [...Array(30)].map(() => Math.floor(Math.random() * 1000)),
       borderColor: 'rgb(255, 99, 132)',
       backgroundColor: 'rgba(255, 99, 132, 0.5)',
     },
     {
       label: 'Page Views',
-      data: [30, 67, 89, 90, 120, 150, 180],
+      data: [...Array(30)].map(() => Math.floor(Math.random() * 1000)),
       borderColor: 'rgb(53, 162, 235)',
       backgroundColor: 'rgba(53, 162, 235, 0.5)',
     },
     {
       label: 'Subscriptions',
-      data: [5, 10, 15, 20, 25, 30, 35],
+      data: [...Array(30)].map(() => Math.floor(Math.random() * 1000)),
       borderColor: 'rgb(255, 205, 86)',
       backgroundColor: 'rgba(255, 205, 86, 0.5)',
     },
@@ -107,7 +107,7 @@ export const dataMonthly = {
     },
     {
       label: 'Subscriptions',
-      data: [...Array(30)].map(() => Math.floor(Math.random() * 20)),
+      data: [...Array(30)].map(() => Math.floor(Math.random() * 50)),
       borderColor: 'rgb(255, 205, 86)',
       backgroundColor: 'rgba(255, 205, 86, 0.5)',
     },
@@ -126,7 +126,7 @@ export const dataBar = {
   datasets: [
     {
       label: 'View',
-      data: [300, 450, 250, 700, 150],
+      data: [...Array(30)].map(() => Math.floor(Math.random()* (100 - 10 + 1) + 10)),
       backgroundColor: colors,
     },
   ],
@@ -199,7 +199,7 @@ export function DashBoard() {
               <Col md="3">
                 <div className="info">
                   <div className="icon icon-info">
-                    <i className="nc-icon nc-bulb-63" />
+                  <i className="nc-icon nc-satisfied mr-3" />
                   </div>
                   <div className="description">
                     <h4 className="info-title">Overall Rating</h4>
@@ -228,7 +228,8 @@ export function DashBoard() {
                     <h2 className=" mb-0">Blog Insight</h2>
                   </div>
                   <div className="col">
-                    <Nav className="justify-content-end" pills>
+                
+                    {/* <Nav className="justify-content-end" pills>
                       <NavItem>
                         <NavLink
                           
@@ -245,12 +246,12 @@ export function DashBoard() {
                           <span className="d-md-none">W</span>
                         </NavLink>
                       </NavItem>
-                    </Nav>
+                    </Nav> */}
                   </div>
                 </Row>
               </CardHeader>
               <CardBody>
-              <Line options={options} data={dataMonthly} />
+              <Line options={options} data={dataYear} />
                 
               </CardBody>
             </Card>
@@ -305,7 +306,7 @@ export function DashBoard() {
                     <td>4,569</td>
                     <td>340</td>
                     <td>
-                      <i className="fas fa-arrow-up text-success mr-3" /> 46,53%
+                      <i className="nc-icon nc-satisfied mr-3" />  4.6
                     </td>
                   </tr>
                   <tr>
@@ -314,8 +315,7 @@ export function DashBoard() {
                     <td>3,985</td>
                     <td>319</td>
                     <td>
-                      <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                      46,53%
+                    <i className="nc-icon nc-satisfied mr-3" />  3.2
                     </td>
                   </tr>
                   <tr>
@@ -324,8 +324,7 @@ export function DashBoard() {
                     <td>3,513</td>
                     <td>294</td>
                     <td>
-                      <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                      36,49%
+                    <i className="nc-icon nc-satisfied mr-3" /> 1.5
                     </td>
                   </tr>
                   <tr>
@@ -334,7 +333,7 @@ export function DashBoard() {
                     <td>2,050</td>
                     <td>147</td>
                     <td>
-                      <i className="fas fa-arrow-up text-success mr-3" /> 50,87%
+                    <i className="nc-icon nc-satisfied mr-3" /> 2.3
                     </td>
                   </tr>
                   <tr>
@@ -343,8 +342,7 @@ export function DashBoard() {
                     <td>1,795</td>
                     <td>190</td>
                     <td>
-                      <i className="fas fa-arrow-down text-danger mr-3" />{" "}
-                      46,53%
+                    <i className="nc-icon nc-satisfied mr-3" />  5.0
                     </td>
                   </tr>
                 </tbody>
