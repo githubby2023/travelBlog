@@ -34,6 +34,9 @@ import Register from "components/Register/Register";
 import Signin from "components/Signin/Signin";
 import ProfilePage from "views/profile/ProfilePage.js";
 import PostPage from "views/post/PostPage";
+import Profile from "components/Profile/Profile";
+import DashBoard from "views/examples/DashBoard";
+import PostPage from "views/examples/PostPage";
 // others
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -77,6 +80,14 @@ root.render(
       <Route
         path="/profile"
         render={(props) => <ProfilePage {...props} />}
+      />
+      <Route
+        path="/dashboard"
+        render={(props) => <DashBoard {...props} />}
+      />
+      <Route
+        path="/postpage"
+        render={(props) => <PostPage {...props} />}
       />
       <Redirect to="/index" />
     </Switch>

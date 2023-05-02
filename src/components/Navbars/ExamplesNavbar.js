@@ -77,7 +77,7 @@ function ExamplesNavbar({ isTransparent = true }) {
         <div className="navbar-translate">
           <NavbarBrand
             data-placement="bottom"
-            to="/index"
+            to="/landing-page"
             target="_blank"
             title="Coded by Creative Tim"
             tag={Link}
@@ -103,19 +103,27 @@ function ExamplesNavbar({ isTransparent = true }) {
         >
           <Nav navbar>
             <NavItem>
-              <NavLink to="/index" tag={Link}>
-                <i className="nc-icon nc-layout-11" /> Components
+              <NavLink to="/profile" tag={Link}>
+                <i className="nc-icon nc-circle-10" /> Profile
               </NavLink>
             </NavItem>
             <NavItem>
               <NavLink
-                href="https://demos.creative-tim.com/paper-kit-react/#/documentation?ref=pkr-examples-navbar"
+                href="/dashboard"
                 target="_blank"
               >
-                <i className="nc-icon nc-book-bookmark" /> Documentation
+                <i className="nc-icon nc-layout-11" /> Analysis
               </NavLink>
             </NavItem>
             <NavItem>
+              <NavLink
+                href="/signin"
+                target="_blank"
+              >
+                <i className="nc-icon nc-user-run" /> Logout
+              </NavLink>
+            </NavItem>
+            {/* <NavItem>
               <NavLink
                 data-placement="bottom"
                 href="https://twitter.com/CreativeTim?ref=creativetim"
@@ -158,8 +166,9 @@ function ExamplesNavbar({ isTransparent = true }) {
                 <i className="fa fa-github" />
                 <p className="d-lg-none">GitHub</p>
               </NavLink>
-            </NavItem>
-            <NavItem>
+            </NavItem> */}
+            
+            {/* <NavItem>
               <Button
                 className="btn-round"
                 color="danger"
@@ -168,7 +177,7 @@ function ExamplesNavbar({ isTransparent = true }) {
               >
                 <i className="nc-icon nc-spaceship"></i> Upgrade to Pro
               </Button>
-            </NavItem>
+            </NavItem> */}
           </Nav>
         </Collapse>
       </Container>
