@@ -1,10 +1,33 @@
 import ExamplesNavbar from "components/Navbars/ExamplesNavbar.js";
-
-import React from "react";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
+import { auth, signInWithGoogle } from "../../api/firebaseconfig";
+import React, { useState, useEffect } from "react";
 import "./Register.scss";
-import { Button, Card, Form, Input, Container, Row, Col } from "reactstrap";
+import { Button, Card, Form, Input, Container, Row, Col, Label} from "reactstrap";
+import { useHistory } from "react-router-dom";
 
 const Register = () => {
+  const [registerEmail, setRegisterEmail] = useState("");
+  const [registerPassword, setRegisterPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [user, setUser] = useState({});
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const history = useHistory();
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      if (currentUser.getIdToken != null) {
+        history.push("/profile");
+      }
+    });
+  }, []);
+
   document.documentElement.classList.remove("nav-open");
   React.useEffect(() => {
     document.body.classList.add("register-page");
@@ -12,6 +35,19 @@ const Register = () => {
       document.body.classList.remove("register-page");
     };
   });
+
+  const registerWithEmail = async () => {
+    try {
+      const user = await createUserWithEmailAndPassword(
+        auth,
+        registerEmail,
+        registerPassword
+      );
+      console.log(user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -28,17 +64,58 @@ const Register = () => {
               <Card className="card-register mx-auto">
                 <h3 className="title mx-auto">Register</h3>
                 <Form className="register-form">
-                  <label>Email</label>
-                  <Input placeholder="Email" type="text" />
+                  <Label for="error" className="control-label">Email</Label>
+                  {/* <Input type="text" name="error" id="error" defaultValue="Error input"></Input> */}
+                  <Input
+                    placeholder="Email"
+                    type="text"
+                    id="error"
+                    error={!registerEmail}
+                    helperText={registerEmail? emailError : "Do not share your password with anyone."}
+                    value={registerEmail}
+                    onChange={(event) => {
+                      setRegisterEmail(event.target.value);
+                      if(event.target.value === ""){
+                        setEmailError("Email is required");
+                    }else{
+                        setEmailError("");
+                    }
+                  }}
+                  />
                   <label>Password</label>
-                  <Input placeholder="Password" type="password" />
+                  <Input
+                    placeholder="Password"
+                    type="password"
+                    helperText={passwordError}
+                    onChange={(event) => {
+                      setRegisterPassword(event.target.value);
+                      if (registerPassword === "") {
+                        setPasswordError("Password is required");
+                      }else{
+                        setPasswordError("");
+                      }
+                    }}
+                  />
                   <label>Confirm Password</label>
-                  <Input placeholder="Password" type="password" />
+                  <Input
+                    placeholder="Password"
+                    type="password"
+                    helperText={confirmPasswordError}
+                    onChange={(event) => {
+                      setConfirmPassword(event.target.value);
+                      if (confirmPassword !== registerPassword) {
+                        setConfirmPasswordError("Not match password");
+                      }else{
+                        setConfirmPasswordError("");
+                      }
+                    }}
+                  />
                   <Button
                     block
                     className="registerBtn"
                     // color="primary"
-                    onClick={(e) => e.preventDefault()}
+                    onClick={registerWithEmail
+                    }
                   >
                     Register
                   </Button>
@@ -46,7 +123,7 @@ const Register = () => {
                     block
                     className="googleBtn mt-2"
                     color="info"
-                    onClick={(e) => e.preventDefault()}
+                    onClick={signInWithGoogle}
                   >
                     <i className="fa fa-google" />
                     Register with Google
