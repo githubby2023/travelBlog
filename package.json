@@ -2,6 +2,7 @@
   "name": "paper-kit-react",
   "version": "1.3.0",
   "dependencies": {
+    "chart.js": "^4.3.0",
     "classnames": "2.3.1",
     "firebase": "^9.21.0",
     "moment": "2.29.4",
@@ -48,7 +49,6 @@
     "gulp-append-prepend": "1.0.9"
   },
   "peerDependencies": {
-    "react": ">=16.0.0",
     "react-dom": ">=16.0.0"
   },
   "description": "Paper Kit React is a free Bootstrap 4, React, React Hooks and Reactstrap UI Kit with pale colors, beautiful typography and thoughtful drawings. We've created it having paper and drawings in mind.",
