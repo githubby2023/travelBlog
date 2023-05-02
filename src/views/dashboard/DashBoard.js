@@ -26,6 +26,7 @@ import {
   Col,
 } from "reactstrap";
 import ExamplesNavbar from "components/Navbars/ExamplesNavbar";
+import Footer from "components/Footers/Footer";
 
 ChartJS.register(
   CategoryScale,
@@ -133,7 +134,7 @@ export function DashBoard() {
   return (
     <>
       <ExamplesNavbar isTransparent={false} />
-      <div className="main">
+      <div className="section main">
         <div className="section section-dark text-center dashboard-section">
           <Container>
             <Row>
@@ -396,6 +397,8 @@ export function DashBoard() {
             </Col>
           </Row>
         </Container>
+        <Footer />
+
       </div>
     </>
   );

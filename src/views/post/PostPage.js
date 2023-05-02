@@ -5,6 +5,7 @@ import PostHeader from "components/Post/PostHeader";
 import { BiCommentDetail } from "react-icons/bi";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { Button, Carousel, CarouselIndicators, CarouselItem } from "reactstrap";
+import Footer from "components/Footers/Footer";
 
 const PostPage = () => {
   const items = [
@@ -196,13 +197,16 @@ const PostPage = () => {
                   </div>
                   <div>
                     <h6 className="suggestion-title">bruh</h6>
-                    <p className="suggestion-content">lorem ipsum lorem lorem ipsum lorem lorem ipsum lorem</p>
+                    <p className="suggestion-content">
+                      lorem ipsum lorem lorem ipsum lorem lorem ipsum lorem
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <Footer />
       </div>
     </>
   );

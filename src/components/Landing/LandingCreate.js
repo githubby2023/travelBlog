@@ -6,7 +6,7 @@ const LandingCreate = () => {
     <>
       <div className="container" lg="12">
         <div className="row">
-          <div className="create-post-container mx-auto col-md-6">
+          <div className="landing-create-post-container mx-auto col-md-6">
             <div className="create-post-row">
               <div className="profile-pic my-auto">
                 <img

@@ -17,7 +17,7 @@ import {
 import SearchBar from "components/Landing/searchBar";
 
 function ExamplesNavbar({ isTransparent = true }) {
-  const [navbarColor, setNavbarColor] = React.useState("navbar-transparent");
+  const [navbarColor, setNavbarColor] = React.useState("");
   const [navbarCollapse, setNavbarCollapse] = React.useState(false);
 
   const toggleNavbarCollapse = () => {
@@ -97,6 +97,11 @@ function ExamplesNavbar({ isTransparent = true }) {
             <NavItem>
               <NavLink href="/dashboard">
                 <i className="nc-icon nc-layout-11" /> Dashboard
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="/profile">
+                <i className="nc-icon nc-single-02" /> Profile
               </NavLink>
             </NavItem>
 

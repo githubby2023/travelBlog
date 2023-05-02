@@ -1,5 +1,138 @@
 .filler {
-    height: 8rem;
-    width: 100%;
-      background: linear-gradient(to top, #ffffff 10%, #012130 100%);
+  height: 8rem;
+  width: 100%;
+  background: linear-gradient(to top, #ffffff 10%, #012130 100%);
+}
+
+.create-post-container {
+  padding-top: 0;
+  margin-top: 0;
+
+  h1{
+    margin-top: 0;
   }
+
+  .add-image {
+    margin: 1rem 0;
+    background-color: #e65c40;
+    width: 100%;
+    border-radius: 10px;
+    height: 30%;
+    padding: auto;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    &:hover {
+      transition: all 0.2s ease-in-out;
+      background-color: #e29e90;
+    }
+
+    .add-icon {
+      font-size: 4rem;
+      color: white;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .create-text {
+      margin-top: 0;
+      color: white;
+      text-align: center;
+    }
+  }
+
+  .label-text {
+    width: 100%;
+    display: inline-block;
+    margin-bottom: 20px;
+    color: #000;
+
+    .input-text {
+      margin-top: 0.5rem;
+      width: 100%;
+      height: 300px;
+      padding: 1rem;
+      text-align: start;
+      word-wrap: break-word;
+      resize: none;
+    }
+  }
+
+  .submit-button {
+    width: 160px;
+    height: 40px;
+    padding: auto;
+    border-radius: 10px;
+    color: white;
+    background-color: #e65c40;
+    border: none;
+    transition: all 0.2s ease-in-out;
+
+    h6 {
+      margin: 0;
+    }
+
+    &:hover {
+      opacity: 0.8;
+      transition: all 0.2s ease-in-out;
+    }
+  }
+}
+
+.tag-container {
+  .label-text {
+    width: 100%;
+    display: inline-block;
+    margin-bottom: 20px;
+    color: #000;
+
+    .input-text {
+      width: 100%;
+      height: 50px;
+      padding: 1rem;
+    }
+  }
+
+  .selected-container {
+    margin: 1rem 0;
+
+    .tag {
+      background-color: #51cbce;
+    }
+  }
+
+  .unselected-container {
+    margin: 1rem 0;
+
+    .tag {
+      background-color: #969696;
+    }
+  }
+
+  .tag {
+    margin: 0 0.4rem 0.1rem;
+    padding: 0.2em 0.6em;
+    border-radius: 10px;
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 0.75em;
+    text-transform: uppercase;
+    display: inline-block;
+    line-height: 17px;
+    transition: opacity 0.2s ease-in-out;
+
+    &:first {
+      margin-left: 0px;
+    }
+  }
+}
+
+.divider {
+  height: 1px;
+  width: 100%;
+  background-color: #969696;
+}

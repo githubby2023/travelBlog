@@ -89,7 +89,7 @@
 }
 
 .comment-container {
-  margin-top: 1rem;
+  margin: 1rem 0 2rem;
   .comment {
     display: flex;
     flex-direction: row;
@@ -153,6 +153,7 @@
     border-radius: 10px;
     padding: 0.2rem;
     max-height: 160px;
+    margin-bottom: 2rem;
 
     .suggestion-post {
       display: flex;

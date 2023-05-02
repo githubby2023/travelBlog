@@ -14,6 +14,7 @@ import {
   Modal,
   UncontrolledDropdown,
 } from "reactstrap";
+import Footer from "components/Footers/Footer";
 
 const UserProfilePage = () => {
   // let pageHeader = React.createRef();
@@ -282,6 +283,7 @@ const UserProfilePage = () => {
             </div>
           </div>
         </div>
+        <Footer />
       </div>
     </>
   );
