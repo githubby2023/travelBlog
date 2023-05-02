@@ -46,7 +46,7 @@ const Signin = () => {
 
   return (
     <>
-      <ExamplesNavbar />
+      {/* <ExamplesNavbar /> */}
       <div
         className="page-header"
         style={{
