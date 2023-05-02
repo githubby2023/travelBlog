@@ -25,11 +25,19 @@
     background-color: c.$ORANGE;
   }
 
-  .signin {
-    color: c.$WHITE;
+  .btn-link{
+    color: c.$ORANGE;
+
+    &:hover{
+      color: c.$NUDE;
+    }
+  }
+
+  .signup {
+    color: c.$ORANGE;
     
     &:hover{
-        color: c.$ORANGE;
+        color: c.$WHITE;
     }
   }
 }

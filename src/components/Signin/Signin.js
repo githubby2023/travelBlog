@@ -78,7 +78,7 @@ const Signin = () => {
                   <div className="forgot d-flex justify-content-end">
                     <Button
                       className="btn-link pr-0 mt-1"
-                      color="danger"
+                      color="warning"
                       href="#pablo"
                       onClick={(e) => e.preventDefault()}
                     >
@@ -106,7 +106,7 @@ const Signin = () => {
                 <div className="mx-auto">
                   <Button
                     className="signup btn-link mt-2"
-                    color="danger"
+                    color="warning"
                     href="/register"
                   >
                     Already have an account? Register

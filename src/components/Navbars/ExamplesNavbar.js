@@ -111,13 +111,18 @@ function ExamplesNavbar() {
                 <i className="nc-icon nc-layout-11" /> Analysis
               </NavLink>
             </NavItem>
+
             <NavItem>
-              <NavLink
+              <Button>
+                <i className="nc-icon nc-user-run" /> Logout
+                onClick = {signOut(getAuth())}
+              </Button>
+              {/* <NavLink
                 href="/signin"
                 target="_blank"
               >
                 <i className="nc-icon nc-user-run" /> Logout
-              </NavLink>
+              </NavLink> */}
             </NavItem>
             {/* <NavItem>
               <NavLink

@@ -71,7 +71,7 @@ const Register = () => {
 
   return (
     <>
-      <ExamplesNavbar />
+      {/* <ExamplesNavbar /> */}
       <div
         className="page-header"
         style={{
@@ -223,8 +223,7 @@ const Register = () => {
                   <option>Myanmar</option>
                   <option>South Korea</option>
                   <option>Brunei</option>
-                  onChange=
-                  {(event) => {
+                  onChange={(event) => {
                     setRegisterNationality(event.target.value);
                   }}
                 </Input>
@@ -263,7 +262,7 @@ const Register = () => {
                 <div className="mx-auto">
                   <Button
                     className="signin btn-link mt-2"
-                    color="danger"
+                    color="warning"
                     href="/signin"
                   >
                     Already have an account? Sign in
