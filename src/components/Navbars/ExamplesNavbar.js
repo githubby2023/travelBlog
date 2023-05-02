@@ -20,7 +20,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 // nodejs library that concatenates strings
 import classnames from "classnames";
-
+import { signOut, getAuth} from "firebase/auth";
 // reactstrap components
 import {
   Collapse,
