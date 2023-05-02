@@ -33,6 +33,7 @@ import RegisterPage from "views/examples/RegisterPage.js";
 import Register from "components/Register/Register";
 import Signin from "components/Signin/Signin";
 import Profile from "components/Profile/Profile";
+import DashBoard from "views/examples/DashBoard";
 // others
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -68,6 +69,10 @@ root.render(
       <Route
         path="/profile"
         render={(props) => <Profile {...props} />}
+      />
+      <Route
+        path="/dashboard"
+        render={(props) => <DashBoard {...props} />}
       />
       <Redirect to="/index" />
     </Switch>
