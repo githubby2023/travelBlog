@@ -96,16 +96,13 @@ function ExamplesNavbar({ isTransparent = true }) {
             </NavItem>
 
             <NavItem>
-              <Button>
-                <i className="nc-icon nc-user-run" /> Logout
-                onClick = {signOut(getAuth())}
-              </Button>
-              {/* <NavLink
+              <NavLink
+                onClick={signOut(getAuth())}
                 href="/signin"
                 target="_blank"
               >
                 <i className="nc-icon nc-user-run" /> Logout
-              </NavLink> */}
+              </NavLink>
             </NavItem>
             {/* <NavItem>
               <NavLink
