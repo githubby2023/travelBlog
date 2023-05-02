@@ -32,6 +32,12 @@ const Register = () => {
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [disabled, setDisabled] = useState(true);
   const history = useHistory();
+  const [emailFormClassName, setEmailFormClassName] = useState("register-form");
+  const [passwordFormClassName, setPasswordFormClassName] = useState("password-form");
+  const [addressFormClassName, setAddressFormClassName] = useState("register-form");
+  const [genderFormClassName, setGenderFormClassName] = useState("register-form");
+  const [nameFormClassName, setNameFormClassName] = useState("register-form");
+  const [nationalityFormClassName, setNationalityFormClassName] = useState("register-form");
 
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
@@ -78,7 +84,7 @@ const Register = () => {
               <Card className="card-register mx-auto">
                 <h3 className="title mx-auto">Register</h3>
 
-                <Form className="register-form">
+                <Form className={emailFormClassName}>
                   <label> Email </label>
                   <Input
                     placeholder="Email"
@@ -87,28 +93,34 @@ const Register = () => {
                     onChange={(event) => {
                       setRegisterEmail(event.target.value);
                       if (event.target.value === "") {
+                        setEmailFormClassName("has-danger");
                         setEmailError("Email is required");
                       } else {
+                        setEmailFormClassName("has-success");
                         setEmailError("");
                       }
                     }}
                   />
                 </Form>
+                <Form className={passwordFormClassName}>
                 <label>Password</label>
-                <Input
-                  placeholder="Password"
-                  type="password"
-                  helperText={passwordError}
-                  error={true}
-                  onChange={(event) => {
-                    setRegisterPassword(event.target.value);
-                    if (registerPassword === "") {
-                      setPasswordError("Password is required");
-                    } else {
-                      setPasswordError("");
-                    }
-                  }}
-                />
+                
+                  <Input
+                    placeholder="Password"
+                    type="password"
+                    helperText={passwordError}
+                    error={true}
+                    onChange={(event) => {
+                      setRegisterPassword(event.target.value);
+                      if (registerPassword === "") {
+                        setPasswordError("Password is required");
+                      } else {
+                        setPasswordError("");
+                      }
+                    }}
+                  />
+                </Form>
+                <Form className={passwordFormClassName}>
                 <label>Confirm Password</label>
                 <Input
                   placeholder="Password"
@@ -116,6 +128,10 @@ const Register = () => {
                   helperText={confirmPasswordError}
                   onChange={(event) => {
                     setRegisterConfirmPassword(event.target.value);
+                    if(event.target.value === registerPassword){
+                      setPasswordFormClassName("has-success");
+                    }else{
+                      setPasswordFormClassName("has-danger");}
                     if (
                       event.target.value !== registerPassword ||
                       registerName === "" ||
@@ -130,12 +146,19 @@ const Register = () => {
                     }
                   }}
                 />
+                </Form>
+                <Form className={nameFormClassName}>
                 <label>Name</label>
                 <Input
                   placeholder="Name"
                   type="text"
                   onChange={(event) => {
                     setRegisterName(event.target.value);
+                    if(event.target.value !== ""){
+                      setNameFormClassName("has-success");
+                    }else{
+                      setNameFormClassName("has-danger");
+                    }
                     if (
                       registerConfirmPassword !== registerPassword ||
                       registerName === "" ||
@@ -148,6 +171,8 @@ const Register = () => {
                     }
                   }}
                 />
+                </Form>
+                <Form className={addressFormClassName}>
                 <label>Address</label>
                 <Input
                   placeholder="Address"
@@ -163,7 +188,11 @@ const Register = () => {
                     );
                     console.log("registerPassword: " + registerPassword);
                     console.log("registerEmail: " + registerEmail);
-
+                    if(event.target.value !== ""){
+                      setAddressFormClassName("has-success");
+                    }else{
+                      setAddressFormClassName("has-danger");
+                    }
                     if (
                       registerConfirmPassword !== registerPassword ||
                       registerName === "" ||
@@ -176,6 +205,8 @@ const Register = () => {
                     }
                   }}
                 />
+                </Form>
+                <Form className={nationalityFormClassName}>
                 <label>Nationality</label>
                 <Input type="select" name="select" id="inputState">
                   <option>Malaysia</option>
@@ -197,6 +228,8 @@ const Register = () => {
                     setRegisterNationality(event.target.value);
                   }}
                 </Input>
+                </Form>
+                <Form className={genderFormClassName}>
                 <label>Gender</label>
                 <Input type="select" name="select" id="inputState">
                   <option>Male</option>
@@ -207,6 +240,7 @@ const Register = () => {
                     setRegisterGender(event.target.value);
                   }}
                 </Input>
+                </Form>
                 <Button
                   block
                   className="registerBtn"

@@ -105,7 +105,7 @@ function ExamplesNavbar() {
             </NavItem>
             <NavItem>
               <NavLink
-                // href="https://demos.creative-tim.com/paper-kit-react/#/documentation?ref=pkr-examples-navbar"
+                href="/dashboard"
                 target="_blank"
               >
                 <i className="nc-icon nc-layout-11" /> Analysis
