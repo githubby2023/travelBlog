@@ -1,5 +1,5 @@
 import React from "react";
-import DemoFooter from "components/Footers/DemoFooter.js";
+import Footer from "components/Footers/Footer.js";
 import ExamplesNavbar from "components/Navbars/ExamplesNavbar";
 import LandingPost from "components/Landing/LandingPost";
 
@@ -37,7 +37,7 @@ function Index() {
         <div className="main">
           <LandingPost />
           <LandingPost />
-          <DemoFooter />
+          <Footer />
         </div>
       </div>
     </>

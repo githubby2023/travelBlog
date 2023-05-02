@@ -13,7 +13,7 @@ const LandingPost = () => {
     
 
   return (
-    <div className="container" lg="12">
+    <div className="container" lg="12" href="/post">
       <div className="row">
           <div className="post-card-container mx-auto col-md-6">
             <div className="post-card-header">
@@ -72,6 +72,7 @@ const LandingPost = () => {
                 Ipsum blabla Lorem Ipsum blabla Lorem Ipsum blabla Lorem Ipsum
                 blabla{" "}
               </p>
+              <a href="/post">View full post</a>
             </div>
             <div className="divider" />
             <div className="comment-container">

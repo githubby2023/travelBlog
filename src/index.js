@@ -6,20 +6,15 @@ import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
 import "bootstrap/scss/bootstrap.scss";
 import "assets/scss/paper-kit.scss?v=1.3.0";
 import "assets/demo/demo.css?v=1.3.0";
+
 // pages
 import Index from "views/Index.js";
-// import NucleoIcons from "views/NucleoIcons.js";
-// import LandingPage from "views/examples/LandingPage.js";
 import OldIndex from "views/examples/OldIndex";
-// import UserProfilePage from "components/Profile/Profile";
 import Register from "components/Register/Register";
 import Signin from "components/Signin/Signin";
-import ProfilePage from "views/profile/ProfilePage.js";
+import Profile from "views/profile/ProfilePage.js";
 import PostPage from "views/post/PostPage";
-import Profile from "components/Profile/Profile";
-import DashBoard from "views/examples/DashBoard";
-import PostPage from "views/examples/PostPage";
-// others
+import DashBoard from "./views/dashboard/DashBoard";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -27,22 +22,6 @@ root.render(
   <BrowserRouter>
     <Switch>
       <Route path="/index" render={(props) => <Index {...props} />} />
-      {/* <Route
-        path="/nucleo-icons"
-        render={(props) => <NucleoIcons {...props} />}
-      />
-      <Route
-        path="/landing-page"
-        render={(props) => <LandingPage {...props} />}
-      />
-      <Route
-        path="/profile-page"
-        render={(props) => <ProfilePage {...props} />}
-      />
-      <Route
-        path="/register-page"
-        render={(props) => <RegisterPage {...props} />}
-      /> */}
       <Route
         path="/oldindex"
         render={(props) => <OldIndex {...props} />}
@@ -61,16 +40,16 @@ root.render(
       />
       <Route
         path="/profile"
-        render={(props) => <ProfilePage {...props} />}
+        render={(props) => <Profile {...props} />}
       />
       <Route
         path="/dashboard"
         render={(props) => <DashBoard {...props} />}
       />
-      <Route
+      {/* <Route
         path="/postpage"
-        render={(props) => <PostPage {...props} />}
-      />
+        render={(props) => <PostPages {...props} />}
+      /> */}
       <Redirect to="/index" />
     </Switch>
   </BrowserRouter>

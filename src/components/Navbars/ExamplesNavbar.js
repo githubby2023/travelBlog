@@ -1,21 +1,3 @@
-/*!
-
-=========================================================
-* Paper Kit React - v1.3.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/paper-kit-react
-
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/paper-kit-react/blob/main/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React from "react";
 import { Link } from "react-router-dom";
 // nodejs library that concatenates strings
@@ -78,7 +60,6 @@ function ExamplesNavbar({ isTransparent = true }) {
           <NavbarBrand
             data-placement="bottom"
             to="/landing-page"
-            target="_blank"
             title="Coded by Creative Tim"
             tag={Link}
           >
@@ -110,74 +91,17 @@ function ExamplesNavbar({ isTransparent = true }) {
             <NavItem>
               <NavLink
                 href="/dashboard"
-                target="_blank"
               >
-                <i className="nc-icon nc-layout-11" /> Analysis
+                <i className="nc-icon nc-layout-11" /> Dashboard
               </NavLink>
             </NavItem>
             <NavItem>
               <NavLink
                 href="/signin"
-                target="_blank"
               >
                 <i className="nc-icon nc-user-run" /> Logout
               </NavLink>
             </NavItem>
-            {/* <NavItem>
-              <NavLink
-                data-placement="bottom"
-                href="https://twitter.com/CreativeTim?ref=creativetim"
-                target="_blank"
-                title="Follow us on Twitter"
-              >
-                <i className="fa fa-twitter" />
-                <p className="d-lg-none">Twitter</p>
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink
-                data-placement="bottom"
-                href="https://www.facebook.com/CreativeTim?ref=creativetim"
-                target="_blank"
-                title="Like us on Facebook"
-              >
-                <i className="fa fa-facebook-square" />
-                <p className="d-lg-none">Facebook</p>
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink
-                data-placement="bottom"
-                href="https://www.instagram.com/CreativeTimOfficial?ref=creativetim"
-                target="_blank"
-                title="Follow us on Instagram"
-              >
-                <i className="fa fa-instagram" />
-                <p className="d-lg-none">Instagram</p>
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink
-                data-placement="bottom"
-                href="https://www.github.com/CreativeTimOfficial?ref=creativetim"
-                target="_blank"
-                title="Star on GitHub"
-              >
-                <i className="fa fa-github" />
-                <p className="d-lg-none">GitHub</p>
-              </NavLink>
-            </NavItem> */}
-            
-            {/* <NavItem>
-              <Button
-                className="btn-round"
-                color="danger"
-                href="https://www.creative-tim.com/product/paper-kit-pro-react?ref=pkr-examples-navbar"
-                target="_blank"
-              >
-                <i className="nc-icon nc-spaceship"></i> Upgrade to Pro
-              </Button>
-            </NavItem> */}
           </Nav>
         </Collapse>
       </Container>
