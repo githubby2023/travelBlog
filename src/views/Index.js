@@ -2,6 +2,7 @@ import React from "react";
 import Footer from "components/Footers/Footer.js";
 import ExamplesNavbar from "components/Navbars/ExamplesNavbar";
 import LandingPost from "components/Landing/LandingPost";
+import LandingCreate from "components/Landing/LandingCreate";
 
 function Index() {
   document.documentElement.classList.remove("nav-open");
@@ -35,6 +36,7 @@ function Index() {
           </div>
         </div>
         <div className="main">
+          <LandingCreate />
           <LandingPost />
           <LandingPost />
           <Footer />

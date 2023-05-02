@@ -15,6 +15,7 @@ import Signin from "components/Signin/Signin";
 import Profile from "views/profile/ProfilePage.js";
 import PostPage from "views/post/PostPage";
 import DashBoard from "./views/dashboard/DashBoard";
+import CreatePage from "views/Create/CreatePage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -45,6 +46,10 @@ root.render(
       <Route
         path="/dashboard"
         render={(props) => <DashBoard {...props} />}
+      />
+      <Route
+        path="/create"
+        render={(props) => <CreatePage {...props} />}
       />
       {/* <Route
         path="/postpage"

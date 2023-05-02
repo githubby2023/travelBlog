@@ -10,10 +10,8 @@ import {
 } from "reactstrap";
 
 const LandingPost = () => {
-    
-
   return (
-    <div className="container" lg="12" href="/post">
+    <div className="container" lg="12">
       <div className="row">
           <div className="post-card-container mx-auto col-md-6">
             <div className="post-card-header">

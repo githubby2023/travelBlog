@@ -75,6 +75,7 @@ function ExamplesNavbar({ isTransparent = true }) {
             <span className="navbar-toggler-bar bar1" />
             <span className="navbar-toggler-bar bar2" />
             <span className="navbar-toggler-bar bar3" />
+            <span className="navbar-toggler-bar bar4" />
           </button>
         </div>
         <Collapse
@@ -84,21 +85,22 @@ function ExamplesNavbar({ isTransparent = true }) {
         >
           <Nav navbar>
             <NavItem>
+              <NavLink href="/create">
+                <i className="nc-icon nc-simple-add" /> Create Post
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="/dashboard">
+                <i className="nc-icon nc-layout-11" /> Dashboard
+              </NavLink>
+            </NavItem>
+            <NavItem>
               <NavLink to="/profile" tag={Link}>
                 <i className="nc-icon nc-circle-10" /> Profile
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink
-                href="/dashboard"
-              >
-                <i className="nc-icon nc-layout-11" /> Dashboard
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink
-                href="/signin"
-              >
+              <NavLink href="/signin">
                 <i className="nc-icon nc-user-run" /> Logout
               </NavLink>
             </NavItem>

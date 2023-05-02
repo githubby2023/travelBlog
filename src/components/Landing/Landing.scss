@@ -111,3 +111,39 @@
     }
   }
 }
+
+//Landing create
+.create-post-container {
+  padding: 15px;
+
+  .create-post-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .profile-pic {
+      position: relative;
+      padding: 0.5rem;
+      max-width: 60px;
+      display: inline-block;
+    }
+
+    .add-row{
+      width: 100%;
+      padding: 0 1rem;
+      border-radius: 10px;
+      background-color: #E65C40;
+      color: #ffffff;
+      display: flex;
+      flex-direction: row;
+      cursor: pointer;
+      
+      .add-icon {
+        font-size: 2rem;
+      }
+    }
+  }
+
+
+
+}
