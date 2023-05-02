@@ -2347,7 +2347,7 @@ textarea.form-control {
   line-height: 26px;
   margin-bottom: 0;
 }
-.form-check .form-check-sign::before,
+/* .form-check .form-check-sign::before,
 .form-check .form-check-sign::after {
   content: " ";
   display: inline-block;
@@ -2375,7 +2375,7 @@ textarea.form-control {
   color: #fff;
   border: 0;
   background-color: inherit;
-}
+} */
 .form-check.disabled .form-check-label {
   color: #9a9a9a;
   opacity: 0.5;
