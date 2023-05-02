@@ -1,0 +1,113 @@
+.section {
+  padding-top: 0;
+
+  .landing-page-header {
+    background-size: cover;
+    min-height: 40vh;
+    max-height: 999px;
+    width: 100%;
+    z-index: 1;
+  }
+}
+
+//LandingPost
+.post-card-container {
+  margin: 2rem 0;
+
+  .post-card-header {
+    width: 100%;
+    // background-color: aqua;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0.5rem 0;
+
+    .post-profile {
+      display: flex;
+      flex-direction: row;
+
+      .post-profile-pic {
+        position: relative;
+        padding: 0.5rem;
+        max-width: 60px;
+        display: inline-block;
+      }
+
+      .post-header-text {
+        margin-left: 0.5rem;
+        h6 {
+          margin-bottom: 0.1rem;
+        }
+        p {
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    .dropdown {
+      .toggle {
+        padding-right: 0;
+        padding-left: 0;
+        background-color: alpha($color: #ffffff);
+      }
+
+      .three-dot-icon {
+        color: #000;
+        // height: 60px;
+        width: 20px;
+      }
+    }
+  }
+
+  .post-card-content {
+    .post-image {
+      width: 100%;
+      height: 40%;
+      object-fit: cover;
+      margin-bottom: 1rem;
+    }
+
+    .post-time {
+      font-size: smaller;
+      font-weight: 500;
+      text-align: end;
+    }
+
+    .post-caption {
+      text-align: justify;
+    }
+  }
+
+  .divider {
+    margin: 1rem 0;
+    height: 1px;
+    width: 100%;
+    background-color: #5c5c5c;
+  }
+
+  .comment-container {
+    .comment {
+      display: flex;
+      flex-direction: row;
+
+      .comment-profile-pic {
+        position: relative;
+        padding: 0.5rem;
+        max-width: 60px;
+        display: inline-block;
+      }
+
+      .comment-text {
+        background-color: #f2f2f2;
+        border-radius: 10px;
+        padding: 0.5rem 1rem;
+      }
+
+      .comment-time {
+        font-size: smaller;
+        text-align: end;
+        font-weight: 500;
+      }
+    }
+  }
+}

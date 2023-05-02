@@ -13,7 +13,7 @@ import {
   TabPane,
   Container,
   Row,
-  Col
+  Col,
 } from "reactstrap";
 
 // core components

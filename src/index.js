@@ -26,13 +26,14 @@ import "assets/scss/paper-kit.scss?v=1.3.0";
 import "assets/demo/demo.css?v=1.3.0";
 // pages
 import Index from "views/Index.js";
-import NucleoIcons from "views/NucleoIcons.js";
-import LandingPage from "views/examples/LandingPage.js";
-import ProfilePage from "views/examples/ProfilePage.js";
-import RegisterPage from "views/examples/RegisterPage.js";
+// import NucleoIcons from "views/NucleoIcons.js";
+// import LandingPage from "views/examples/LandingPage.js";
+import OldIndex from "views/examples/OldIndex";
+// import UserProfilePage from "components/Profile/Profile";
 import Register from "components/Register/Register";
 import Signin from "components/Signin/Signin";
-import Profile from "components/Profile/Profile";
+import ProfilePage from "views/profile/ProfilePage.js";
+import PostPage from "views/post/PostPage";
 // others
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -41,7 +42,7 @@ root.render(
   <BrowserRouter>
     <Switch>
       <Route path="/index" render={(props) => <Index {...props} />} />
-      <Route
+      {/* <Route
         path="/nucleo-icons"
         render={(props) => <NucleoIcons {...props} />}
       />
@@ -56,6 +57,14 @@ root.render(
       <Route
         path="/register-page"
         render={(props) => <RegisterPage {...props} />}
+      /> */}
+      <Route
+        path="/oldindex"
+        render={(props) => <OldIndex {...props} />}
+      />
+      <Route
+        path="/post"
+        render={(props) => <PostPage {...props} />}
       />
       <Route
         path="/register"
@@ -67,7 +76,7 @@ root.render(
       />
       <Route
         path="/profile"
-        render={(props) => <Profile {...props} />}
+        render={(props) => <ProfilePage {...props} />}
       />
       <Redirect to="/index" />
     </Switch>

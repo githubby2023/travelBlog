@@ -1,6 +1,6 @@
-import { Profile } from "../model/ProfileModel.js";
+import { ProfileModel } from "../model/ProfileModel.js";
 
-const user = new Profile({
+const user = new ProfileModel({
   uid: "1234",
   username: "john_doe",
   nationality: "USA",

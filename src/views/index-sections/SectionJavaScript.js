@@ -34,7 +34,7 @@ import {
   UncontrolledTooltip,
   PopoverBody,
   PopoverHeader,
-  UncontrolledPopover
+  UncontrolledPopover,
 } from "reactstrap";
 
 // core components
@@ -209,7 +209,7 @@ function SectionJavaScript() {
                     <InputGroup className="date" id="datetimepicker">
                       <ReactDatetime
                         inputProps={{
-                          placeholder: "Datetime Picker Here"
+                          placeholder: "Datetime Picker Here",
                         }}
                       />
                       <InputGroupAddon addonType="append">

@@ -30,10 +30,10 @@ import {
   NavLink,
   Nav,
   Container,
-  Button
+  Button,
 } from "reactstrap";
 
-function ExamplesNavbar() {
+function ExamplesNavbar({ isTransparent = true }) {
   const [navbarColor, setNavbarColor] = React.useState("navbar-transparent");
   const [navbarCollapse, setNavbarCollapse] = React.useState(false);
 
@@ -44,16 +44,20 @@ function ExamplesNavbar() {
 
   React.useEffect(() => {
     const updateNavbarColor = () => {
-      if (
-        document.documentElement.scrollTop > 299 ||
-        document.body.scrollTop > 299
-      ) {
+      if (isTransparent) {
+        if (
+          document.documentElement.scrollTop > 299 ||
+          document.body.scrollTop > 299
+        ) {
+          setNavbarColor("");
+        } else if (
+          document.documentElement.scrollTop < 300 ||
+          document.body.scrollTop < 300
+        ) {
+          setNavbarColor("navbar-transparent");
+        }
+      } else {
         setNavbarColor("");
-      } else if (
-        document.documentElement.scrollTop < 300 ||
-        document.body.scrollTop < 300
-      ) {
-        setNavbarColor("navbar-transparent");
       }
     };
 
@@ -83,7 +87,7 @@ function ExamplesNavbar() {
           <button
             aria-expanded={navbarCollapse}
             className={classnames("navbar-toggler navbar-toggler", {
-              toggled: navbarCollapse
+              toggled: navbarCollapse,
             })}
             onClick={toggleNavbarCollapse}
           >

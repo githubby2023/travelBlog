@@ -18,7 +18,7 @@
 //   }
 // }
 
-class Profile {
+class ProfileModel {
     constructor({
       uid,
       username,
