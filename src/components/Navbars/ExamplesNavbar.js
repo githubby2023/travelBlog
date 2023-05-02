@@ -122,7 +122,7 @@ function ExamplesNavbar({ isTransparent = true }) {
               <NavLink href="/signin">
                 <i className="nc-icon nc-user-run" /> Logout
               </NavLink>
-            </NavItem>
+            </NavItem> */}
           </Nav>
         </Collapse>
       </Container>
