@@ -165,7 +165,7 @@ function ProfilePage() {
               </Row>
             </TabPane>
             <TabPane className="text-center" tabId="2" id="following">
-              <h3 className="text-muted">Not following anyone yet :(</h3>
+              <h3 className="text-muted">Not following anyone yet :</h3>
               <Button className="btn-round" color="warning">
                 Find artists
               </Button>
