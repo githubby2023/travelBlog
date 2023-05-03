@@ -41,3 +41,18 @@
     }
   }
 }
+
+.presentation-title-2 {
+  font-size: 8em;
+  font-weight: 700;
+  padding-left: 125px;
+  color: #ffffff;
+  background: #fbf8ec;
+  background: -moz-linear-gradient(top, #ffffff 35%, #4e6773 100%);
+  background: -webkit-linear-gradient(top, #ffffff 35%, #4e6773 100%);
+  background: -ms-linear-gradient(top, #ffffff 35%, #4e6773 100%);
+  background: linear-gradient(to bottom, #ffffff 35%, #4e6773 100%);
+  text-shadow: 2px 2px 4px #ffffff70;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

@@ -47,12 +47,16 @@ const Signin = () => {
   return (
     <>
       {/* <ExamplesNavbar /> */}
+      
+                
+             
       <div
         className="page-header"
         style={{
           backgroundImage: "url(" + require("assets/img/sea.jpg") + ")",
         }}
       >
+        <h1 className="presentation-title-2">Travel Blog</h1>
         <Container>
           <Row>
             <Col className="mx-auto" lg="6">

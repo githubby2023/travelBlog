@@ -78,6 +78,7 @@ const Register = () => {
           backgroundImage: "url(" + require("assets/img/darksea.jpg") + ")",
         }}
       >
+        <h1 className="presentation-title-2">Travel Blog</h1>
         <Container>
           <Row>
             <Col className="mx-auto" lg="6">
