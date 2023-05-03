@@ -5,7 +5,7 @@ const PostedBlogCard = (props) => {
   const { blogProps } = props;
   return (
     <>
-      <div className="blog-card-container">
+      <a href="/post" className="blog-card-container">
         <h4 className="blog-title">{blogProps.title}</h4>
         <img
           className="image-container"
@@ -13,7 +13,7 @@ const PostedBlogCard = (props) => {
           alt={blogProps.title}
         />
         <h6 className="blog-desc">{blogProps.desc}</h6>
-      </div>
+      </a>
     </>
   );
 };
