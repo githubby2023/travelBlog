@@ -61,7 +61,7 @@ function ExamplesNavbar({ isTransparent = true }) {
           <NavbarBrand
             data-placement="bottom"
             to="/landing-page"
-            title="Coded by Creative Tim"
+            title="Coded by GitHubby"
             tag={Link}
           >
             Travel Blog

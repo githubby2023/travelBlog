@@ -2,6 +2,8 @@ import React from "react";
 import Footer from "components/Footers/Footer.js";
 import ExamplesNavbar from "components/Navbars/ExamplesNavbar";
 import LandingPost from "components/Landing/LandingPost";
+import LandingPost2 from "components/Landing/LandingPost2";
+
 import LandingCreate from "components/Landing/LandingCreate";
 
 import SearchBar from "components/Landing/searchBar";
@@ -41,7 +43,7 @@ function Index() {
           {/* <SearchBar /> */}
           <LandingCreate />
           <LandingPost />
-          <LandingPost />
+          <LandingPost2 />
           <Footer />
         </div>
       </div>
