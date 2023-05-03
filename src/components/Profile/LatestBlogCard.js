@@ -5,7 +5,7 @@ import "./Profile.scss";
 const LatestBlogCard = ({blog}) => {
   return (
     <>
-      <a href="/post" className="row lastest-container">
+      <a href="/post" isSender={true} className="row lastest-container">
         <img
           className="image-container col-md-6"
           src={blog.url}
