@@ -43,7 +43,7 @@ const Register = () => {
     onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       if (currentUser != null) {
-        history.push("/profile");
+        history.push("/index");
       }
     });
   }, []);
@@ -131,7 +131,8 @@ const Register = () => {
                     if(event.target.value === registerPassword){
                       setPasswordFormClassName("has-success");
                     }else{
-                      setPasswordFormClassName("has-danger");}
+                      setPasswordFormClassName("has-danger");
+                    }
                     if (
                       event.target.value !== registerPassword ||
                       registerName === "" ||
