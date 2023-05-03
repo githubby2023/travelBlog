@@ -125,6 +125,26 @@
       font-weight: 500;
     }
   }
+
+  .comment-input-row{
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .input-text {
+      width: 100%;
+      height: 50px;
+      padding: 1rem;
+    }
+
+    .send-icon{
+      margin-left: 1rem;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+  }
+
 }
 
 //right section

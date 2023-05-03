@@ -4,6 +4,7 @@ import "components/Post/Post.scss";
 import PostHeader from "components/Post/PostHeader";
 import { BiCommentDetail } from "react-icons/bi";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
+import { RiSendPlaneFill } from "react-icons/ri";
 import {
   Button,
   Carousel,
@@ -213,6 +214,14 @@ const PostPage = ({ isSender = true }) => {
                     </p>
                     <p className="comment-time">time</p>
                   </div>
+                </div>
+                <div className="comment-input-row">
+                  <input
+                    className="input-text"
+                    placeholder="Type in your comment here!"
+                    type="text"
+                  />
+                  <RiSendPlaneFill className="send-icon"/>
                 </div>
               </div>
             </div>
