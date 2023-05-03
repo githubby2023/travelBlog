@@ -20,12 +20,12 @@ const LandingPost = () => {
                   <img
                     alt="..."
                     className="img-circle img-no-padding img-responsive my-auto"
-                    src={require("assets/img/faces/ayo-ogunseinde-2.jpg")}
+                    src={require("assets/img/faces/erik-lucatero-2.jpg")}
                   />
                 </div>
                 <div className="post-header-text my-auto">
-                  <h6>Ayo Ogunseinde</h6>
-                  <p>Las Vegas</p>
+                  <h6>Erik Lucatero</h6>
+                  <p>Paris</p>
                 </div>
               </div>
               <UncontrolledDropdown className="dropdown my-auto">
@@ -61,18 +61,18 @@ const LandingPost = () => {
               <img
                 alt="..."
                 className="post-image img-rounded img-no-padding img-responsive"
-                src={require("assets/img/faces/ayo-ogunseinde-2.jpg")}
+                src={require("assets/img/faces/erik-lucatero-2.jpg")}
                 // src={userProps.}
               />
               {/* <p className="post-time">time</p> */}
               <p className="post-caption">
-              Born to rhyme and born to shine - I live and breathe the rhythm of the streets, 
-              turning words into art that speaks to the soul. With every beat, I tell a story of 
-              struggle and triumph, of pain and joy, of love and hate. My voice is my weapon, 
-              my pen is my shield, and my music is my legacy. I represent the voice of the voiceless, 
-              the hope of the hopeless, the dream of the dreamers. Through my music, I bring people together, 
-              break down barriers, and create a world where everyone has a chance to shine. This is hip-hop, 
-              this is my life, and I wouldn't have it any other way. #HipHopNation #RapLife #Blessed{" "}
+              Life is full of surprises, some good and some bad. But it's what we make of those surprises that define who we are.
+               When we face challenges, we have a choice - to let them defeat us or to rise above them. It's not always easy, but it's always worth it. 
+               The struggles we face are opportunities for growth, for learning, for becoming stronger and more resilient. And the victories we achieve 
+               are the sweetest rewards, the moments we'll treasure forever. So don't be afraid to take risks, to step out of your comfort zone, to chase 
+               your dreams. The road may be long and winding, but the destination is worth it. And along the way, remember to savor the small moments, 
+               to appreciate the people who love you, to find joy in the simple things. Because in the end, it's not the destination that matters, 
+               it's the journey. So embrace it, live it, love it. #LifeLessons #JourneyOfALifetime #NeverGiveUp{" "}
               </p>
               <a href="/post">View full post</a>
             </div>
@@ -89,9 +89,11 @@ const LandingPost = () => {
                 <div className="comment-text my-auto">
                   <h6>Clem Onojeghuo</h6>
                   <p>
-                    Wow this is amazing caption. Hope to see more nice picture from you in the future
+                  I couldn't agree more! The journey is what shapes us into the people we're meant to be.
+                   It's not always easy, but the challenges we face along the way are what make us stronger, 
+                   wiser, and more resilient. Here's to embracing the journey and all that it has to offer!
                   </p>
-                  <p className="comment-time">17/4/23 12.00pm</p>
+                  <p className="comment-time">18/4/23 12.30pm</p>
                 </div>
               </div>
             </div>
