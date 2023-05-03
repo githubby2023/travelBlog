@@ -109,7 +109,7 @@ function ExamplesNavbar({ isTransparent = true }) {
               <NavLink
                 onClick={signOut(getAuth())}
                 href="/signin"
-                target="_blank"
+                // target="_blank"
               >
                 <i className="nc-icon nc-user-run" /> Logout
               </NavLink>

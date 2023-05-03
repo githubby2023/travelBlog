@@ -26,7 +26,7 @@ const Signin = () => {
     onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       if (currentUser.getIdToken != null) {
-        history.push("/profile");
+        history.push("/index");
       }
     });
   }, []);
@@ -109,7 +109,7 @@ const Signin = () => {
                     color="warning"
                     href="/register"
                   >
-                    Already have an account? Register
+                    Don't have account yet? Register
                   </Button>
                 </div>
               </Card>
