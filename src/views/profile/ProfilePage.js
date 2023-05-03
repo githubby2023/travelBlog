@@ -15,6 +15,7 @@ import {
   UncontrolledDropdown,
 } from "reactstrap";
 import Footer from "components/Footers/Footer";
+import ScrollContainer from "react-indiana-drag-scroll";
 
 const UserProfilePage = () => {
   // let pageHeader = React.createRef();
@@ -275,11 +276,11 @@ const UserProfilePage = () => {
           <div className="row">
             <div className="mx-auto col-md-12">
               <h4 className="bold text-center">User Blog</h4>
-              <div className="card-container">
+              <ScrollContainer className="card-container">
                 {newBlogs.map((blog) => (
                   <PostedBlogCard key={blog.id} blogProps={blog} />
                 ))}
-              </div>
+              </ScrollContainer>
             </div>
           </div>
         </div>

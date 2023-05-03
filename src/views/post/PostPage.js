@@ -4,10 +4,16 @@ import "components/Post/Post.scss";
 import PostHeader from "components/Post/PostHeader";
 import { BiCommentDetail } from "react-icons/bi";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
-import { Button, Carousel, CarouselIndicators, CarouselItem } from "reactstrap";
+import {
+  Button,
+  Carousel,
+  CarouselIndicators,
+  CarouselItem,
+  Modal,
+} from "reactstrap";
 import Footer from "components/Footers/Footer";
 
-const PostPage = () => {
+const PostPage = ({ isSender }) => {
   const items = [
     {
       src: require("assets/img/soroush-karimi.jpg"),
@@ -49,15 +55,67 @@ const PostPage = () => {
     setActiveIndex(newIndex);
   };
 
+  const [isModalOpened, setModal] = React.useState(false);
+
+  function toggleModal() {
+    setModal((bool) => !bool);
+  }
+
   return (
     <>
       <ExamplesNavbar isTransparent={false} />
+      <Modal
+        className="modal-container"
+        isOpen={isModalOpened}
+        toggle={toggleModal}
+      >
+        <div className="modal-header">
+          <button
+            aria-label="Close"
+            className="close"
+            type="button"
+            onClick={toggleModal}
+          >
+            <span aria-hidden={true}>×</span>
+          </button>
+          <h4 className="modal-title text-center" id="editProfileModal">
+            Delete Post
+          </h4>
+        </div>
+        <div className="modal-body">
+          <div className="container">
+            <div className="row">
+              <div className="col text-center">
+                <h4>Are you sure want to delete?</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="modal-footer">
+          <div className="left-side">
+            <Button
+              className="btn-link"
+              color="default"
+              type="button"
+              onClick={toggleModal}
+            >
+              Cancel
+            </Button>
+          </div>
+          <div className="divider" />
+          <div className="right-side">
+            <Button className="btn-link" color="danger" type="button">
+              Update
+            </Button>
+          </div>
+        </div>
+      </Modal>
       <div className="section">
         <div className="filler" />
         <div className="container" lg="12">
           <div className="row">
             <div className="col-md-9">
-              <PostHeader />
+              <PostHeader toggleModal={toggleModal} />
               <div className="post-content">
                 <Carousel
                   activeIndex={activeIndex}
