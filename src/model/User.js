@@ -18,7 +18,7 @@
 //   }
 // }
 
-class ProfileModel {
+class User {
     constructor({
       uid,
       username,
@@ -27,6 +27,7 @@ class ProfileModel {
       gender,
       address,
       viewarray,
+      profilepic
     }) {
       this._uid = uid;
       this._username = username;
@@ -35,6 +36,7 @@ class ProfileModel {
       this._gender = gender;
       this._address = address;
       this._viewarray = viewarray;
+      this._profilepic = profilepic;
     }
   
     get uid() {
@@ -91,6 +93,14 @@ class ProfileModel {
   
     set viewarray(viewarray) {
       this._viewarray = viewarray;
+    }
+
+    get profilepic() {
+      return this._profilepic;
+    }
+  
+    set profilepic(profilepic) {
+      this._profilepic = profilepic;
     }
   }
   

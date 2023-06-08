@@ -3,8 +3,9 @@ import ExamplesNavbar from "components/Navbars/ExamplesNavbar.js";
 import React, { useState, useEffect } from "react";
 import "./Signin.scss";
 import { Button, Card, Form, Input, Container, Row, Col } from "reactstrap";
-import { auth, signInWithGoogle } from "../../api/firebaseconfig";
-import { signInWithEmailAndPassword, onAuthStateChanged} from "firebase/auth";
+import { auth } from "../../api/firebaseconfig";
+import { signInWithGoogle } from "../../api/authentication";
+import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { useHistory } from "react-router-dom";
 
 const Signin = () => {
@@ -47,9 +48,7 @@ const Signin = () => {
   return (
     <>
       {/* <ExamplesNavbar /> */}
-      
-                
-             
+
       <div
         className="page-header"
         style={{

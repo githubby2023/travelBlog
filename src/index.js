@@ -1,6 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
+import { userContext } from "./providers/user";
+
 
 // styles
 import "bootstrap/scss/bootstrap.scss";
@@ -20,42 +22,23 @@ import CreatePage from "views/Create/CreatePage";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
-  <BrowserRouter>
-    <Switch>
-      <Route path="/index" render={(props) => <Index {...props} />} />
-      <Route
-        path="/oldindex"
-        render={(props) => <OldIndex {...props} />}
-      />
-      <Route
-        path="/post"
-        render={(props) => <PostPage {...props} />}
-      />
-      <Route
-        path="/register"
-        render={(props) => <Register {...props} />}
-      />
-      <Route
-        path="/signin"
-        render={(props) => <Signin {...props} />}
-      />
-      <Route
-        path="/profile"
-        render={(props) => <Profile {...props} />}
-      />
-      <Route
-        path="/dashboard"
-        render={(props) => <DashBoard {...props} />}
-      />
-      <Route
-        path="/create"
-        render={(props) => <CreatePage {...props} />}
-      />
-      {/* <Route
-        path="/postpage"
-        render={(props) => <PostPages {...props} />}
-      /> */}
-      <Redirect to="/index" />
-    </Switch>
-  </BrowserRouter>
+  <userContext.Provider
+    value={{
+      user: {},
+    }}
+  >
+    <BrowserRouter>
+      <Switch>
+        <Route path="/index" render={(props) => <Index {...props} />} />
+        <Route path="/oldindex" render={(props) => <OldIndex {...props} />} />
+        <Route path="/post" render={(props) => <PostPage {...props} />} />
+        <Route path="/register" render={(props) => <Register {...props} />} />
+        <Route path="/signin" render={(props) => <Signin {...props} />} />
+        <Route path="/profile" render={(props) => <Profile {...props} />} />
+        <Route path="/dashboard" render={(props) => <DashBoard {...props} />} />
+        <Route path="/create" render={(props) => <CreatePage {...props} />} />
+        <Redirect to="/index" />
+      </Switch>
+    </BrowserRouter>
+  </userContext.Provider>
 );

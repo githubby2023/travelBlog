@@ -6,8 +6,6 @@ import LandingPost2 from "components/Landing/LandingPost2";
 
 import LandingCreate from "components/Landing/LandingCreate";
 
-import SearchBar from "components/Landing/searchBar";
-
 function Index() {
   document.documentElement.classList.remove("nav-open");
   React.useEffect(() => {
