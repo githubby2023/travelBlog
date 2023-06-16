@@ -6,7 +6,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { firestore } from "./firebaseconfig";
 
 const provider = new GoogleAuthProvider();
@@ -45,59 +45,47 @@ export const signInWithGoogle = async () => {
   try {
     const user = await signInWithPopup(auth, provider);
     console.log("signInWithGoogle: " + user.user.displayName);
-    writeUserData(
-      user.user.uid,
-      user.user.displayName,
-      "",
-      user.user.email,
-      "",
-      "",
-      user.user.photoURL
-    );
+
+    if (user.user) {
+      console.log("Sign in Success");
+      return user.user;
+    }
   } catch (error) {
     console.log(error);
   }
-  // await signInWithPopup(auth, provider).then((result) => {
-  //   const name = result.user.displayName;
-  //   const email = result.user.email;
-  //   const profilePic = result.user.photoURL;
-
-  // }).catch((error) => { console.log(error) });
 };
 
-const writeUserData = async (
+export const writeUserData = async (
   uid,
   username,
   nationality,
   email,
   gender,
   address,
-  profilepic
+  profilepic,
+  bio
 ) => {
-  console.log("writeUserData1: " + uid);
-
   let user = {
-    uid: uid,
-    username: username,
-    nationality: nationality,
-    email: email,
-    gender: gender,
-    address: address,
-    profilepic: profilepic,
+    uid: uid ?? "",
+    username: username ?? "",
+    nationality: nationality ?? "",
+    email: email ?? "",
+    gender: gender ?? "",
+    address: address ?? "",
+    profilepic: profilepic ?? "",
+    bio: bio ?? "",
   };
-
-  try {
-    const docRef = await addDoc(collection(firestore, "User"), user);
-    console.log("Document written with ID: ", docRef.id);
-  } catch (e) {
-    console.error("Error adding document: ", e);
-  }
+  return setDoc(doc(firestore, "User", uid), user);
 };
 
-function queryUser() {
-  const userRef = firestore.collection("users");
-  const query = userRef.where("uid", "==", auth.currentUser.uid);
-  console.log(query);
-
-  // const [user] = useCollectionData(query, { idField: "id" });
-}
+export const queryUser = async (uid) => {
+  return getDoc(doc(firestore, "User", uid)) // return a promise
+    .then((doc) => {
+      // console.log("Document data is " + doc.data());
+      if (doc.exists()) {
+        return doc.data();
+      } else {
+        return false;
+      }
+    });
+};

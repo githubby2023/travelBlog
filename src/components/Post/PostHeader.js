@@ -3,12 +3,12 @@ import "./PostHeader.js";
 import { AiTwotoneEdit } from "react-icons/ai";
 import { AiFillDelete } from "react-icons/ai";
 
-const PostHeader = ({ toggleModal, isSender }) => {
+const PostHeader = ({ toggleModal, issender }) => {
   return (
     <div className="post-header">
       <div className="title-container">
         <h1 className="post-title">Topic</h1>
-        {isSender ? (
+        {issender ? (
           <div>
             <a href="/create">
               <AiTwotoneEdit className="icon" />

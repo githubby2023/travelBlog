@@ -1,8 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
-import { userContext } from "./providers/user";
-
 
 // styles
 import "bootstrap/scss/bootstrap.scss";
@@ -21,12 +19,8 @@ import CreatePage from "views/Create/CreatePage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
-root.render(
-  <userContext.Provider
-    value={{
-      user: {},
-    }}
-  >
+function Application() {
+  return (
     <BrowserRouter>
       <Switch>
         <Route path="/index" render={(props) => <Index {...props} />} />
@@ -40,5 +34,9 @@ root.render(
         <Redirect to="/index" />
       </Switch>
     </BrowserRouter>
-  </userContext.Provider>
+  );
+}
+
+root.render(
+    <Application />
 );

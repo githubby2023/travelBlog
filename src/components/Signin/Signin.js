@@ -1,17 +1,19 @@
-import ExamplesNavbar from "components/Navbars/ExamplesNavbar.js";
-
 import React, { useState, useEffect } from "react";
 import "./Signin.scss";
 import { Button, Card, Form, Input, Container, Row, Col } from "reactstrap";
 import { auth } from "../../api/firebaseconfig";
-import { signInWithGoogle } from "../../api/authentication";
-import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import {
+  signInWithGoogle,
+  writeUserData,
+  queryUser,
+  loginWithEmail,
+} from "../../api/authentication";
+import { onAuthStateChanged } from "firebase/auth";
 import { useHistory } from "react-router-dom";
 
 const Signin = () => {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
-  const [user, setUser] = useState({});
 
   const history = useHistory();
 
@@ -25,25 +27,44 @@ const Signin = () => {
 
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      if (currentUser.getIdToken != null) {
-        history.push("/index");
+      if (currentUser) {
+        // dispatch(updateUser(currentUser.displayName));
+        currentUser.getIdToken().then((token) => {
+          if (token) {
+            queryUser(currentUser.uid).then((user) => {
+              if (user) {
+                //User ady in the database
+                localStorage.setItem("currentUser", JSON.stringify(user));
+                history.push("/index");
+              } else {
+                // No user is found in database, create a new user in firestore
+                writeUserData(
+                  currentUser.uid,
+                  currentUser.displayName,
+                  "",
+                  currentUser.email,
+                  "",
+                  "",
+                  currentUser.photoURL,
+                  ""
+                )
+                  .then(() => {
+                    // console.log("Document written successfully");
+                    queryUser(currentUser.uid).then((user) => {
+                      localStorage.setItem("currentUser", JSON.stringify(user));
+                      history.push("/index");
+                    });
+                  })
+                  .catch((e) => {
+                    console.log(e);
+                  });
+              }
+            });
+          }
+        });
       }
     });
   }, []);
-
-  const login = async () => {
-    try {
-      const user = await signInWithEmailAndPassword(
-        auth,
-        loginEmail,
-        loginPassword
-      );
-      console.log(user);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <>
@@ -92,7 +113,7 @@ const Signin = () => {
                     block
                     className="signinBtn"
                     // color="primary"
-                    onClick={login}
+                    onClick={loginWithEmail(loginEmail, loginPassword)}
                   >
                     Sign in
                   </Button>

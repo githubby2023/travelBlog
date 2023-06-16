@@ -2,7 +2,8 @@ import React from "react";
 import { AiTwotoneEdit } from "react-icons/ai";
 import "./Profile.scss";
 
-const ProfileCard = ({ userProps, isSender, toggleModal }) => {
+const ProfileCard = ({ name, nationality, issender, toggleModal }) => {
+  React.useEffect(() => {}, [name]);
   return (
     <>
       <div className="profile-container">
@@ -16,16 +17,16 @@ const ProfileCard = ({ userProps, isSender, toggleModal }) => {
         </div>
         <div className="name">
           <div className="name-container">
-            <h4 className="title">{userProps.username}</h4>
-            {isSender ? (
+            <h4 className="title">{name}</h4>
+            {issender ? (
               <div className="icon">
-                <AiTwotoneEdit width={40}  onClick={toggleModal}/>
+                <AiTwotoneEdit width={40} onClick={toggleModal} />
               </div>
             ) : (
               <></>
             )}
           </div>
-          <h6 className="description">{userProps.nationality}</h6>
+          <h6 className="description">{nationality}</h6>
         </div>
       </div>
     </>

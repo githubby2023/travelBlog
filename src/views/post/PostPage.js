@@ -14,7 +14,7 @@ import {
 } from "reactstrap";
 import Footer from "components/Footers/Footer";
 
-const PostPage = ({ isSender = true }) => {
+const PostPage = ({ issender }) => {
   const items = [
     {
       src: require("assets/img/soroush-karimi.jpg"),
@@ -116,7 +116,7 @@ const PostPage = ({ isSender = true }) => {
         <div className="container" lg="12">
           <div className="row">
             <div className="col-md-9">
-              <PostHeader toggleModal={toggleModal} isSender={isSender} />
+              <PostHeader toggleModal={toggleModal} issender={issender} />
               <div className="post-content">
                 <Carousel
                   activeIndex={activeIndex}
