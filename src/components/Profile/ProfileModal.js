@@ -35,10 +35,12 @@ const ProfileModal = ({ isModalOpened, toggleModal, currentUser }) => {
       user.gender,
       user.address,
       user.profilepic,
-      user.bio
+      user.bio,
+      user.cover
     ).then(() => {
       localStorage.setItem("currentUser", JSON.stringify(user));
       toggleModal();
+      window.location.reload(true);
     });
   };
 

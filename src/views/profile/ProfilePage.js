@@ -7,6 +7,8 @@ import LatestBlogCard from "components/Profile/LatestBlogCard";
 import Footer from "components/Footers/Footer";
 import ScrollContainer from "react-indiana-drag-scroll";
 import ProfileModal from "components/Profile/ProfileModal";
+import { BiEdit } from "react-icons/bi";
+import ProfileCoverModal from "components/Profile/ProfileCoverModal";
 
 const UserProfilePage = () => {
   // let pageHeader = React.createRef();
@@ -45,11 +47,15 @@ const UserProfilePage = () => {
   ];
 
   const newBlogs = blogs.slice(1);
-  const [isModalOpened, setModal] = React.useState(false);
   const [currentUser, serCurrentUser] = React.useState({});
+  const [isModalOpened, setModal] = React.useState(false);
+  const [isCoverModalOpened, setCoverModal] = React.useState(false);
 
   function toggleModal() {
     setModal((bool) => !bool);
+  }
+  function toggleCoverModal() {
+    setCoverModal((bool) => !bool);
   }
 
   React.useEffect(() => {
@@ -68,24 +74,33 @@ const UserProfilePage = () => {
         toggleModal={toggleModal}
         currentUser={currentUser}
       />
+      <ProfileCoverModal
+        isModalCoverOpened={isCoverModalOpened}
+        toggleCoverModal={toggleCoverModal}
+        uid={currentUser.uid}
+      />
       <div className="section">
         <div
           style={{
-            backgroundImage:
-              "url(" + require("assets/img/fabio-mangione.jpg") + ")",
+            backgroundImage: `url(${
+              currentUser.cover || require("assets/img/fabio-mangione.jpg")
+            })`,
           }}
           className="page-header"
           data-parallax={true}
           // ref={pageHeader}
         >
           <div className="filter" />
+          <BiEdit className="editCoverIcon" onClick={toggleCoverModal} />
         </div>
         <div className="container" lg="12">
           <ProfileCard
+            uid={currentUser.uid}
             name={currentUser.username}
             nationality={currentUser.nationality}
             issender={true}
             toggleModal={toggleModal}
+            photoUrl={currentUser.profilepic}
           />
           <div className="row">
             <div className="bio mx-auto col-md-4 text-center">
@@ -103,7 +118,7 @@ const UserProfilePage = () => {
               <h4 className="bold text-center">Lastest Post</h4>
             </div>
           </div>
-          {blogs.length == 0 ? (
+          {blogs.length === 0 ? (
             <div className="row">
               <div className="mx-auto col-md-12">
                 <h4 className="bold text-center">No Blog Yet</h4>

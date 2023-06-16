@@ -63,7 +63,8 @@ export const writeUserData = async (
   gender,
   address,
   profilepic,
-  bio
+  bio,
+  cover
 ) => {
   let user = {
     uid: uid ?? "",
@@ -74,8 +75,20 @@ export const writeUserData = async (
     address: address ?? "",
     profilepic: profilepic ?? "",
     bio: bio ?? "",
+    cover: cover ?? "",
   };
   return setDoc(doc(firestore, "User", uid), user);
+};
+
+export const uploadCoverPhoto = async (
+  uid,
+  cover
+) => {
+  let user = {
+    uid: uid ?? "",
+    cover: cover ?? "",
+  };
+  return setDoc(doc(firestore, "User", uid), user, { merge: true });
 };
 
 export const queryUser = async (uid) => {

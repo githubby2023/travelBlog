@@ -4,6 +4,7 @@
   padding-top: 0;
 
   .page-header {
+    position: relative;
     // background-color: #b2afab;
     // background-position: center center;
     background-size: cover;
@@ -16,6 +17,24 @@
     // display: flex;
     // align-items: center;
     // justify-content: center;
+
+    .editCoverIcon{
+      width: 1.5%;
+      height: auto;
+      cursor: pointer;
+      color: #ffffff;
+      position: absolute;
+      right: 10%;
+      top: 30%;
+      z-index: 2;
+      opacity: 0.5;
+      transition: all 0.2s ease-out;
+
+      &:hover {
+        opacity: 1;
+        transition: all 0.2s ease-out;
+      }
+    }
   }
 
   .container {
@@ -73,6 +92,7 @@
 //Profile card css
 .profile-container {
   text-align: center;
+  position: relative;
 
   .profilepic {
     position: relative;
@@ -81,6 +101,37 @@
     margin: -85px auto 0;
     display: inline-block;
     z-index: 999;
+    cursor: pointer;
+    transition: all 0.2s ease-out;
+
+    .imgg {
+      aspect-ratio: 1/1;
+      object-fit: cover;
+    }
+
+    &:hover {
+      filter: brightness(70%);
+      transition: all 0.2s ease-out;
+
+      .plus {
+        opacity: 1;
+        transition: all 0.2s ease-out;
+      }
+    }
+  }
+
+  .plus {
+    opacity: 0;
+    min-width: 60px;
+    max-width: 180px;
+    height: auto;
+    color: #ffffff;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -30px;
+    margin-top: -30px;
+    transition: all 0.2s ease-out;
   }
 
   .name-container {
