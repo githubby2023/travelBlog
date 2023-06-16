@@ -9,47 +9,49 @@ import ScrollContainer from "react-indiana-drag-scroll";
 import ProfileModal from "components/Profile/ProfileModal";
 import { BiEdit } from "react-icons/bi";
 import ProfileCoverModal from "components/Profile/ProfileCoverModal";
+import { queryUserBlog } from "../../api/queryBlog";
 
 const UserProfilePage = () => {
   // let pageHeader = React.createRef();
 
-  const blogs = [
-    {
-      id: "1",
-      title: "Ice Mountain",
-      url: "https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      desc: "Standing in awe of the frozen majesty before me, I can't help but feel small in comparison. The ice mountain towers above me, its jagged peaks piercing the clouds, a testament to the power and beauty of nature.",
-    },
-    {
-      id: "2",
-      title: "Beauty In Bloom",
-      url: "https://images.pexels.com/photos/381739/pexels-photo-381739.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      desc: "Beauty In Bloom",
-    },
-    {
-      id: "3",
-      title: "Mighty Oak",
-      url: "https://japan.stripes.com/sites/default/files/styles/community_site_carousel_750x500/public/article-images/main_13.jpg?itok=_GELFbpY",
-      desc: "Mighty Oak",
-    },
-    {
-      id: "4",
-      title: "Blue Beauty",
-      url: "https://images.pexels.com/photos/326055/pexels-photo-326055.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      desc: "Blue Beauty",
-    },
-    {
-      id: "5",
-      title: "Nighttime Magic",
-      url: "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      desc: "Nighttime Magic",
-    },
-  ];
+  // const blogs = [
+  //   {
+  //     id: "1",
+  //     title: "Ice Mountain",
+  //     url: "https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+  //     desc: "Standing in awe of the frozen majesty before me, I can't help but feel small in comparison. The ice mountain towers above me, its jagged peaks piercing the clouds, a testament to the power and beauty of nature.",
+  //   },
+  //   {
+  //     id: "2",
+  //     title: "Beauty In Bloom",
+  //     url: "https://images.pexels.com/photos/381739/pexels-photo-381739.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+  //     desc: "Beauty In Bloom",
+  //   },
+  //   {
+  //     id: "3",
+  //     title: "Mighty Oak",
+  //     url: "https://japan.stripes.com/sites/default/files/styles/community_site_carousel_750x500/public/article-images/main_13.jpg?itok=_GELFbpY",
+  //     desc: "Mighty Oak",
+  //   },
+  //   {
+  //     id: "4",
+  //     title: "Blue Beauty",
+  //     url: "https://images.pexels.com/photos/326055/pexels-photo-326055.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+  //     desc: "Blue Beauty",
+  //   },
+  //   {
+  //     id: "5",
+  //     title: "Nighttime Magic",
+  //     url: "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+  //     desc: "Nighttime Magic",
+  //   },
+  // ];
 
-  const newBlogs = blogs.slice(1);
   const [currentUser, serCurrentUser] = React.useState({});
   const [isModalOpened, setModal] = React.useState(false);
   const [isCoverModalOpened, setCoverModal] = React.useState(false);
+  const [blogs, setBlogs] = React.useState([{}]);
+  const newBlogs = blogs.slice(1);
 
   function toggleModal() {
     setModal((bool) => !bool);
@@ -63,6 +65,9 @@ const UserProfilePage = () => {
     if (userTemp) {
       serCurrentUser(userTemp);
     }
+    queryUserBlog(userTemp.uid).then((blogs) => {
+      setBlogs(blogs);
+    });
   }, []);
 
   return (
@@ -115,16 +120,21 @@ const UserProfilePage = () => {
           </div>
           <div className="row">
             <div className="mx-auto col-md-12">
-              <h4 className="bold text-center">Lastest Post</h4>
+              <h4 className="bold text-center">Lastest Blog</h4>
             </div>
           </div>
+          {/* When there is 0 blog */}
           {blogs.length === 0 ? (
             <div className="row">
               <div className="mx-auto col-md-12">
                 <h4 className="bold text-center">No Blog Yet</h4>
               </div>
             </div>
+            // When there is only 1 blog
+          ) : blogs.length === 1 ? (
+            <LatestBlogCard blog={blogs[0]} />
           ) : (
+            // When there are more than 1 blog
             <>
               <LatestBlogCard blog={blogs[0]} />
               <div className="row">

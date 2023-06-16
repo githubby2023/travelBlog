@@ -80,10 +80,7 @@ export const writeUserData = async (
   return setDoc(doc(firestore, "User", uid), user);
 };
 
-export const uploadCoverPhoto = async (
-  uid,
-  cover
-) => {
+export const uploadCoverPhoto = async (uid, cover) => {
   let user = {
     uid: uid ?? "",
     cover: cover ?? "",
