@@ -1,16 +1,17 @@
 import React from "react";
 import "components/Dashboard/Dashboard.scss";
+import { dataYear } from "./LineChartData";
+import { dataBar } from "./BarChartData";
+
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
   PointElement,
   LineElement,
-  Title,
   BarElement,
   Tooltip,
   Legend,
-  ArcElement,
 } from "chart.js";
 import { Line, Bar } from "react-chartjs-2";
 
@@ -49,85 +50,6 @@ export const options = {
       text: "Chart.js Line Chart",
     },
   },
-};
-
-let labels = ["January", "February", "March", "April", "May", "June", "July"];
-
-export const dataYear = {
-  labels,
-  datasets: [
-    {
-      label: "User Visits",
-      data: [...Array(30)].map(() => Math.floor(Math.random() * 1000)),
-      borderColor: "rgb(255, 99, 132)",
-      backgroundColor: "rgba(255, 99, 132, 0.5)",
-    },
-    {
-      label: "Page Views",
-      data: [...Array(30)].map(() => Math.floor(Math.random() * 1000)),
-      borderColor: "rgb(53, 162, 235)",
-      backgroundColor: "rgba(53, 162, 235, 0.5)",
-    },
-    {
-      label: "Subscriptions",
-      data: [...Array(30)].map(() => Math.floor(Math.random() * 1000)),
-      borderColor: "rgb(255, 205, 86)",
-      backgroundColor: "rgba(255, 205, 86, 0.5)",
-    },
-  ],
-};
-
-labels = [];
-
-for (let i = 1; i <= 30; i++) {
-  labels.push(i.toString());
-}
-
-export const dataMonthly = {
-  labels,
-  datasets: [
-    {
-      label: "User Visits",
-      data: [...Array(30)].map(() => Math.floor(Math.random() * 1000)),
-      borderColor: "rgb(255, 99, 132)",
-      backgroundColor: "rgba(255, 99, 132, 0.5)",
-    },
-    {
-      label: "Page Views",
-      data: [...Array(30)].map(() => Math.floor(Math.random() * 500)),
-      borderColor: "rgb(53, 162, 235)",
-      backgroundColor: "rgba(53, 162, 235, 0.5)",
-    },
-    {
-      label: "Subscriptions",
-      data: [...Array(30)].map(() => Math.floor(Math.random() * 50)),
-      borderColor: "rgb(255, 205, 86)",
-      backgroundColor: "rgba(255, 205, 86, 0.5)",
-    },
-  ],
-};
-
-labels = ["Food", "Transport", "Attraction", "Accomodation", "Others"];
-
-const colors = [
-  "rgba(255, 99, 132, 0.5)",
-  "rgba(54, 162, 235, 0.5)",
-  "rgba(255, 206, 86, 0.5)",
-  "rgba(75, 192, 192, 0.5)",
-  "rgba(153, 102, 255, 0.5)",
-];
-
-export const dataBar = {
-  labels,
-  datasets: [
-    {
-      label: "View",
-      data: [...Array(30)].map(() =>
-        Math.floor(Math.random() * (100 - 10 + 1) + 10)
-      ),
-      backgroundColor: colors,
-    },
-  ],
 };
 
 export function DashBoard() {
