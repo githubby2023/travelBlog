@@ -1,10 +1,10 @@
-import ExamplesNavbar from "components/Navbars/ExamplesNavbar.js";
+
 import {
-  createUserWithEmailAndPassword,
+
   onAuthStateChanged,
 } from "firebase/auth";
 import { auth } from "../../api/firebaseconfig";
-import { signInWithGoogle, registerWithEmail } from "../../api/authentication";
+import { signInWithGoogle, registerWithEmail,queryUser,writeUserData } from "../../api/authentication";
 import React, { useState, useEffect } from "react";
 import "./Register.scss";
 import {
@@ -46,10 +46,48 @@ const Register = () => {
 
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      if (currentUser != null) {
-        history.push("/index");
+      if (currentUser) {
+        // dispatch(updateUser(currentUser.displayName));
+        currentUser.getIdToken().then((token) => {
+          if (token) {
+            queryUser(currentUser.uid).then((user) => {
+              if (user) {
+                //User ady in the database
+                localStorage.setItem("currentUser", JSON.stringify(user));
+                history.push("/index");
+              } else {
+                // No user is found in database, create a new user in firestore
+                writeUserData(
+                  currentUser.uid,
+                  registerName,
+                  registerNationality,
+                  currentUser.email,
+                  registerGender,
+                  registerAddress,
+                  currentUser.photoURL,
+                  "",
+                  "",
+                  "",
+                )
+                  .then(() => {
+                    // console.log("Document written successfully");
+                    queryUser(currentUser.uid).then((user) => {
+                      localStorage.setItem("currentUser", JSON.stringify(user));
+                      history.push("/index");
+                    });
+                  })
+                  .catch((e) => {
+                    console.log(e);
+                  });
+              }
+            });
+          }
+        });
       }
+      // setUser(currentUser);
+      // if (currentUser != null) {
+      //   history.push("/index");
+      // }
     });
   }, []);
 
@@ -240,9 +278,10 @@ const Register = () => {
                 <Button
                   block
                   className="registerBtn"
+                  onClick={() => {registerWithEmail(registerEmail, registerPassword)}}
+                  // onClick={() => {console.log("nihao")}}
                   disabled={disabled}
                   // color="primary"
-                  onClick={registerWithEmail(registerEmail, registerPassword)}
                 >
                   Register
                 </Button>
