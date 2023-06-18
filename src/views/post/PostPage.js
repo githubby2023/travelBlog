@@ -13,8 +13,11 @@ import {
   Modal,
 } from "reactstrap";
 import Footer from "components/Footers/Footer";
+import { useParams } from "react-router-dom";
 
 const PostPage = ({ issender }) => {
+
+  const { id } = useParams();
   const items = [
     {
       src: require("assets/img/soroush-karimi.jpg"),

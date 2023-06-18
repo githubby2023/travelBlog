@@ -101,8 +101,10 @@
 }
 
 .comment-container {
+  width: 100%;
   margin: 1rem 0 2rem;
   .comment {
+    width: 100%;
     display: flex;
     flex-direction: row;
 
@@ -111,6 +113,11 @@
       padding: 0.5rem;
       max-width: 60px;
       display: inline-block;
+
+      img {
+        aspect-ratio: 1/1;
+        object-fit: cover;
+      }
     }
 
     .comment-text {
@@ -126,7 +133,7 @@
     }
   }
 
-  .comment-input-row{
+  .comment-input-row {
     margin-top: 2rem;
     display: flex;
     flex-direction: row;
@@ -138,13 +145,12 @@
       padding: 1rem;
     }
 
-    .send-icon{
+    .send-icon {
       margin-left: 1rem;
       font-size: 2rem;
       cursor: pointer;
     }
   }
-
 }
 
 //right section
@@ -221,7 +227,7 @@
 }
 
 .modal-body {
-  h4{
+  h4 {
     margin: 1rem 0;
   }
 }

@@ -25,7 +25,7 @@ function Application() {
       <Switch>
         <Route path="/index" render={(props) => <Index {...props} />} />
         <Route path="/oldindex" render={(props) => <OldIndex {...props} />} />
-        <Route path="/post" render={(props) => <PostPage {...props} />} />
+        <Route path="/post/:id" render={(props) => <PostPage {...props} />} />
         <Route path="/register" render={(props) => <Register {...props} />} />
         <Route path="/signin" render={(props) => <Signin {...props} />} />
         <Route path="/profile" render={(props) => <Profile {...props} />} />
