@@ -315,6 +315,13 @@ const Rating = ({ blog, user }) => {
   const maxRating = 5;
   const [selectedStar, setSelectedStar] = React.useState(-1);
 
+  React.useEffect(() => {
+    const userRating = blog.rating[user.uid];
+    if (userRating) {
+      setSelectedStar(userRating - 1);
+    }
+  }, [blog.rating, user.uid]);
+
   const handleStarClick = (index) => {
     setSelectedStar(index);
     console.log("Selected Star Index:", index);
