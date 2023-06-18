@@ -3,6 +3,7 @@ import "components/Dashboard/Dashboard.scss";
 import { dataYear } from "./LineChartData";
 import { dataBar } from "./BarChartData";
 
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -160,7 +161,7 @@ export function DashBoard() {
                       </h6>
                       <h2 className="mb-0">Topic Engagement </h2>
                     </div>
-                    <Bar data={dataBar} />
+                    <Bar options={options} data={dataBar} />
                   </Row>
                 </CardHeader>
                 <CardBody></CardBody>
