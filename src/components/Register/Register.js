@@ -18,8 +18,12 @@ import {
   Label,
 } from "reactstrap";
 import { useHistory } from "react-router-dom";
+import { useDispatch,useSelector } from "react-redux";
+
 
 const Register = () => {
+  const registerErrorMessage = useSelector(state => state.registerErrorMessage);
+  const [errorMessage, setErrorMessage] = useState("");
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
   const [registerConfirmPassword, setRegisterConfirmPassword] = useState("");
@@ -46,6 +50,7 @@ const Register = () => {
 
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
+      setErrorMessage("");
       if (currentUser) {
         // dispatch(updateUser(currentUser.displayName));
         currentUser.getIdToken().then((token) => {
@@ -278,7 +283,7 @@ const Register = () => {
                 <Button
                   block
                   className="registerBtn"
-                  onClick={() => {registerWithEmail(registerEmail, registerPassword)}}
+                  onClick={() => {registerWithEmail(registerEmail, registerPassword)? setErrorMessage({registerErrorMessage}): setErrorMessage("Email is already in use")}}
                   // onClick={() => {console.log("nihao")}}
                   disabled={disabled}
                   // color="primary"
@@ -294,7 +299,7 @@ const Register = () => {
                   <i className="fa fa-google" />
                   Register with Google
                 </Button>
-
+                {registerErrorMessage && <div className="error"> {registerErrorMessage} </div>}
                 <div className="mx-auto">
                   <Button
                     className="signin btn-link mt-2"
