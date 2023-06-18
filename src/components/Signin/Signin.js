@@ -14,6 +14,7 @@ import { useHistory } from "react-router-dom";
 const Signin = () => {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const history = useHistory();
 
@@ -28,6 +29,7 @@ const Signin = () => {
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
+        setErrorMessage("");
         // dispatch(updateUser(currentUser.displayName));
         currentUser.getIdToken().then((token) => {
           if (token) {
@@ -105,7 +107,7 @@ const Signin = () => {
                       className="btn-link pr-0 mt-1"
                       color="warning"
                       href="#pablo"
-                      onClick={(e) => e.preventDefault()}
+                      onClick={(e) => console.log("Forgot password?")}
                     >
                       Forgot password?
                     </Button>
@@ -114,7 +116,7 @@ const Signin = () => {
                     block
                     className="signinBtn"
                     // color="primary"
-                    onClick={loginWithEmail(loginEmail, loginPassword)}
+                    onClick={()=>{loginWithEmail(loginEmail, loginPassword)? setErrorMessage("Invalid email or password") : setErrorMessage("")}} 
                   >
                     Sign in
                   </Button>
@@ -127,6 +129,7 @@ const Signin = () => {
                     <i className="fa fa-google" />
                     Sign in with Google
                   </Button>
+                  {errorMessage && <div className="error"> {errorMessage} </div>}
                 </Form>
                 <div className="mx-auto">
                   <Button

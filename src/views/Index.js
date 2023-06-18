@@ -2,11 +2,13 @@ import React from "react";
 import Footer from "components/Footers/Footer.js";
 import ExamplesNavbar from "components/Navbars/ExamplesNavbar";
 import LandingPost from "components/Landing/LandingPost";
-import LandingPost2 from "components/Landing/LandingPost2";
-
 import LandingCreate from "components/Landing/LandingCreate";
+import { queryAllBlogs } from "../api/queryBlog";
+import { queryUser } from "api/authentication";
 
 function Index() {
+  const [landingPosts, setLandingPosts] = React.useState([]);
+
   document.documentElement.classList.remove("nav-open");
   React.useEffect(() => {
     document.body.classList.add("index");
@@ -14,7 +16,35 @@ function Index() {
       document.body.classList.remove("index");
     };
   });
-  
+
+  React.useEffect(() => {
+    queryAllBlogs().then((blogs) => {
+      if (blogs) {
+        Promise.all(
+          blogs.map((blog) =>
+            queryUser(blog.author_id).then((user) => ({
+              blog,
+              user,
+            }))
+          )
+        )
+          .then((results) => {
+            const Posts = results.map(({ blog, user }) => (
+              <LandingPost
+                key={blog.postId}
+                user={user}
+                blog={blog}
+              />
+            ));
+            setLandingPosts(Posts);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+    });
+  }, []);
+
   return (
     <>
       <ExamplesNavbar />
@@ -39,10 +69,8 @@ function Index() {
           </div>
         </div>
         <div className="main">
-          {/* <SearchBar /> */}
           <LandingCreate />
-          <LandingPost />
-          <LandingPost2 />
+          {landingPosts}
           <Footer />
         </div>
       </div>
