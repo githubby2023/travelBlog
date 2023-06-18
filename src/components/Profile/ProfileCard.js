@@ -34,7 +34,7 @@ const ProfileCard = ({
               className="imgg img-circle img-no-padding img-responsive"
               src={
                 photoUrl === "undefined"
-                  ? require("assets/img/faces/joe-gardner-2.jpg")
+                  ? require("assets/img/faces/noImage.png")
                   : photoUrl
               }
             />

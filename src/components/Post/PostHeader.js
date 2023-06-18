@@ -1,13 +1,22 @@
 import React from "react";
 import "./PostHeader.js";
-import { AiTwotoneEdit } from "react-icons/ai";
-import { AiFillDelete } from "react-icons/ai";
+import { AiTwotoneEdit, AiFillStar, AiFillDelete } from "react-icons/ai";
 
-const PostHeader = ({ toggleModal, issender }) => {
+const PostHeader = ({ toggleModal, issender, blog }) => {
+  const [rating, setRating] = React.useState(0);
+
+  React.useEffect(() => {
+    console.log(blog.rating);
+    const ratingValues = Object.values(blog.rating);
+    console.log(ratingValues);
+    const sum = ratingValues.reduce((acc, value) => acc + value);
+    setRating(sum);
+  }, [blog.rating]);
+
   return (
     <div className="post-header">
       <div className="title-container">
-        <h1 className="post-title">Topic</h1>
+        <h2 className="post-title">{blog.topic}</h2>
         {issender ? (
           <div>
             <a href="/create">
@@ -20,8 +29,21 @@ const PostHeader = ({ toggleModal, issender }) => {
         )}
       </div>
       <div className="subtitle-row">
-        <p className="location">Malaysia</p>
-        <p className="time">10:00am</p>
+        <p className="location">
+          {blog.location === "" ? "No location" : blog.location}
+        </p>
+        <p className="time">
+          {/* {new Intl.DateTimeFormat("en-US", {
+            month: "long",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+          }).format(blog.timestamp)} */}
+        </p>
+        <p>
+          <AiFillStar />
+          {`   ${rating}`}
+        </p>
       </div>
     </div>
   );

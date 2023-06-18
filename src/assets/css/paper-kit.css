@@ -508,6 +508,7 @@
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   border: 0;
+  z-index: 100; 
 }
 
 .bootstrap-datetimepicker-widget {
@@ -5480,6 +5481,8 @@ License - nucleoapp.com/license/
   color: #ffffff !important;
 }
 .card .carousel a .fa-angle-left:before {
+  color: #ffffff ;
+  z-index: 100;
   padding-right: 3px;
 }
 .card .carousel a .fa-angle-right:before {

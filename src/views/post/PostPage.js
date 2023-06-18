@@ -4,7 +4,6 @@ import "components/Post/Post.scss";
 import PostHeader from "components/Post/PostHeader";
 import { BiCommentDetail } from "react-icons/bi";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
-import { RiSendPlaneFill } from "react-icons/ri";
 import {
   Button,
   Carousel,
@@ -14,28 +13,74 @@ import {
 } from "reactstrap";
 import Footer from "components/Footers/Footer";
 import { useParams } from "react-router-dom";
+import Comment from "components/Landing/Comment";
+import { Link } from "react-router-dom";
+import {
+  queryUserBlog,
+  queryBlogComments,
+  deleteBlog,
+  setBlogRating,
+} from "../../api/queryBlog";
 
-const PostPage = ({ issender }) => {
-
+//TODO: rating and timestamp
+const PostPage = (props) => {
   const { id } = useParams();
-  const items = [
-    {
-      src: require("assets/img/soroush-karimi.jpg"),
-      altText: "Somewhere",
-      caption: "Somewhere",
-    },
-    {
-      src: require("assets/img/federico-beccari.jpg"),
-      altText: "Somewhere else",
-      caption: "Somewhere else",
-    },
-    {
-      src: require("assets/img/joshua-stannard.jpg"),
-      altText: "Here it is",
-      caption: "Here it is",
-    },
-  ];
+  const { user } = props.location.state;
+  const { blog } = props.location.state;
+  const { comments } = props.location.state ?? [];
+  const [isSender, setIsSender] = React.useState(false);
+  const [suggestions, setSuggestions] = React.useState([]);
+  const [carousellItems, setCarousellItems] = React.useState([{}]);
+  const [postComments, setPostComments] = React.useState([{}]);
 
+  //Check if the current user is the sender of the post
+  //If yes, show the edit and delete button
+  //Also Query the other post from the same author
+  //Remove the current post from the list
+  React.useEffect(() => {
+    const userTemp = JSON.parse(localStorage.getItem("currentUser"));
+    if (userTemp.uid === blog.author_id) {
+      setIsSender(true);
+    }
+    queryUserBlog(blog.author_id).then((blogs) => {
+      const temp = [];
+      blogs.forEach((queriedBlog) => {
+        console.log("Queried Blogs are " + JSON.stringify(queriedBlog.postId));
+        console.log("Blogs are " + JSON.stringify(blog.postId));
+        if (queriedBlog.postId !== blog.postId) {
+          temp.push(queriedBlog);
+        }
+      });
+      console.log(temp.length);
+      setSuggestions(temp);
+    });
+  }, [blog.author_id, blog.postId]);
+
+  //Get comments in 2 case,
+  //If it is route from the landing, the comments are passed in as props
+  //if it is route from the suggestion, the comments are queried from the database
+  React.useEffect(() => {
+    if (comments.length === 0) {
+      queryBlogComments(blog.postId).then((queryComments) => {
+        if (queryComments) {
+          setPostComments(queryComments);
+        }
+      });
+    } else {
+      setPostComments(comments);
+    }
+  }, [blog.postId, comments]);
+
+  //Set up the carousell Images
+  React.useEffect(() => {
+    const temp = [];
+    for (const [key, value] of Object.entries(blog.image)) {
+      temp.push({ src: value, altText: key });
+    }
+    setCarousellItems(temp);
+  }, [blog.image]);
+
+  //Carousell
   const [activeIndex, setActiveIndex] = React.useState(0);
   const [animating, setAnimating] = React.useState(false);
   const onExiting = () => {
@@ -46,12 +91,14 @@ const PostPage = ({ issender }) => {
   };
   const next = () => {
     if (animating) return;
-    const nextIndex = activeIndex === items.length - 1 ? 0 : activeIndex + 1;
+    const nextIndex =
+      activeIndex === carousellItems.length - 1 ? 0 : activeIndex + 1;
     setActiveIndex(nextIndex);
   };
   const previous = () => {
     if (animating) return;
-    const nextIndex = activeIndex === 0 ? items.length - 1 : activeIndex - 1;
+    const nextIndex =
+      activeIndex === 0 ? carousellItems.length - 1 : activeIndex - 1;
     setActiveIndex(nextIndex);
   };
   const goToIndex = (newIndex) => {
@@ -59,8 +106,8 @@ const PostPage = ({ issender }) => {
     setActiveIndex(newIndex);
   };
 
+  //Delete post modal
   const [isModalOpened, setModal] = React.useState(false);
-
   function toggleModal() {
     setModal((bool) => !bool);
   }
@@ -108,8 +155,18 @@ const PostPage = ({ issender }) => {
           </div>
           <div className="divider" />
           <div className="right-side">
-            <Button className="btn-link" color="danger" type="button">
-              Update
+            <Button
+              className="btn-link"
+              color="danger"
+              type="button"
+              onClick={() => {
+                deleteBlog(blog.postId).then(() => {
+                  alert("Post deleted");
+                  window.location.href = "/index";
+                });
+              }}
+            >
+              Delete
             </Button>
           </div>
         </div>
@@ -119,7 +176,11 @@ const PostPage = ({ issender }) => {
         <div className="container" lg="12">
           <div className="row">
             <div className="col-md-9">
-              <PostHeader toggleModal={toggleModal} issender={issender} />
+              <PostHeader
+                toggleModal={toggleModal}
+                issender={isSender}
+                blog={blog}
+              />
               <div className="post-content">
                 <Carousel
                   activeIndex={activeIndex}
@@ -127,22 +188,18 @@ const PostPage = ({ issender }) => {
                   previous={previous}
                 >
                   <CarouselIndicators
-                    items={items}
+                    items={carousellItems}
                     activeIndex={activeIndex}
                     onClickHandler={goToIndex}
                   />
-                  {items.map((item) => {
+                  {carousellItems.map((item) => {
                     return (
                       <CarouselItem
                         onExiting={onExiting}
                         onExited={onExited}
-                        key={item.src}
+                        key={item.altText}
                       >
                         <img src={item.src} alt={item.altText} />
-                        {/* <CarouselCaption
-                          captionText={item.caption}
-                          captionHeader=""
-                        /> */}
                       </CarouselItem>
                     );
                   })}
@@ -173,60 +230,26 @@ const PostPage = ({ issender }) => {
                     <span className="sr-only">Next</span>
                   </a>
                 </Carousel>
-                <p className="post-text">
-                  Lorem ipsum blabla lorem ipsum blabla lorem ipsum blabla lorem
-                  ipsum blabla lorem ipsum blabla lorem ipsum blabla lorem ipsum
-                  blabla lorem ipsum blabla lorem ipsum blabla{" "}
-                </p>
+                <p className="post-text">{blog.caption["paragraph 1"]}</p>
               </div>
               <div className="post-footer">
                 <div className="post-status">
                   <div className="rating-number number my-auto">
-                    <AiFillStar />
-                    <AiFillStar />
-                    <AiFillStar />
-                    <AiFillStar />
-                    <AiOutlineStar /> 4
+                    <Rating user={user} blog={blog} />
                   </div>
                   <div className="comment-number number my-auto">
-                    <BiCommentDetail /> 68
+                    <BiCommentDetail /> {postComments.length ?? 0}
                   </div>
                 </div>
                 <div className="tag-container">
-                  <label className="tag">Primary</label>
-                  <label className="tag">Primary</label>
+                  {blog.tag.map((individualTag) => (
+                    <label className="tag">{individualTag}</label>
+                  ))}
                 </div>
               </div>
               <div className="divider" />
-              <div className="comment-container">
-                <div className="comment">
-                  <div className="comment-profile-pic">
-                    <img
-                      alt="..."
-                      className="img-circle img-no-padding img-responsive my-auto"
-                      src={require("assets/img/faces/joe-gardner-2.jpg")}
-                    />
-                  </div>
-                  <div className="comment-text my-auto">
-                    <h6>userName</h6>
-                    <p>
-                      Lorem Ipsum blabla Lorem Ipsum blabla Lorem Ipsum blabla
-                      Lorem Ipsum blablaLorem Ipsum blabla Lorem Ipsum blabla
-                      Lorem Ipsum blabla Lorem Ipsum blabla Lorem Ipsum
-                      blablaLorem Ipsum blabla
-                    </p>
-                    <p className="comment-time">time</p>
-                  </div>
-                </div>
-                <div className="comment-input-row">
-                  <input
-                    className="input-text"
-                    placeholder="Type in your comment here!"
-                    type="text"
-                  />
-                  <RiSendPlaneFill className="send-icon"/>
-                </div>
-              </div>
+              {postComments &&
+                postComments.map((comment) => <Comment comment={comment} />)}
             </div>
 
             {/* right section */}
@@ -237,48 +260,125 @@ const PostPage = ({ issender }) => {
                   <div className="post-profile-pic">
                     <img
                       alt="..."
-                      className="img-circle img-no-padding img-responsive my-auto"
-                      src={require("assets/img/faces/joe-gardner-2.jpg")}
+                      className="img-circle img-no-padding img-responsive"
+                      src={
+                        user.profilepic === ""
+                          ? require("assets/img/faces/noImage.png")
+                          : user.profilepic
+                      }
                     />
                   </div>
                   <div className="post-header-text my-auto">
-                    <h6>Xuan</h6>
-                    <p>location</p>
+                    <h6>{user.username}</h6>
+                    <p>{user.nationality}</p>
                   </div>
                 </div>
-                <p className="author-bio">Author bio lorem ipsum</p>
+                <p className="author-bio">{user.bio}</p>
                 <Button
                   className="btn-round mr-1"
                   color="primary"
                   type="button"
+                  onClick={() => {}}
                 >
-                  See profile
+                  <Link
+                    className="white-text"
+                    to={{
+                      pathname: `/profile/${user.uid}`,
+                    }}
+                  >
+                    See profile
+                  </Link>
                 </Button>
               </div>
-              <h5 className="bold suggestion-title">Other posts from author</h5>
-              <div className="suggestion-post-container">
-                <div className="suggestion-post">
-                  <div className="suggestion-pic">
-                    <img
-                      alt="..."
-                      className="img-rounded img-no-padding img-responsive my-auto"
-                      src={require("assets/img/faces/joe-gardner-2.jpg")}
-                    />
-                  </div>
-                  <div>
-                    <h6 className="suggestion-title">bruh</h6>
-                    <p className="suggestion-content">
-                      lorem ipsum lorem lorem ipsum lorem lorem ipsum lorem
-                    </p>
-                  </div>
-                </div>
-              </div>
+              {suggestions.length > 0 ? (
+                <>
+                  <h5 className="bold suggestion-title">
+                    Other posts from author
+                  </h5>
+                  {suggestions.map((blog) => (
+                    <SuggestionBlogs blog={blog} user={user} />
+                  ))}
+                </>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
         </div>
         <Footer />
       </div>
     </>
+  );
+};
+
+const Rating = ({ blog, user }) => {
+  const maxRating = 5;
+  const [selectedStar, setSelectedStar] = React.useState(-1);
+
+  const handleStarClick = (index) => {
+    setSelectedStar(index);
+    console.log("Selected Star Index:", index);
+    setBlogRating(blog.postId, user.uid, index + 1)
+      .then(() => {
+        console.log("Rating updated");
+      })
+      .catch((error) => {
+        console.log("Error updating rating", error);
+      });
+  };
+
+  const renderStars = () => {
+    const stars = [];
+
+    for (let i = 0; i < maxRating; i++) {
+      const StarIcon = i <= selectedStar ? AiFillStar : AiOutlineStar;
+      const starColor = i <= selectedStar ? "#f96800" : "inherit"; // Set the color to yellow for filled stars
+
+      stars.push(
+        <StarIcon
+          key={i}
+          onClick={() => handleStarClick(i)}
+          style={{ color: starColor }}
+          className="star-icon"
+        />
+      );
+    }
+
+    return stars;
+  };
+
+  return <div className="rating-number number my-auto">{renderStars()}</div>;
+};
+
+const SuggestionBlogs = ({ blog, user }) => {
+  const comments = [];
+  return (
+    <Link
+      className="black-text"
+      to={{
+        pathname: `/post/${blog.postId}`,
+        state: { blog, user, comments },
+      }}
+    >
+      <div className="suggestion-post-container">
+        <div className="suggestion-post">
+          <div className="suggestion-pic">
+            <img
+              alt="..."
+              className="img-rounded img-no-padding img-responsive my-auto"
+              src={
+                blog.image["cover picture"] ??
+                require("assets/img/faces/joe-gardner-2.jpg")
+              }
+            />
+          </div>
+          <div>
+            <h6 className="suggestion-title">{blog.topic}</h6>
+            <p className="suggestion-content">{blog.caption["paragraph 1"]}</p>
+          </div>
+        </div>
+      </div>
+    </Link>
   );
 };
 

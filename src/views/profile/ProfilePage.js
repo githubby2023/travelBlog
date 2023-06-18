@@ -47,7 +47,7 @@ const UserProfilePage = () => {
   //   },
   // ];
 
-  const [currentUser, serCurrentUser] = React.useState({});
+  const [currentUser, setCurrentUser] = React.useState({});
   const [isModalOpened, setModal] = React.useState(false);
   const [isCoverModalOpened, setCoverModal] = React.useState(false);
   const [blogs, setBlogs] = React.useState([{}]);
@@ -63,7 +63,7 @@ const UserProfilePage = () => {
   React.useEffect(() => {
     const userTemp = JSON.parse(localStorage.getItem("currentUser"));
     if (userTemp) {
-      serCurrentUser(userTemp);
+      setCurrentUser(userTemp);
     }
   }, []);
 

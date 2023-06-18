@@ -6,6 +6,7 @@ import {
   query,
   orderBy,
   limit,
+  setDoc,
 } from "firebase/firestore";
 import { firestore } from "./firebaseconfig";
 
@@ -37,11 +38,13 @@ export const queryUserBlog = async (uid) => {
 };
 
 export const queryAllBlogs = async () => {
-  return getDocs(query(
-    collection(firestore, "Post"),
-    orderBy("timestamp", "desc"),
-    limit(10)
-  )) // return a promise
+  return getDocs(
+    query(
+      collection(firestore, "Post"),
+      orderBy("timestamp", "desc"),
+      limit(10)
+    )
+  ) // return a promise
     .then((querySnapshot) => {
       let blogs = [];
       querySnapshot.forEach((doc) => {
@@ -55,15 +58,24 @@ export const queryAllBlogs = async () => {
 };
 
 export const queryBlogComments = async (postId) => {
-  return getDocs(
-    collection(firestore, "Post", postId, "comment")
-  ).then((querySnapshot) => {
-    let comments = [];
-    querySnapshot.forEach((doc) => {
-      if (doc.exists()) {
-        comments.push(doc.data());
-      }
-    });
-    return comments;
-  });
+  return getDocs(collection(firestore, "Post", postId, "comment")).then(
+    (querySnapshot) => {
+      let comments = [];
+      querySnapshot.forEach((doc) => {
+        if (doc.exists()) {
+          comments.push(doc.data());
+        }
+      });
+      return comments;
+    }
+  );
+};
+
+export const deleteBlog = async (postId) => {
+  return await doc(firestore, "Post", postId).delete();
+};
+
+export const setBlogRating = async (postId, uid, rating) => {
+  let rate = { rating: { [uid]: rating } };
+  return setDoc(doc(firestore, "Post", postId), rate, { merge: true });
 };
