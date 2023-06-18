@@ -1,6 +1,4 @@
-
 import {
-
   onAuthStateChanged,
 } from "firebase/auth";
 import { auth } from "../../api/firebaseconfig";
@@ -19,9 +17,11 @@ import {
 } from "reactstrap";
 import { useHistory } from "react-router-dom";
 import { useDispatch,useSelector } from "react-redux";
+import { setRegisterErrorMessage } from "actions/setRegisterErrorMessage";
 
 
 const Register = () => {
+  const dispatch = useDispatch();
   const registerErrorMessage = useSelector(state => state.registerErrorMessage);
   const [errorMessage, setErrorMessage] = useState("");
   const [registerEmail, setRegisterEmail] = useState("");
@@ -47,6 +47,22 @@ const Register = () => {
   const [nameFormClassName, setNameFormClassName] = useState("register-form");
   const [nationalityFormClassName, setNationalityFormClassName] =
     useState("register-form");
+
+  const [registerInput, setRegisterInput] = useState({email:"", password: "", confirmpassword: "", name: "", address:"",nationality:"",gender:""});
+
+  useEffect(() => {
+    setRegisterEmail(registerInput.email);
+    setRegisterPassword(registerInput.password);
+    setRegisterConfirmPassword(registerInput.confirmpassword);
+    setRegisterName(registerInput.name);
+    setRegisterAddress(registerInput.address);
+    setRegisterNationality(registerInput.nationality);
+    setRegisterGender(registerInput.gender);
+
+    if(registerConfirmPassword !== registerPassword){
+      setConfirmPasswordError("Not match password");
+    }
+  } , [registerInput]);
 
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
@@ -127,14 +143,22 @@ const Register = () => {
                     type="text"
                     error={emailError ? true : false}
                     onChange={(event) => {
-                      setRegisterEmail(event.target.value);
-                      if (event.target.value === "") {
-                        setEmailFormClassName("has-danger");
-                        setEmailError("Email is required");
-                      } else {
-                        setEmailFormClassName("has-success");
-                        setEmailError("");
-                      }
+                      setRegisterInput({...registerInput, email: event.target.value});
+                      console.log("email :" +registerInput.email)
+                      // setRegisterEmail(event.target.value);
+                      // //condition to check if email is valid********************
+                      // const emptyStringTrue = event.target.value === "" || event.target.value === null
+                      // const withoutAllias = event.target.value.includes("@") === false
+                      // const withoutDot = event.target.value.includes(".") === false || event.target.value.endsWith(".") === true
+                      // const withoutTopLevelDomain = (event.target.value.endsWith('com') === false && event.target.value.endsWith('net') === false && event.target.value.endsWith('org') === false && event.target.value.endsWith('info') === false && event.target.value.endsWith('us') === false && event.target.value.endsWith('my') === false)
+                      // //********************************************************* */
+                      // if (emptyStringTrue || withoutAllias || withoutDot || withoutTopLevelDomain)  {
+                      //   setEmailFormClassName("has-danger");
+                      //   setEmailError("Email is required");
+                      // } else {
+                      //   setEmailFormClassName("has-success");
+                      //   setEmailError("");
+                      // }
                     }}
                   />
                 </Form>
@@ -147,15 +171,19 @@ const Register = () => {
                     helperText={passwordError}
                     error={true}
                     onChange={(event) => {
-                      setRegisterPassword(event.target.value);
-                      if (registerPassword === "") {
-                        setPasswordError("Password is required");
-                      } else {
-                        setPasswordError("");
-                      }
+                      setRegisterInput({...registerInput, password: event.target.value});
+                      console.log("password :" + registerInput.password)
+                      console.log("email :" + registerInput.email)
+                      // setRegisterPassword(event.target.value);
+                      // if (registerPassword === null || registerPassword.length < 3) {
+                      //   setPasswordError("Password must be at least 3 characters long");
+                      // } else {
+                      //   setPasswordError("");
+                      // }
                     }}
                   />
                 </Form>
+                {passwordError && <div className="error"> {passwordError} </div>}
                 <Form className={passwordFormClassName}>
                   <label>Confirm Password</label>
                   <Input
@@ -163,6 +191,10 @@ const Register = () => {
                     type="password"
                     helperText={confirmPasswordError}
                     onChange={(event) => {
+                      console.log(
+                        "registerConfirmPassword: " + registerConfirmPassword
+                      );
+                      console.log("registerPassword: " + registerPassword);
                       setRegisterConfirmPassword(event.target.value);
                       if (event.target.value === registerPassword) {
                         setPasswordFormClassName("has-success");
@@ -184,6 +216,7 @@ const Register = () => {
                     }}
                   />
                 </Form>
+                {confirmPasswordError && <div className="error"> {confirmPasswordError} </div>}
                 <Form className={nameFormClassName}>
                   <label>Name</label>
                   <Input
@@ -283,7 +316,11 @@ const Register = () => {
                 <Button
                   block
                   className="registerBtn"
-                  onClick={() => {registerWithEmail(registerEmail, registerPassword)? setErrorMessage({registerErrorMessage}): setErrorMessage("Email is already in use")}}
+                  onClick={() => {
+                      dispatch(setRegisterErrorMessage());
+                      registerWithEmail(registerEmail, registerPassword)? setErrorMessage({registerErrorMessage}): setErrorMessage("Email is already in use")
+                    }
+                  }
                   // onClick={() => {console.log("nihao")}}
                   disabled={disabled}
                   // color="primary"

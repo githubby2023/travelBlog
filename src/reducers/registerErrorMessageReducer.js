@@ -1,7 +1,7 @@
-const registerErrorMessageReducer = (state = 'halo', action) => {
+const registerErrorMessageReducer = (state = '', action) => {
     switch (action.type) {
-        case 'SET_MESSAGE':
-            state = "Invalid email or password"
+        case 'CHANGE_ERROR_MESSAGE':
+            state = "Register failed, please check your email and password"
             return state
         default:
             return state

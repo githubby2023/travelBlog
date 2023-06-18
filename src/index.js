@@ -27,7 +27,7 @@ function Application() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/in dex" render={(props) => <Index {...props} />} />
+        <Route path="/index" render={(props) => <Index {...props} />} />
         <Route path="/oldindex" render={(props) => <OldIndex {...props} />} />
         <Route path="/post" render={(props) => <PostPage {...props} />} />
         <Route path="/register" render={(props) => <Register {...props} />} />
@@ -44,5 +44,5 @@ function Application() {
 root.render(
   <Provider store = {store}>
     <Application />
-  </Provider> 
+   </Provider> 
 );
