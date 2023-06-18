@@ -35,7 +35,7 @@ function Application() {
         <Route path="/post/:id" render={(props) => <PostPage {...props} />} />
         <Route path="/register" render={(props) => <Register {...props} />} />
         <Route path="/signin" render={(props) => <Signin {...props} />} />
-        <Route path="/profile" render={(props) => <Profile {...props} />} />
+        <Route path="/profile/:id" render={(props) => <Profile {...props} />} />
         <Route path="/dashboard" render={(props) => <DashBoard {...props} />} />
         <Route path="/create" render={(props) => <CreatePage {...props} />} />
         <Redirect to="/index" />

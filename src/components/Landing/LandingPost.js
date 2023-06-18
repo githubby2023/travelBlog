@@ -9,6 +9,7 @@ import {
 } from "reactstrap";
 import Comment from "./Comment";
 import { queryBlogComments } from "../../api/queryBlog";
+import { Link } from "react-router-dom";
 
 const LandingPost = ({ user, blog }) => {
   const [comments, setComments] = React.useState([]);
@@ -79,7 +80,15 @@ const LandingPost = ({ user, blog }) => {
             />
             {/* <p className="post-time">time</p> */}
             <p className="post-caption">{blog.caption["paragraph 1"]}</p>
-            <a href={`/post/${blog.postId}`}>View full post</a>
+            {/* <a href={`/post/${blog.postId}`} >View full post</a> */}
+            <Link
+              to={{
+                pathname: `/post/${blog.postId}`,
+                state: { blog, user, comments },
+              }}
+            >
+              View full post
+            </Link>
           </div>
           <div className="divider" />
           {comments && comments.map((comment) => <Comment comment={comment} />)}

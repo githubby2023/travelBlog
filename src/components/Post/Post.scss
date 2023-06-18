@@ -101,10 +101,8 @@
 }
 
 .comment-container {
-  width: 100%;
   margin: 1rem 0 2rem;
   .comment {
-    width: 100%;
     display: flex;
     flex-direction: row;
 
@@ -121,6 +119,7 @@
     }
 
     .comment-text {
+      width: 100%;
       background-color: #f2f2f2;
       border-radius: 10px;
       padding: 0.5rem 1rem;
@@ -165,6 +164,11 @@
         padding: 0.5rem;
         max-width: 60px;
         display: inline-block;
+
+        img {
+          aspect-ratio: 1/1;
+          object-fit: cover;
+        }
       }
 
       .post-header-text {
@@ -194,14 +198,19 @@
     margin-bottom: 2rem;
 
     .suggestion-post {
+      height: 100%;
       display: flex;
       flex-direction: row;
 
       .suggestion-pic {
-        //   position: relative;
+        height: 100%;
         padding: 0.5rem;
         max-width: 100px;
-        //   display: inline-block;
+
+        img{
+          aspect-ratio: 1/1;
+          object-fit: cover;
+        }
       }
 
       .suggestion-title {
@@ -211,6 +220,12 @@
 
       .suggestion-content {
         font-size: 0.8rem;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 5;
+        -webkit-box-orient: vertical;
+        line-clamp: 5; 
+        box-orient: vertical;
       }
     }
   }
@@ -229,5 +244,30 @@
 .modal-body {
   h4 {
     margin: 1rem 0;
+  }
+}
+
+.white-text {
+  color: #ffffff;
+
+  &:hover {
+    color: #ffffff;
+  }
+}
+.black-text {
+  color: #000000;
+
+  &:hover {
+    color: #000000;
+  }
+}
+
+.star-icon {
+  opacity: 0.8;
+  transition: all 0.1s ease-in-out;
+
+  &:hover {
+    opacity: 1;
+    transition: all 0.1s ease-in-out;
   }
 }
