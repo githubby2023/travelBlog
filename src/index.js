@@ -47,9 +47,5 @@ function Application() {
 root.render(
   <Provider store={store}>
     <Application />
-<<<<<<< HEAD
    </Provider> 
-=======
-  </Provider>
->>>>>>> 66eb0ea82846d346e560fb848ec302c5315ea3d2
 );

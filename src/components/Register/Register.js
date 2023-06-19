@@ -191,28 +191,28 @@ const Register = () => {
                     type="password"
                     helperText={confirmPasswordError}
                     onChange={(event) => {
-                      console.log(
-                        "registerConfirmPassword: " + registerConfirmPassword
-                      );
-                      console.log("registerPassword: " + registerPassword);
-                      setRegisterConfirmPassword(event.target.value);
-                      if (event.target.value === registerPassword) {
-                        setPasswordFormClassName("has-success");
-                      } else {
-                        setPasswordFormClassName("has-danger");
-                      }
-                      if (
-                        event.target.value !== registerPassword ||
-                        registerName === "" ||
-                        registerAddress === "" ||
-                        registerEmail === ""
-                      ) {
-                        setDisabled(true);
-                        setConfirmPasswordError("Not match password");
-                      } else {
-                        setDisabled(false);
-                        setConfirmPasswordError("");
-                      }
+                      // console.log(
+                      //   "registerConfirmPassword: " + registerConfirmPassword
+                      // );
+                      // console.log("registerPassword: " + registerPassword);
+                      // setRegisterConfirmPassword(event.target.value);
+                      // if (event.target.value === registerPassword) {
+                      //   setPasswordFormClassName("has-success");
+                      // } else {
+                      //   setPasswordFormClassName("has-danger");
+                      // }
+                      // if (
+                      //   event.target.value !== registerPassword ||
+                      //   registerName === "" ||
+                      //   registerAddress === "" ||
+                      //   registerEmail === ""
+                      // ) {
+                      //   setDisabled(true);
+                      //   setConfirmPasswordError("Not match password");
+                      // } else {
+                      //   setDisabled(false);
+                      //   setConfirmPasswordError("");
+                      // }
                     }}
                   />
                 </Form>
@@ -223,22 +223,22 @@ const Register = () => {
                     placeholder="Name"
                     type="text"
                     onChange={(event) => {
-                      setRegisterName(event.target.value);
-                      if (event.target.value !== "") {
-                        setNameFormClassName("has-success");
-                      } else {
-                        setNameFormClassName("has-danger");
-                      }
-                      if (
-                        registerConfirmPassword !== registerPassword ||
-                        registerName === "" ||
-                        registerAddress === "" ||
-                        registerEmail === ""
-                      ) {
-                        setDisabled(true);
-                      } else {
-                        setDisabled(false);
-                      }
+                      // setRegisterName(event.target.value);
+                      // if (event.target.value !== "") {
+                      //   setNameFormClassName("has-success");
+                      // } else {
+                      //   setNameFormClassName("has-danger");
+                      // }
+                      // if (
+                      //   registerConfirmPassword !== registerPassword ||
+                      //   registerName === "" ||
+                      //   registerAddress === "" ||
+                      //   registerEmail === ""
+                      // ) {
+                      //   setDisabled(true);
+                      // } else {
+                      //   setDisabled(false);
+                      // }
                     }}
                   />
                 </Form>
@@ -248,33 +248,33 @@ const Register = () => {
                     placeholder="Address"
                     type="text"
                     onChange={(event) => {
-                      setRegisterAddress(event.target.value);
-                      console.log(
-                        "registerNationality: " + registerNationality
-                      );
-                      console.log("registerGender: " + registerGender);
-                      console.log("registerAddress: " + registerAddress);
-                      console.log("registerName: " + registerName);
-                      console.log(
-                        "registerConfirmPassword: " + registerConfirmPassword
-                      );
-                      console.log("registerPassword: " + registerPassword);
-                      console.log("registerEmail: " + registerEmail);
-                      if (event.target.value !== "") {
-                        setAddressFormClassName("has-success");
-                      } else {
-                        setAddressFormClassName("has-danger");
-                      }
-                      if (
-                        registerConfirmPassword !== registerPassword ||
-                        registerName === "" ||
-                        registerAddress === "" ||
-                        registerEmail === ""
-                      ) {
-                        setDisabled(true);
-                      } else {
-                        setDisabled(false);
-                      }
+                      // setRegisterAddress(event.target.value);
+                      // console.log(
+                      //   "registerNationality: " + registerNationality
+                      // );
+                      // console.log("registerGender: " + registerGender);
+                      // console.log("registerAddress: " + registerAddress);
+                      // console.log("registerName: " + registerName);
+                      // console.log(
+                      //   "registerConfirmPassword: " + registerConfirmPassword
+                      // );
+                      // console.log("registerPassword: " + registerPassword);
+                      // console.log("registerEmail: " + registerEmail);
+                      // if (event.target.value !== "") {
+                      //   setAddressFormClassName("has-success");
+                      // } else {
+                      //   setAddressFormClassName("has-danger");
+                      // }
+                      // if (
+                      //   registerConfirmPassword !== registerPassword ||
+                      //   registerName === "" ||
+                      //   registerAddress === "" ||
+                      //   registerEmail === ""
+                      // ) {
+                      //   setDisabled(true);
+                      // } else {
+                      //   setDisabled(false);
+                      // }
                     }}
                   />
                 </Form>
@@ -297,7 +297,7 @@ const Register = () => {
                     <option>Brunei</option>
                     onChange=
                     {(event) => {
-                      setRegisterNationality(event.target.value);
+                      // setRegisterNationality(event.target.value);
                     }}
                   </Input>
                 </Form>
@@ -309,7 +309,7 @@ const Register = () => {
                     <option>Prefer not to say</option>
                     onChange=
                     {(event) => {
-                      setRegisterGender(event.target.value);
+                      // setRegisterGender(event.target.value);
                     }}
                   </Input>
                 </Form>
@@ -317,7 +317,7 @@ const Register = () => {
                   block
                   className="registerBtn"
                   onClick={() => {
-                      dispatch(setRegisterErrorMessage());
+                      // dispatch(setRegisterErrorMessage());
                       registerWithEmail(registerEmail, registerPassword)? setErrorMessage({registerErrorMessage}): setErrorMessage("Email is already in use")
                     }
                   }
