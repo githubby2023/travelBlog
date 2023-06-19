@@ -8,6 +8,7 @@ import { queryUser } from "api/authentication";
 
 function Index() {
   const [landingPosts, setLandingPosts] = React.useState([]);
+  const [currentUser, setCurrentUser] = React.useState({});
 
   document.documentElement.classList.remove("nav-open");
   React.useEffect(() => {
@@ -25,22 +26,18 @@ function Index() {
             queryUser(blog.author_id).then((user) => ({
               blog,
               user,
-            }))
+            })
+            )
           )
         )
           .then((results) => {
-            const Posts = results.map(
-              ({ blog, user }) => (
-                console.log("Index is at " + blog.postId + " " + user.username),
-                (
-                  <LandingPost
-                    key={`${blog.postId} ${user.username}`}
-                    user={user}
-                    blog={blog}
-                  />
-                )
-              )
-            );
+            const Posts = results.map(({ blog, user }) => (
+              <LandingPost
+                key={`${blog.postId} ${user.username}`}
+                user={user}
+                blog={blog}
+              />
+            ));
             setLandingPosts(Posts);
           })
           .catch((error) => {

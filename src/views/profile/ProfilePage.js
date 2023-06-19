@@ -98,7 +98,6 @@ const UserProfilePage = () => {
                 <h6 className="text-center">Try to create some blog?</h6>
                 <div className="landing-create-post-container mx-auto col-md-6">
                   <div className="create-post-row">
-                    
                     <a href="/create" className="add-row">
                       <GrFormAdd className="add-icon my-auto" />
                       <p className="my-auto">Create Post</p>
@@ -116,7 +115,7 @@ const UserProfilePage = () => {
                   <h4 className="bold text-center">Lastest Blog</h4>
                 </div>
               </div>
-              <LatestBlogCard blog={blogs[0]} />
+              <LatestBlogCard blog={blogs[0]} user={currentUser} />
             </>
           ) : (
             // When there are more than 1 blog
@@ -126,13 +125,17 @@ const UserProfilePage = () => {
                   <h4 className="bold text-center">Lastest Blog</h4>
                 </div>
               </div>
-              <LatestBlogCard blog={blogs[0]} />
+              <LatestBlogCard blog={blogs[0]} user={currentUser} />
               <div className="row">
                 <div className="mx-auto col-md-12">
                   <h4 className="bold text-center">User Blog</h4>
                   <ScrollContainer className="card-container">
                     {newBlogs.map((blog) => (
-                      <PostedBlogCard key={blog.postId} blogProps={blog} />
+                      <PostedBlogCard
+                        key={blog.postId}
+                        blog={blog}
+                        user={currentUser}
+                      />
                     ))}
                   </ScrollContainer>
                 </div>

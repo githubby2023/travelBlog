@@ -51,7 +51,6 @@ const CreatePage = (props) => {
 
   function addTextBox(event) {
     setBlogContent([...blogContent, ""]);
-    setActiveIndex("paragraph " + blogContent.length);
   }
 
   function handleDataInput(event, index) {
@@ -317,8 +316,8 @@ const CreatePage = (props) => {
                 />
               </label>
               <div className="selected-container">
-                {tag.map((tag) => (
-                  <label className="tag">{tag}</label>
+                {tag.map((tag, index) => (
+                  <label key={`${tag}_${index}`} className="tag">{tag}</label>
                 ))}
               </div>
             </div>

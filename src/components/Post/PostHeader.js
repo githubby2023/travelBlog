@@ -21,7 +21,7 @@ const PostHeader = ({ toggleModal, issender, blog }) => {
       <div className="title-container">
         <h2 className="post-title">{blog.topic}</h2>
         {issender ? (
-          <div>
+          <div className="icon-container">
             <Link
               className="white-text"
               to={{

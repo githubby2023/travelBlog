@@ -19,7 +19,6 @@ import Profile from "views/profile/ProfilePage.js";
 import PostPage from "views/post/PostPage";
 import DashBoard from "./views/dashboard/DashBoard";
 import CreatePage from "views/Create/CreatePage";
-import NucleoIcons from "views/NucleoIcons";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const store = createStore(

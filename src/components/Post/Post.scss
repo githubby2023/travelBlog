@@ -13,7 +13,7 @@
     color: #ffffff;
     display: flex;
     flex-direction: row;
-    align-items: baseline;
+    align-items:start;
     justify-content: space-between;
 
     .post-title {
@@ -22,6 +22,14 @@
       color: #000;
       margin: 0;
       text-align: left;
+    }
+
+    .icon-container{
+      display: flex;
+      flex-direction: row;
+      justify-content: end;
+      width: 12vw;
+      margin-left: auto;
     }
 
     .icon {
