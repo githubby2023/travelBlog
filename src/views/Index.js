@@ -8,15 +8,14 @@ import { queryUser } from "api/authentication";
 
 function Index() {
   const [landingPosts, setLandingPosts] = React.useState([]);
-  const [currentUser, setCurrentUser] = React.useState({});
 
-  document.documentElement.classList.remove("nav-open");
-  React.useEffect(() => {
-    document.body.classList.add("index");
-    return function cleanup() {
-      document.body.classList.remove("index");
-    };
-  });
+  // document.documentElement.classList.remove("nav-open");
+  // React.useEffect(() => {
+  //   document.body.classList.add("index");
+  //   return function cleanup() {
+  //     document.body.classList.remove("index");
+  //   };
+  // });
 
   React.useEffect(() => {
     queryAllBlogs().then((blogs) => {
@@ -26,8 +25,7 @@ function Index() {
             queryUser(blog.author_id).then((user) => ({
               blog,
               user,
-            })
-            )
+            }))
           )
         )
           .then((results) => {
@@ -64,7 +62,7 @@ function Index() {
               <div className="title-brand">
                 <h1 className="presentation-title">Travel Blog</h1>
               </div>
-              <h2 className="presentation-subtitle text-center">
+              <h2 className="presentation-subtitle text-center" style={{marginBottom: 40}}>
                 Explore the world
               </h2>
             </div>

@@ -280,13 +280,7 @@ const CreatePage = (props) => {
                   ))
                 )}
               </label>
-              <button
-                className="submit-button"
-                type="submit"
-                onClick={() => createBlog()}
-              >
-                <h6>Post</h6>
-              </button>
+              
             </div>
             {/* Right Location */}
             <div className="tag-container col-md-3">
@@ -320,6 +314,13 @@ const CreatePage = (props) => {
                   <label key={`${tag}_${index}`} className="tag">{tag}</label>
                 ))}
               </div>
+              <button
+                className="submit-button"
+                type="submit"
+                onClick={() => createBlog()}
+              >
+                <h6>Post</h6>
+              </button>
             </div>
           </div>
         </div>

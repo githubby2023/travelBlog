@@ -50,6 +50,21 @@
         display: none;
       }
     }
+
+    @media only screen and (max-width: 500px) {
+      .card-container {
+        display: flex;
+        flex-direction: column;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        white-space: nowrap;
+        cursor: e-resize;
+
+        &::-webkit-scrollbar {
+          display: none;
+        }
+      }
+    }
   }
 }
 
@@ -63,8 +78,11 @@
   display: inline-block;
   margin: 2rem;
   max-width: 280px;
-  height: 500px;
   cursor: pointer;
+
+  @media only screen and (max-width: 500px) {
+    max-width: 100%;
+  }
 
   .blog-title {
     margin: 0 0 1rem 0;

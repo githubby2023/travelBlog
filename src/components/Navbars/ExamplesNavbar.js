@@ -12,7 +12,6 @@ import {
   NavLink,
   Nav,
   Container,
-  Button,
 } from "reactstrap";
 import SearchBar from "components/Landing/searchBar";
 
@@ -121,7 +120,7 @@ function ExamplesNavbar({ isTransparent = true }) {
 
             <NavItem>
               <NavLink
-                onClick={signOut(getAuth())}
+                onClick={() => signOut(getAuth())}
                 href="/signin"
                 // target="_blank"
               >

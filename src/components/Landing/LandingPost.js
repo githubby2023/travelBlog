@@ -44,7 +44,7 @@ const LandingPost = ({ user, blog }) => {
               </div>
             </div>
             {/* Right 3 dots menu */}
-            <UncontrolledDropdown className="dropdown my-auto">
+            {/* <UncontrolledDropdown className="dropdown my-auto">
               <DropdownToggle
                 className="toggle"
                 color="#ffffff"
@@ -61,14 +61,11 @@ const LandingPost = ({ user, blog }) => {
                 aria-labelledby="postDropdown"
                 className="dropdown-info"
               >
-                {/* <DropdownItem header tag="span">
-                    Nationality
-                  </DropdownItem> */}
                 <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}>
                   Report
                 </DropdownItem>
               </DropdownMenu>
-            </UncontrolledDropdown>
+            </UncontrolledDropdown> */}
           </div>
           <div className="post-card-content">
             <img
