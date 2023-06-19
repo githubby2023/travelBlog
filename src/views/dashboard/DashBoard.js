@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState }  from "react";
 import "components/Dashboard/Dashboard.scss";
 import { dataYear } from "./LineChartData";
 import { dataBar } from "./BarChartData";
-
+import { queryUserBlog } from "api/queryBlog";
+import { getPostsWithCommentCount } from "api/analysis";
 
 import {
   Chart as ChartJS,
@@ -54,6 +55,24 @@ export const options = {
 };
 
 export function DashBoard() {
+
+  
+  const userTemp = JSON.parse(localStorage.getItem("currentUser"));
+  const [postList, setPostList] = useState([]);
+
+  useEffect(() => {
+    const fetchPostList = async () => {
+      try {
+        const fetchedPostList = await getPostsWithCommentCount (userTemp.uid); // Replace `authorId` with the appropriate value
+        setPostList(fetchedPostList);
+      } catch (error) {
+        console.error('Error fetching post list:', error);
+      }
+    };
+  
+    fetchPostList();
+  }, []);
+  
   return (
     <>
       <ExamplesNavbar isTransparent={false} />
@@ -190,51 +209,17 @@ export function DashBoard() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <th scope="row">/argon/</th>
-                      <td>Food</td>
-                      <td>4,569</td>
-                      <td>340</td>
-                      <td>
-                        <i className="nc-icon nc-satisfied mr-3" /> 4.6
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">/argon/index.html</th>
-                      <td>Attraction</td>
-                      <td>3,985</td>
-                      <td>319</td>
-                      <td>
-                        <i className="nc-icon nc-satisfied mr-3" /> 3.2
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">/argon/charts.html</th>
-                      <td>Accomodation</td>
-                      <td>3,513</td>
-                      <td>294</td>
-                      <td>
-                        <i className="nc-icon nc-satisfied mr-3" /> 1.5
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">/argon/tables.html</th>
-                      <td>Transport</td>
-                      <td>2,050</td>
-                      <td>147</td>
-                      <td>
-                        <i className="nc-icon nc-satisfied mr-3" /> 2.3
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">/argon/profile.html</th>
-                      <td>Culture</td>
-                      <td>1,795</td>
-                      <td>190</td>
-                      <td>
-                        <i className="nc-icon nc-satisfied mr-3" /> 5.0
-                      </td>
-                    </tr>
+                    {/* fetched data is print out in the table */}
+                  {postList.map((post) => (
+        <tr key={post.postId}>
+          <th scope="row">{post.topic}</th>
+          <td>{post.topic}</td>
+          <td>-</td>
+          <td>{post.commentCount}</td>
+          <td><i className="nc-icon nc-satisfied mr-3" />
+          {post.rating.toString()}</td> {/* Convert rating to a string */}
+        </tr>
+      ))}
                   </tbody>
                 </Table>
               </Card>
