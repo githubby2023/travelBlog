@@ -5,12 +5,12 @@ import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAyAq1htA0LBgUo5RWlcFK9RXOBrHPPhXo",
-  authDomain: "travelblog-4fef5.firebaseapp.com",
-  projectId: "travelblog-4fef5",
-  storageBucket: "travelblog-4fef5.appspot.com",
-  messagingSenderId: "1060464481002",
-  appId: "1:1060464481002:web:5ea78972b1045efb413d93"
+  apiKey: "AIzaSyDyanL_SuRHvpKHzuolhM-L6RrczM-hoYk",
+  authDomain: "travelblog-eacd5.firebaseapp.com",
+  projectId: "travelblog-eacd5",
+  storageBucket: "travelblog-eacd5.appspot.com",
+  messagingSenderId: "638674361782",
+  appId: "1:638674361782:web:71a0bb705fbca9708df517"
 };
 
 // Initialize Firebase
