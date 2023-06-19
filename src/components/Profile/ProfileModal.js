@@ -8,7 +8,7 @@ import {
   Modal,
   UncontrolledDropdown,
 } from "reactstrap";
-import { writeUserData, queryUser } from "../../api/authentication";
+import { writeUserData } from "../../api/authentication";
 
 const ProfileModal = ({ isModalOpened, toggleModal, currentUser }) => {
   const continent = [

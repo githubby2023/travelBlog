@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 // nodejs library that concatenates strings
 import classnames from "classnames";
-import { signOut, getAuth} from "firebase/auth";
+import { signOut, getAuth } from "firebase/auth";
 // reactstrap components
 import {
   Collapse,
@@ -19,11 +19,25 @@ import SearchBar from "components/Landing/searchBar";
 function ExamplesNavbar({ isTransparent = true }) {
   const [navbarColor, setNavbarColor] = React.useState("");
   const [navbarCollapse, setNavbarCollapse] = React.useState(false);
+  const [currentUser, setCurrentUser] = React.useState({uid: ""});
+  const [profileRoute, setProfileRoute] = React.useState("/signin");
+  const [createRoute, setCreateRoute] = React.useState("/signin");
+  const [dashboardRoute, setDashboardRoute] = React.useState("/signin");
 
   const toggleNavbarCollapse = () => {
     setNavbarCollapse(!navbarCollapse);
     document.documentElement.classList.toggle("nav-open");
   };
+
+  React.useEffect(() => {
+    const userTemp = JSON.parse(localStorage.getItem("currentUser"));
+    if (userTemp) {
+      setCurrentUser(userTemp);
+      setProfileRoute(`/profile/${userTemp.uid}`);
+      setCreateRoute("/create");
+      setDashboardRoute(`/dashboard`);
+    }
+  }, []);
 
   React.useEffect(() => {
     const updateNavbarColor = () => {
@@ -49,7 +63,7 @@ function ExamplesNavbar({ isTransparent = true }) {
     return function cleanup() {
       window.removeEventListener("scroll", updateNavbarColor);
     };
-  });
+  }, [isTransparent]);
   return (
     <Navbar
       className={classnames("fixed-top", navbarColor)}
@@ -86,21 +100,21 @@ function ExamplesNavbar({ isTransparent = true }) {
         >
           <Nav navbar>
             <NavItem>
-              <SearchBar/>
+              <SearchBar />
             </NavItem>
-          
+
             <NavItem>
-              <NavLink href="/create">
+              <NavLink href={createRoute}>
                 <i className="nc-icon nc-simple-add" /> Create Post
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/dashboard">
+              <NavLink href={dashboardRoute}>
                 <i className="nc-icon nc-layout-11" /> Dashboard
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/profile">
+              <NavLink href={profileRoute}>
                 <i className="nc-icon nc-single-02" /> Profile
               </NavLink>
             </NavItem>
@@ -111,25 +125,17 @@ function ExamplesNavbar({ isTransparent = true }) {
                 href="/signin"
                 // target="_blank"
               >
-                <i className="nc-icon nc-user-run" /> Logout
+                {currentUser.uid === "" ? (
+                  <>
+                    <i className="nc-icon nc-circle-10" /> Login
+                  </>
+                ) : (
+                  <>
+                    <i className="nc-icon nc-user-run" /> Logout
+                  </>
+                )}
               </NavLink>
             </NavItem>
-            {/* <NavItem>
-              <NavLink
-                data-placement="bottom"
-                href="https://twitter.com/CreativeTim?ref=creativetim"
-                target="_blank"
-                title="Follow us on Twitter"
-              >
-                <i className="fa fa-twitter" />
-                <p className="d-lg-none">Twitter</p>
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="/signin">
-                <i className="nc-icon nc-user-run" /> Logout
-              </NavLink>
-            </NavItem> */}
           </Nav>
         </Collapse>
       </Container>

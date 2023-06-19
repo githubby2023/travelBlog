@@ -28,10 +28,16 @@ const PostPage = (props) => {
   const { user } = props.location.state;
   const { blog } = props.location.state;
   const { comments } = props.location.state ?? [];
+  const [currentBlog, setCurrentBlog] = React.useState(blog);
   const [isSender, setIsSender] = React.useState(false);
   const [suggestions, setSuggestions] = React.useState([]);
   const [carousellItems, setCarousellItems] = React.useState([{}]);
   const [postComments, setPostComments] = React.useState([{}]);
+  const [currentUser, setCurrentUser] = React.useState({});
+
+  React.useEffect(() => {
+    setCurrentBlog(blog);
+  }, [blog]);
 
   //Check if the current user is the sender of the post
   //If yes, show the edit and delete button
@@ -39,29 +45,33 @@ const PostPage = (props) => {
   //Remove the current post from the list
   React.useEffect(() => {
     const userTemp = JSON.parse(localStorage.getItem("currentUser"));
-    if (userTemp.uid === blog.author_id) {
-      setIsSender(true);
+    if (userTemp) {
+      setCurrentUser(userTemp);
+      if (userTemp.uid === currentBlog.author_id) {
+        setIsSender(true);
+      }
+    } else {
+      setIsSender(false);
     }
-    queryUserBlog(blog.author_id).then((blogs) => {
+    queryUserBlog(currentBlog.author_id).then((blogs) => {
       const temp = [];
       blogs.forEach((queriedBlog) => {
-        console.log("Queried Blogs are " + JSON.stringify(queriedBlog.postId));
-        console.log("Blogs are " + JSON.stringify(blog.postId));
-        if (queriedBlog.postId !== blog.postId) {
+        if (queriedBlog.postId !== currentBlog.postId) {
           temp.push(queriedBlog);
         }
       });
-      console.log(temp.length);
       setSuggestions(temp);
     });
-  }, [blog.author_id, blog.postId]);
+  }, [currentBlog.author_id, currentBlog.postId]);
 
   //Get comments in 2 case,
   //If it is route from the landing, the comments are passed in as props
   //if it is route from the suggestion, the comments are queried from the database
   React.useEffect(() => {
+    // console.log("Comments are " + JSON.stringify(comments));
     if (comments.length === 0) {
-      queryBlogComments(blog.postId).then((queryComments) => {
+      // console.log("Run here");
+      queryBlogComments(currentBlog.postId).then((queryComments) => {
         if (queryComments) {
           setPostComments(queryComments);
         }
@@ -69,16 +79,16 @@ const PostPage = (props) => {
     } else {
       setPostComments(comments);
     }
-  }, [blog.postId, comments]);
+  }, [currentBlog.postId, comments]);
 
   //Set up the carousell Images
   React.useEffect(() => {
     const temp = [];
-    for (const [key, value] of Object.entries(blog.image)) {
+    for (const [key, value] of Object.entries(currentBlog.image)) {
       temp.push({ src: value, altText: key });
     }
     setCarousellItems(temp);
-  }, [blog.image]);
+  }, [currentBlog.image]);
 
   //Carousell
   const [activeIndex, setActiveIndex] = React.useState(0);
@@ -110,6 +120,21 @@ const PostPage = (props) => {
   const [isModalOpened, setModal] = React.useState(false);
   function toggleModal() {
     setModal((bool) => !bool);
+  }
+
+  //Destruct Blog Content Map into array
+  const blogArray = Object.entries(currentBlog.caption)
+    .sort(([keyA], [keyB]) => {
+      const indexA = extractIndexFromKey(keyA);
+      const indexB = extractIndexFromKey(keyB);
+      return indexA - indexB;
+    })
+    .map(([key, value]) => value);
+
+  // Helper function to extract index from key
+  function extractIndexFromKey(key) {
+    const match = key.match(/\d+/); // Extract numeric digits from the key
+    return match ? parseInt(match[0]) : 0; // Convert the extracted digits to an integer
   }
 
   return (
@@ -160,7 +185,7 @@ const PostPage = (props) => {
               color="danger"
               type="button"
               onClick={() => {
-                deleteBlog(blog.postId).then(() => {
+                deleteBlog(currentBlog.postId).then(() => {
                   alert("Post deleted");
                   window.location.href = "/index";
                 });
@@ -179,7 +204,7 @@ const PostPage = (props) => {
               <PostHeader
                 toggleModal={toggleModal}
                 issender={isSender}
-                blog={blog}
+                blog={currentBlog}
               />
               <div className="post-content">
                 <Carousel
@@ -199,7 +224,11 @@ const PostPage = (props) => {
                         onExited={onExited}
                         key={item.altText}
                       >
-                        <img src={item.src} alt={item.altText} />
+                        <img
+                          className="carousel-img"
+                          src={item.src}
+                          alt={item.altText}
+                        />
                       </CarouselItem>
                     );
                   })}
@@ -230,19 +259,21 @@ const PostPage = (props) => {
                     <span className="sr-only">Next</span>
                   </a>
                 </Carousel>
-                <p className="post-text">{blog.caption["paragraph 1"]}</p>
+                {blogArray.map((paragraph) => (
+                  <p className="post-text">{paragraph}</p>
+                ))}
               </div>
               <div className="post-footer">
                 <div className="post-status">
                   <div className="rating-number number my-auto">
-                    <Rating user={user} blog={blog} />
+                    <Rating currentUser={currentUser} blog={currentBlog} />
                   </div>
                   <div className="comment-number number my-auto">
                     <BiCommentDetail /> {postComments.length ?? 0}
                   </div>
                 </div>
                 <div className="tag-container">
-                  {blog.tag.map((individualTag) => (
+                  {currentBlog.tag.map((individualTag) => (
                     <label className="tag">{individualTag}</label>
                   ))}
                 </div>
@@ -311,27 +342,42 @@ const PostPage = (props) => {
   );
 };
 
-const Rating = ({ blog, user }) => {
+const Rating = ({ blog, currentUser }) => {
   const maxRating = 5;
   const [selectedStar, setSelectedStar] = React.useState(-1);
 
   React.useEffect(() => {
-    const userRating = blog.rating[user.uid];
-    if (userRating) {
-      setSelectedStar(userRating - 1);
+    if (currentUser) {
+      const userRating = blog.rating[currentUser.uid];
+      if (userRating) {
+        setSelectedStar(userRating - 1);
+      }
     }
-  }, [blog.rating, user.uid]);
+  }, [blog, currentUser]);
 
   const handleStarClick = (index) => {
-    setSelectedStar(index);
-    console.log("Selected Star Index:", index);
-    setBlogRating(blog.postId, user.uid, index + 1)
-      .then(() => {
-        console.log("Rating updated");
-      })
-      .catch((error) => {
-        console.log("Error updating rating", error);
-      });
+    if (currentUser) {
+      setSelectedStar(index);
+      console.log("Selected Star Index:", index);
+      setBlogRating(blog.postId, currentUser.uid, index + 1)
+        .then(() => {
+          console.log("Rating updated");
+        })
+        .catch((error) => {
+          console.log("Error updating rating", error);
+        });
+    } else {
+      const userTemp = JSON.parse(localStorage.getItem("currentUser"));
+    // if (userTemp) {
+    //   setCurrentUser(userTemp);
+    //   if (userTemp.uid === currentBlog.author_id) {
+    //     setIsSender(true);
+    //   }
+    // } else {
+    //   setIsSender(false);
+    // }
+      window.location.href = "/signin";
+    }
   };
 
   const renderStars = () => {

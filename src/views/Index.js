@@ -29,13 +29,18 @@ function Index() {
           )
         )
           .then((results) => {
-            const Posts = results.map(({ blog, user }) => (
-              <LandingPost
-                key={blog.postId}
-                user={user}
-                blog={blog}
-              />
-            ));
+            const Posts = results.map(
+              ({ blog, user }) => (
+                console.log("Index is at " + blog.postId + " " + user.username),
+                (
+                  <LandingPost
+                    key={`${blog.postId} ${user.username}`}
+                    user={user}
+                    blog={blog}
+                  />
+                )
+              )
+            );
             setLandingPosts(Posts);
           })
           .catch((error) => {

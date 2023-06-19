@@ -19,6 +19,7 @@ import Profile from "views/profile/ProfilePage.js";
 import PostPage from "views/post/PostPage";
 import DashBoard from "./views/dashboard/DashBoard";
 import CreatePage from "views/Create/CreatePage";
+import NucleoIcons from "views/NucleoIcons";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const store = createStore(
@@ -38,6 +39,7 @@ function Application() {
         <Route path="/profile/:id" render={(props) => <Profile {...props} />} />
         <Route path="/dashboard" render={(props) => <DashBoard {...props} />} />
         <Route path="/create" render={(props) => <CreatePage {...props} />} />
+        {/* <Route path="/nu" render={(props) => <NucleoIcons {...props} />} /> */}
         <Redirect to="/index" />
       </Switch>
     </BrowserRouter>

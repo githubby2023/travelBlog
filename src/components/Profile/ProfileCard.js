@@ -12,7 +12,12 @@ const ProfileCard = ({
   toggleModal,
 }) => {
   const [isModalPictureOpened, setModalPicture] = React.useState(false);
+  const [imageError, setImageError] = React.useState(false);
 
+  const handleImageError = () => {
+    setImageError(true);
+  };
+  
   function togglePictureModal() {
     setModalPicture((bool) => !bool);
   }
@@ -29,15 +34,20 @@ const ProfileCard = ({
 
         <div className="profile-container">
           <div className="profilepic">
-            <img
-              alt="..."
-              className="imgg img-circle img-no-padding img-responsive"
-              src={
-                photoUrl === "undefined"
-                  ? require("assets/img/faces/noImage.png")
-                  : photoUrl
-              }
-            />
+            {imageError ? (
+              <img
+                alt="Fallback"
+                className="imgg img-circle img-no-padding img-responsive"
+                src={require("assets/img/faces/noImage.png").default}
+              />
+            ) : (
+              <img
+                alt="..."
+                className="imgg img-circle img-no-padding img-responsive"
+                src={photoUrl}
+                onError={handleImageError}
+              />
+            )}
             <AiOutlinePlus className="plus" onClick={togglePictureModal} />
           </div>
           <div className="name">

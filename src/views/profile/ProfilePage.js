@@ -10,43 +10,12 @@ import ProfileModal from "components/Profile/ProfileModal";
 import { BiEdit } from "react-icons/bi";
 import ProfileCoverModal from "components/Profile/ProfileCoverModal";
 import { queryUserBlog } from "../../api/queryBlog";
+import { useParams } from "react-router-dom";
+import { queryUser } from "api/authentication";
+import { GrFormAdd } from "react-icons/gr";
 
 const UserProfilePage = () => {
-  // let pageHeader = React.createRef();
-
-  // const blogs = [
-  //   {
-  //     id: "1",
-  //     title: "Ice Mountain",
-  //     url: "https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  //     desc: "Standing in awe of the frozen majesty before me, I can't help but feel small in comparison. The ice mountain towers above me, its jagged peaks piercing the clouds, a testament to the power and beauty of nature.",
-  //   },
-  //   {
-  //     id: "2",
-  //     title: "Beauty In Bloom",
-  //     url: "https://images.pexels.com/photos/381739/pexels-photo-381739.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  //     desc: "Beauty In Bloom",
-  //   },
-  //   {
-  //     id: "3",
-  //     title: "Mighty Oak",
-  //     url: "https://japan.stripes.com/sites/default/files/styles/community_site_carousel_750x500/public/article-images/main_13.jpg?itok=_GELFbpY",
-  //     desc: "Mighty Oak",
-  //   },
-  //   {
-  //     id: "4",
-  //     title: "Blue Beauty",
-  //     url: "https://images.pexels.com/photos/326055/pexels-photo-326055.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  //     desc: "Blue Beauty",
-  //   },
-  //   {
-  //     id: "5",
-  //     title: "Nighttime Magic",
-  //     url: "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  //     desc: "Nighttime Magic",
-  //   },
-  // ];
-
+  const { id } = useParams();
   const [currentUser, setCurrentUser] = React.useState({});
   const [isModalOpened, setModal] = React.useState(false);
   const [isCoverModalOpened, setCoverModal] = React.useState(false);
@@ -61,11 +30,10 @@ const UserProfilePage = () => {
   }
 
   React.useEffect(() => {
-    const userTemp = JSON.parse(localStorage.getItem("currentUser"));
-    if (userTemp) {
-      setCurrentUser(userTemp);
-    }
-  }, []);
+    queryUser(id).then((user) => {
+      setCurrentUser(user);
+    });
+  }, [id]);
 
   React.useEffect(() => {
     queryUserBlog(currentUser.uid).then((blogs) => {
@@ -121,24 +89,43 @@ const UserProfilePage = () => {
               {/* <p>bruh {Encryption.decryptAES("sPqsda9NhISgRa8Zn4ktig==")}</p> */}
             </div>
           </div>
-          <div className="row">
-            <div className="mx-auto col-md-12">
-              <h4 className="bold text-center">Lastest Blog</h4>
-            </div>
-          </div>
+
           {/* When there is 0 blog */}
           {blogs.length === 0 ? (
             <div className="row">
               <div className="mx-auto col-md-12">
                 <h4 className="bold text-center">No Blog Yet</h4>
+                <h6 className="text-center">Try to create some blog?</h6>
+                <div className="landing-create-post-container mx-auto col-md-6">
+                  <div className="create-post-row">
+                    
+                    <a href="/create" className="add-row">
+                      <GrFormAdd className="add-icon my-auto" />
+                      <p className="my-auto">Create Post</p>
+                    </a>
+                  </div>
+                </div>
+                <div style={{ height: "100px" }} />
               </div>
             </div>
-            // When there is only 1 blog
-          ) : blogs.length === 1 ? (
-            <LatestBlogCard blog={blogs[0]} />
+          ) : // When there is only 1 blog
+          blogs.length === 1 ? (
+            <>
+              <div className="row">
+                <div className="mx-auto col-md-12">
+                  <h4 className="bold text-center">Lastest Blog</h4>
+                </div>
+              </div>
+              <LatestBlogCard blog={blogs[0]} />
+            </>
           ) : (
             // When there are more than 1 blog
             <>
+              <div className="row">
+                <div className="mx-auto col-md-12">
+                  <h4 className="bold text-center">Lastest Blog</h4>
+                </div>
+              </div>
               <LatestBlogCard blog={blogs[0]} />
               <div className="row">
                 <div className="mx-auto col-md-12">

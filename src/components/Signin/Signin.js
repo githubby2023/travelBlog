@@ -10,6 +10,8 @@ import {
 } from "../../api/authentication";
 import { onAuthStateChanged } from "firebase/auth";
 import { useHistory } from "react-router-dom";
+import { updateUser } from "../../actions/userAction";
+import { useDispatch } from "react-redux";
 
 const Signin = () => {
   const [loginEmail, setLoginEmail] = useState("");
@@ -26,6 +28,8 @@ const Signin = () => {
     };
   });
 
+  const dispatch = useDispatch();
+  
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
@@ -37,6 +41,7 @@ const Signin = () => {
               if (user) {
                 //User ady in the database
                 localStorage.setItem("currentUser", JSON.stringify(user));
+                dispatch(updateUser(currentUser.uid));
                 history.push("/index");
               } else {
                 // No user is found in database, create a new user in firestore
@@ -116,7 +121,11 @@ const Signin = () => {
                     block
                     className="signinBtn"
                     // color="primary"
-                    onClick={()=>{loginWithEmail(loginEmail, loginPassword)? setErrorMessage("Invalid email or password") : setErrorMessage("")}} 
+                    onClick={() => {
+                      loginWithEmail(loginEmail, loginPassword)
+                        ? setErrorMessage("Invalid email or password")
+                        : setErrorMessage("");
+                    }}
                   >
                     Sign in
                   </Button>
@@ -129,7 +138,9 @@ const Signin = () => {
                     <i className="fa fa-google" />
                     Sign in with Google
                   </Button>
-                  {errorMessage && <div className="error"> {errorMessage} </div>}
+                  {errorMessage && (
+                    <div className="error"> {errorMessage} </div>
+                  )}
                 </Form>
                 <div className="mx-auto">
                   <Button
