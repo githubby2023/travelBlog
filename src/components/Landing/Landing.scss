@@ -31,6 +31,11 @@
         padding: 0.5rem;
         max-width: 60px;
         display: inline-block;
+
+        img {
+          aspect-ratio: 1/1;
+          object-fit: cover;
+        }
       }
 
       .post-header-text {
@@ -95,9 +100,15 @@
         padding: 0.5rem;
         max-width: 60px;
         display: inline-block;
+
+        img {
+          aspect-ratio: 1/1;
+          object-fit: cover;
+        }
       }
 
       .comment-text {
+        width: 100%;
         background-color: #f2f2f2;
         border-radius: 10px;
         padding: 0.5rem 1rem;
@@ -129,24 +140,21 @@
       display: inline-block;
     }
 
-    .add-row{
+    .add-row {
       width: 100%;
       padding: 0 1rem;
       border-radius: 10px;
-      background-color: #E65C40;
+      background-color: #e65c40;
       color: #ffffff;
       display: flex;
       flex-direction: row;
       cursor: pointer;
-      
+
       .add-icon {
         font-size: 2rem;
       }
     }
   }
-
-
-
 }
 
 //search bar
@@ -168,7 +176,7 @@
       display: flex;
       flex-direction: row;
       cursor: pointer;
-      
+
       &:hover {
         background-color: #cbcbcb;
       }
@@ -179,5 +187,3 @@
     }
   }
 }
-
-

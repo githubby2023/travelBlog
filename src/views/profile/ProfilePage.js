@@ -47,7 +47,7 @@ const UserProfilePage = () => {
   //   },
   // ];
 
-  const [currentUser, serCurrentUser] = React.useState({});
+  const [currentUser, setCurrentUser] = React.useState({});
   const [isModalOpened, setModal] = React.useState(false);
   const [isCoverModalOpened, setCoverModal] = React.useState(false);
   const [blogs, setBlogs] = React.useState([{}]);
@@ -63,12 +63,15 @@ const UserProfilePage = () => {
   React.useEffect(() => {
     const userTemp = JSON.parse(localStorage.getItem("currentUser"));
     if (userTemp) {
-      serCurrentUser(userTemp);
+      setCurrentUser(userTemp);
     }
-    queryUserBlog(userTemp.uid).then((blogs) => {
+  }, []);
+
+  React.useEffect(() => {
+    queryUserBlog(currentUser.uid).then((blogs) => {
       setBlogs(blogs);
     });
-  }, []);
+  }, [currentUser.uid]);
 
   return (
     // console.log("Current User is " + JSON.stringify(currentUser)),
@@ -142,7 +145,7 @@ const UserProfilePage = () => {
                   <h4 className="bold text-center">User Blog</h4>
                   <ScrollContainer className="card-container">
                     {newBlogs.map((blog) => (
-                      <PostedBlogCard key={blog.id} blogProps={blog} />
+                      <PostedBlogCard key={blog.postId} blogProps={blog} />
                     ))}
                   </ScrollContainer>
                 </div>
