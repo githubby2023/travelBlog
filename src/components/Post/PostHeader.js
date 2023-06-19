@@ -1,16 +1,19 @@
 import React from "react";
 import "./PostHeader.js";
 import { AiTwotoneEdit, AiFillStar, AiFillDelete } from "react-icons/ai";
+import { Link } from "react-router-dom";
 
 const PostHeader = ({ toggleModal, issender, blog }) => {
   const [rating, setRating] = React.useState(0);
 
   React.useEffect(() => {
-    console.log(blog.rating);
     const ratingValues = Object.values(blog.rating);
-    console.log(ratingValues);
-    const sum = ratingValues.reduce((acc, value) => acc + value);
-    setRating(sum);
+    if (ratingValues.length === 0) {
+      setRating(0);
+    } else {
+      const sum = ratingValues.reduce((acc, value) => acc + value);
+      setRating(Math.floor(sum/ratingValues.length));
+    }
   }, [blog.rating]);
 
   return (
@@ -18,10 +21,16 @@ const PostHeader = ({ toggleModal, issender, blog }) => {
       <div className="title-container">
         <h2 className="post-title">{blog.topic}</h2>
         {issender ? (
-          <div>
-            <a href="/create">
+          <div className="icon-container">
+            <Link
+              className="white-text"
+              to={{
+                pathname: `/create/${blog.postId}`,
+                state: { blog },
+              }}
+            >
               <AiTwotoneEdit className="icon" />
-            </a>
+            </Link>
             <AiFillDelete className="icon red" onClick={toggleModal} />
           </div>
         ) : (

@@ -18,7 +18,7 @@
     // align-items: center;
     // justify-content: center;
 
-    .editCoverIcon{
+    .editCoverIcon {
       width: 1.5%;
       height: auto;
       cursor: pointer;
@@ -50,6 +50,21 @@
         display: none;
       }
     }
+
+    @media only screen and (max-width: 500px) {
+      .card-container {
+        display: flex;
+        flex-direction: column;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        white-space: nowrap;
+        cursor: e-resize;
+
+        &::-webkit-scrollbar {
+          display: none;
+        }
+      }
+    }
   }
 }
 
@@ -62,9 +77,12 @@
   color: #000;
   display: inline-block;
   margin: 2rem;
-  min-width: 280px;
-  height: 500px;
+  max-width: 280px;
   cursor: pointer;
+
+  @media only screen and (max-width: 500px) {
+    max-width: 100%;
+  }
 
   .blog-title {
     margin: 0 0 1rem 0;
@@ -84,8 +102,19 @@
   }
 
   .blog-desc {
+    width: 100%;
     margin: 1rem 0;
     font-weight: 400;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    line-clamp: 5;
+    box-orient: vertical;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 }
 
@@ -301,6 +330,41 @@
       display: inline-block;
       height: 63px;
       width: 1px;
+    }
+  }
+}
+
+//Landing create
+.landing-create-post-container {
+  padding: 15px;
+  margin-top: 15px;
+
+  .create-post-row {
+    display: flex;
+    height: 60px;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .profile-pic {
+      position: relative;
+      padding: 0.5rem;
+      max-width: 60px;
+      display: inline-block;
+    }
+
+    .add-row {
+      width: 100%;
+      padding: 0 1rem;
+      border-radius: 10px;
+      background-color: #e65c40;
+      color: #ffffff;
+      display: flex;
+      flex-direction: row;
+      cursor: pointer;
+
+      .add-icon {
+        font-size: 2rem;
+      }
     }
   }
 }

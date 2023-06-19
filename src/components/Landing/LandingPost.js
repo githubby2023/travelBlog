@@ -20,9 +20,10 @@ const LandingPost = ({ user, blog }) => {
         setComments(queryComments);
       }
     });
-  }, []);
+  }, [blog.postId]);
 
   return (
+    
     <div className="container" lg="12">
       <div className="row">
         <div className="post-card-container mx-auto col-md-6">
@@ -43,7 +44,7 @@ const LandingPost = ({ user, blog }) => {
               </div>
             </div>
             {/* Right 3 dots menu */}
-            <UncontrolledDropdown className="dropdown my-auto">
+            {/* <UncontrolledDropdown className="dropdown my-auto">
               <DropdownToggle
                 className="toggle"
                 color="#ffffff"
@@ -60,14 +61,11 @@ const LandingPost = ({ user, blog }) => {
                 aria-labelledby="postDropdown"
                 className="dropdown-info"
               >
-                {/* <DropdownItem header tag="span">
-                    Nationality
-                  </DropdownItem> */}
                 <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}>
                   Report
                 </DropdownItem>
               </DropdownMenu>
-            </UncontrolledDropdown>
+            </UncontrolledDropdown> */}
           </div>
           <div className="post-card-content">
             <img
@@ -91,7 +89,7 @@ const LandingPost = ({ user, blog }) => {
             </Link>
           </div>
           <div className="divider" />
-          {comments && comments.map((comment) => <Comment comment={comment} />)}
+          {comments.length > 0 && comments.map((comment, index) => <Comment key={index} comment={comment} />)}
         </div>
       </div>
     </div>

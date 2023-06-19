@@ -38,6 +38,7 @@ function Application() {
         <Route path="/profile/:id" render={(props) => <Profile {...props} />} />
         <Route path="/dashboard" render={(props) => <DashBoard {...props} />} />
         <Route path="/create" render={(props) => <CreatePage {...props} />} />
+        {/* <Route path="/nu" render={(props) => <NucleoIcons {...props} />} /> */}
         <Redirect to="/index" />
       </Switch>
     </BrowserRouter>
