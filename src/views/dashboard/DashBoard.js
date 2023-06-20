@@ -2,8 +2,8 @@ import React, { useEffect, useState }  from "react";
 import "components/Dashboard/Dashboard.scss";
 import { dataYear } from "./LineChartData";
 import { dataBar } from "./BarChartData";
-import { queryUserBlog } from "api/queryBlog";
-import { getPostsWithCommentCount } from "api/analysis";
+import {  getPostsWithCommentCount, fetchTagCounts  } from "api/analysis";
+
 
 import {
   Chart as ChartJS,
@@ -54,23 +54,55 @@ export const options = {
   },
 };
 
+const generateDataBar = (data) => {
+
+  const labels = Object.keys(data);
+  const values = Object.values(data);
+
+  const colors = [
+    "rgba(255, 99, 132, 0.5)",
+    "rgba(54, 162, 235, 0.5)",
+    "rgba(255, 206, 86, 0.5)",
+    "rgba(75, 192, 192, 0.5)",
+    "rgba(153, 102, 255, 0.5)",
+  ];
+
+  const dataBar = {
+    labels,
+    datasets: [
+      {
+        label: "View",
+        data: values,
+        backgroundColor: colors,
+      },
+    ],
+  };
+
+  return dataBar;
+};
+
 export function DashBoard() {
 
   
-  const userTemp = JSON.parse(localStorage.getItem("currentUser"));
   const [postList, setPostList] = useState([]);
+  const [favouriteTag, setFavouriteTag] = useState({});
 
   useEffect(() => {
-    const fetchPostList = async () => {
+    const fetchAllData = async () => {
       try {
-        const fetchedPostList = await getPostsWithCommentCount (userTemp.uid); // Replace `authorId` with the appropriate value
+        const fetchedPostList = await getPostsWithCommentCount (); 
+        const fecthFavourite = await fetchTagCounts();
+
+        console.log(fecthFavourite);
         setPostList(fetchedPostList);
+        setFavouriteTag(fecthFavourite);
+
       } catch (error) {
         console.error('Error fetching post list:', error);
       }
     };
-  
-    fetchPostList();
+
+    fetchAllData();
   }, []);
   
   return (
@@ -171,20 +203,20 @@ export function DashBoard() {
               </Card>
             </Col>
             <Col xl="4">
-              <Card className="shadow">
-                <CardHeader className="bg-transparent">
-                  <Row className="align-items-center">
-                    <div className="col">
-                      <h6 className="text-uppercase text-muted ls-1 mb-1">
-                        Analysis
+            <Card className="shadow">
+              <CardHeader className="bg-transparent">
+                <Row className="align-items-center">
+                  <div className="col">
+                    <h6 className="text-uppercase text-muted ls-1 mb-1">
+                       Analysis
                       </h6>
                       <h2 className="mb-0">Topic Engagement </h2>
-                    </div>
-                    <Bar options={options} data={dataBar} />
+                     </div>
+                    <Bar data={generateDataBar(favouriteTag)} />
                   </Row>
-                </CardHeader>
+              </CardHeader>
                 <CardBody></CardBody>
-              </Card>
+            </Card>
             </Col>
           </Row>
           <Row className="mt-5">
