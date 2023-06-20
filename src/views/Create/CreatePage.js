@@ -1,7 +1,16 @@
 import ExamplesNavbar from "components/Navbars/ExamplesNavbar";
 import React from "react";
 import { GrFormAdd } from "react-icons/gr";
-import { Carousel, CarouselIndicators, CarouselItem } from "reactstrap";
+import {
+  Carousel,
+  CarouselIndicators,
+  CarouselItem,
+  Alert,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  UncontrolledDropdown,
+} from "reactstrap";
 import "components/Create/Create.scss";
 import { updateBlog, writeBlog } from "../../api/queryBlog";
 import { Timestamp } from "firebase/firestore";
@@ -16,6 +25,16 @@ const CreatePage = (props) => {
   const [topic, setTopic] = React.useState("");
   const [location, setLocation] = React.useState("");
   const [tag, setTag] = React.useState([]);
+  const [isAlertOpened, setAlert] = React.useState(false);
+  const [alertContent, setAlertContent] = React.useState("");
+
+  const tagText = [
+    "Food",
+    "Attraction",
+    "Accommodation",
+    "Transport",
+    "Others",
+  ];
 
   React.useEffect(() => {
     const userTemp = JSON.parse(localStorage.getItem("currentUser"));
@@ -37,14 +56,6 @@ const CreatePage = (props) => {
     }
   }, [blog]);
 
-  function handleEnterTag(e) {
-    if (e.key === "Enter") {
-      const newTag = e.target.value;
-      setTag([...tag, newTag]);
-      e.target.value = "";
-    }
-  }
-
   function handleChange(event) {
     setImageFiles([...imageFiles, ...event.target.files]);
   }
@@ -65,7 +76,39 @@ const CreatePage = (props) => {
     return map;
   }, {});
 
+  function validateBlog() {
+    if (topic === "") {
+      setAlertContent("Please enter a topic");
+      setAlert(true);
+      return false;
+    }
+    if (blogContent.length === 0) {
+      setAlertContent("Please enter some content");
+      setAlert(true);
+      return false;
+    }
+    if (location === "") {
+      setAlertContent("Please enter a location");
+      setAlert(true);
+      return false;
+    }
+    if (tag.length === 0) {
+      setAlertContent("Please enter a tag");
+      setAlert(true);
+      return false;
+    }
+    if (imageFiles.length === 0) {
+      setAlertContent("Please upload an image");
+      setAlert(true);
+      return false;
+    }
+    return true;
+  }
+
   function createBlog() {
+    if (!validateBlog()) {
+      return;
+    }
     const newBlog = {
       author_id: currentUser.uid,
       topic: topic,
@@ -102,6 +145,10 @@ const CreatePage = (props) => {
           alert("Error creating blog");
         });
     }
+  }
+
+  function toggleAlert() {
+    setAlert(false);
   }
 
   //Carousell
@@ -280,7 +327,6 @@ const CreatePage = (props) => {
                   ))
                 )}
               </label>
-              
             </div>
             {/* Right Location */}
             <div className="tag-container col-md-3">
@@ -299,7 +345,45 @@ const CreatePage = (props) => {
               </label>
               <label className="label-text">
                 <h6>Add tag</h6>
-                <input
+                <UncontrolledDropdown>
+                  <DropdownToggle
+                    style={{ width: "100%" }}
+                    aria-expanded={false}
+                    aria-haspopup={true}
+                    caret
+                    color="warning"
+                    data-toggle="dropdown"
+                    id="dropdownMenuButton"
+                    onClick={(e) => e.preventDefault()}
+                    role="button"
+                  >
+                    {tag[0] ?? "Select Tag"}
+                  </DropdownToggle>
+                  <DropdownMenu
+                    aria-labelledby="dropdownMenuButton"
+                    className="dropdown-info"
+                  >
+                    <DropdownItem header tag="span">
+                      Nationality
+                    </DropdownItem>
+                    {tagText.map((singleTag) => {
+                      return (
+                        <DropdownItem
+                          href="#pablo"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setTag([singleTag]);
+                          }}
+                          value={singleTag}
+                          key={singleTag}
+                        >
+                          {singleTag}
+                        </DropdownItem>
+                      );
+                    })}
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+                {/* <input
                   className="tag-input input-text"
                   placeholder="Tag"
                   type="text"
@@ -307,13 +391,15 @@ const CreatePage = (props) => {
                   onKeyDown={(e) => {
                     handleEnterTag(e);
                   }}
-                />
+                /> */}
               </label>
-              <div className="selected-container">
+              {/* <div className="selected-container">
                 {tag.map((tag, index) => (
-                  <label key={`${tag}_${index}`} className="tag">{tag}</label>
+                  <label key={`${tag}_${index}`} className="tag">
+                    {tag}
+                  </label>
                 ))}
-              </div>
+              </div> */}
               <button
                 className="submit-button"
                 type="submit"
@@ -321,6 +407,15 @@ const CreatePage = (props) => {
               >
                 <h6>Post</h6>
               </button>
+              <Alert
+                style={{ marginTop: 10 }}
+                className="toast"
+                color="danger"
+                isOpen={isAlertOpened}
+                toggle={() => toggleAlert()}
+              >
+                {alertContent}
+              </Alert>
             </div>
           </div>
         </div>

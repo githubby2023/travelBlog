@@ -2,8 +2,8 @@ import React, { useEffect, useState }  from "react";
 import "components/Dashboard/Dashboard.scss";
 import { dataYear } from "./LineChartData";
 import { dataBar } from "./BarChartData";
-import { queryUserBlog } from "api/queryBlog";
-import { getPostsWithCommentCount } from "api/analysis";
+import {  getPostsWithCommentCount, fetchTagCounts ,fetchPostView } from "api/analysis";
+
 
 import {
   Chart as ChartJS,
@@ -15,7 +15,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { Line, Bar } from "react-chartjs-2";
+import { Line, Bar, Doughnut } from "react-chartjs-2";
 
 // reactstrap components
 import {
@@ -54,23 +54,299 @@ export const options = {
   },
 };
 
+const currentDate = new Date();
+const currentDay = currentDate.getDate();
+const currentMonth = currentDate.toLocaleDateString('en-US', { month: 'long' });
+const currentYear = currentDate.getFullYear();
+
+const parseTimestamp = (timestamp) => {
+  const date = timestamp.toDate();
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  const formattedDate = date.toLocaleDateString('en-US', options);
+
+  const [month, day, year] = formattedDate.split(' ');
+
+  return [parseInt(year), month, parseInt(day)];
+};
+
+
+
+const generateDataBar = (data) => {
+
+  const labels = Object.keys(data);
+  const values = Object.values(data);
+
+  const colors = [
+    "rgba(255, 99, 132, 0.5)",
+    "rgba(54, 162, 235, 0.5)",
+    "rgba(255, 206, 86, 0.5)",
+    "rgba(75, 192, 192, 0.5)",
+    "rgba(153, 102, 255, 0.5)",
+  ];
+
+  const dataBar = {
+    labels,
+    datasets: [
+      {
+        label: "View",
+        data: values,
+        backgroundColor: colors,
+      },
+    ],
+  };
+
+  return dataBar;
+};
+
+const generateDataLine = (dataPost,viewData) => {
+
+  const dailyPostCounts = {}; // Object to store the count of posts for each day
+  const dailyViewCounts = {};
+
+  // Initialize dayCounts object with day numbers as keys and initial count of 0
+  for (let day = 1; day <= currentDay; day++) {
+    dailyPostCounts [day] = 0;
+    dailyViewCounts [day] = 0;
+  }
+
+  dataPost.forEach(obj => {
+    
+    const timePost = parseTimestamp(obj.timestamp);
+  if (timePost[0] == currentYear && timePost[1]  == currentMonth){
+    // Increment the count for the corresponding day
+   if ( dailyPostCounts.hasOwnProperty(timePost[2])) {
+    dailyPostCounts[timePost[2]]++;
+  } else {
+    dailyPostCounts[timePost[2]] = 1;
+  }
+  }
+   
+});
+
+for (const view of viewData) {
+   const timeView = parseTimestamp(view.timestamp);
+   if (timeView[0] == currentYear && timeView[1] == currentMonth) {
+    // Increment the count for the corresponding day
+    let day = timeView[2];
+     if (dailyViewCounts.hasOwnProperty(day)) {
+       dailyViewCounts[day]++;
+     } else {
+       dailyViewCounts[day] = 1;
+     }
+   }
+}
+
+  const labelDay = Object.keys(dailyPostCounts).map(day => parseInt(day));
+  const PostValueDay = Object.values(dailyPostCounts);
+  const viewValueDay = Object.values(dailyViewCounts);
+  console.log(PostValueDay);
+  let labels = labelDay;
+
+  const dataLine = {
+    labels,
+  datasets: [
+    {
+      label: "Number of Created Post",
+      data: PostValueDay,
+      borderColor: "rgb(255, 99, 132)",
+      backgroundColor: "rgba(255, 99, 132, 0.5)",
+    },
+    {
+      label: "Page Views",
+      data: viewValueDay,
+      borderColor: "rgb(53, 162, 235)",
+      backgroundColor: "rgba(53, 162, 235, 0.5)",
+    }
+  ],
+  };
+
+  return dataLine;
+};
+
+const generateDataDoughnut = (data) => {
+
+  const labels = Object.keys(data);
+  const values = Object.values(data);
+
+  const dataDoughnut = {
+    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+    datasets: [
+      {
+        label: '# of Votes',
+        data: [12, 19, 3, 5, 2, 3],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+  return dataDoughnut;
+};
+//calculate a rating for a post
+const averageRating = (post_rating) => {
+  const values = Object.values(post_rating);
+
+  if (values.length === 0) {
+    return 0; // Handle the case when the object is empty
+  }
+
+  const sum = values.reduce((acc, value) => acc + value, 0);
+  const average = sum / values.length;
+  const roundedAverage = average.toFixed(1); // Round to 1 decimal point
+
+  return Number(roundedAverage); // Convert back to a number
+}
+
+//avergae for overall rating
+const calculateOverallRating = (post_list) =>{
+  if (post_list.length === 0) {
+    return 0; // Handle the case when the array is empty
+  }
+  
+
+  let sum = 0;
+  let existedRating =0;
+  for (let i = 0; i < post_list.length; i++) {
+    let avePost = averageRating( post_list[i].rating);
+    if (avePost > 0){
+      existedRating++;
+      sum += avePost;
+    }
+  }
+
+  const average = sum / existedRating;
+
+  
+  return  average.toFixed(1);
+}
+
+const calculateTotalView = (postViewList, post_id) => {
+  let totalViews = 0;
+
+  for (const viewPage of postViewList) {
+    if (viewPage.post_id === post_id) {
+      totalViews += 1;
+    }
+  }
+
+  return totalViews;
+};
+
+const calculateReach = (postViewList) => {
+  // Create a Set to store unique viewer IDs
+  const uniqueViewers = new Set();
+
+  // Iterate through each post view object
+  for (const postView of postViewList) {
+    const viewerId = postView.viewer_id;
+    uniqueViewers.add(viewerId); // Add viewer ID to the Set
+  }
+
+  // Calculate the reach as the number of unique viewers
+  const reach = uniqueViewers.size;
+
+  return reach;
+};
+
+
+const calculateTrafficRate = (postViewList) => {
+  const trafficRate = {};
+  const hourCounts = {};
+
+  // Count the number of views for each hour
+  for (const view of postViewList) {
+    const timestamp = new Date(view.timestamp);
+    const hour = timestamp.getHours();
+
+    if (hourCounts.hasOwnProperty(hour)) {
+      hourCounts[hour]++;
+    } else {
+      hourCounts[hour] = 1;
+    }
+  }
+
+  // Calculate the traffic rate for each hour
+  for (const hour in hourCounts) {
+    const count = hourCounts[hour];
+    const rate = Math.round((count / postViewList.length) * 100);
+    trafficRate[hour] = rate;
+  }
+
+  // Calculate the average traffic rate
+  const totalRate = Object.values(trafficRate).reduce((sum, rate) => sum + rate, 0);
+  const averageRate = Math.round(totalRate / Object.keys(trafficRate).length);
+
+  return averageRate;
+};
+
+
+const countTags = (postList, pageViewList) => {
+  const tagCounts = {};
+
+  for (const view of pageViewList) {
+    
+    const postId = view.post_id;
+    const post = postList.find((post) => post.postId === postId);
+
+    if (post) {
+      const tags = post.tag;
+
+      for (const tag of tags) {
+        if (tagCounts.hasOwnProperty(tag)) {
+          tagCounts[tag]++;
+        } else {
+          tagCounts[tag] = 1;
+        }
+      }
+    }
+  }
+ 
+
+  return tagCounts;
+};
+
+
+
+
 export function DashBoard() {
 
   
-  const userTemp = JSON.parse(localStorage.getItem("currentUser"));
   const [postList, setPostList] = useState([]);
+  const [postViewList, setPostView] = useState([]);
+ 
+
 
   useEffect(() => {
-    const fetchPostList = async () => {
+    const fetchAllData = async () => {
       try {
-        const fetchedPostList = await getPostsWithCommentCount (userTemp.uid); // Replace `authorId` with the appropriate value
+        const fetchedPostList = await getPostsWithCommentCount (); 
+        const fecthPostView = await fetchPostView();
+
+      
         setPostList(fetchedPostList);
+        setPostView(fecthPostView);
+      
+
       } catch (error) {
         console.error('Error fetching post list:', error);
       }
     };
-  
-    fetchPostList();
+
+    fetchAllData();
   }, []);
   
   return (
@@ -86,8 +362,8 @@ export function DashBoard() {
                     <i className="nc-icon nc-chart-bar-32" />
                   </div>
                   <div className="description">
-                    <h4 className="info-title">Highest Traffic</h4>
-                    <span className="h2 font-weight-bold">350,897</span>
+                    <h4 className="info-title">Average Traffic</h4>
+                    <span className="h2 font-weight-bold">{calculateTrafficRate (postViewList)}</span>
                     <br></br>
                     <span className="h5">per hour</span>
                   </div>
@@ -112,9 +388,10 @@ export function DashBoard() {
                     <i className="nc-icon nc-single-02" />
                   </div>
                   <div className="description">
-                    <h4 className="info-title">Subscribers</h4>
-                    <span className="h2 font-weight-bold mb-2">4023</span>
+                    <h4 className="info-title">Reach</h4>
+                    <span className="h2 font-weight-bold mb-2">{calculateReach(postViewList)}</span>
                     <br></br>
+                    <span className="h5">users</span>
                   </div>
                 </div>
               </Col>
@@ -125,7 +402,7 @@ export function DashBoard() {
                   </div>
                   <div className="description">
                     <h4 className="info-title">Overall Rating</h4>
-                    <span className="h2 font-weight-bold mb-0">4.5/5.0</span>
+                    <span className="h2 font-weight-bold mb-0">{calculateOverallRating(postList)}/5.0</span>
                   </div>
                 </div>
               </Col>
@@ -166,25 +443,25 @@ export function DashBoard() {
                   </Row>
                 </CardHeader>
                 <CardBody>
-                  <Line options={options} data={dataYear} />
+                  <Line options={options} data={generateDataLine(postList,postViewList)} />
                 </CardBody>
               </Card>
             </Col>
             <Col xl="4">
-              <Card className="shadow">
-                <CardHeader className="bg-transparent">
-                  <Row className="align-items-center">
-                    <div className="col">
-                      <h6 className="text-uppercase text-muted ls-1 mb-1">
-                        Analysis
+            <Card className="shadow">
+              <CardHeader className="bg-transparent">
+                <Row className="align-items-center">
+                  <div className="col">
+                    <h6 className="text-uppercase text-muted ls-1 mb-1">
+                       Analysis
                       </h6>
                       <h2 className="mb-0">Topic Engagement </h2>
-                    </div>
-                    <Bar options={options} data={dataBar} />
+                     </div>
+                    <Bar data={generateDataBar(countTags(postList,postViewList))} />
                   </Row>
-                </CardHeader>
+              </CardHeader>
                 <CardBody></CardBody>
-              </Card>
+            </Card>
             </Col>
           </Row>
           <Row className="mt-5">
@@ -201,7 +478,7 @@ export function DashBoard() {
                 <Table className="align-items-center table-flush" responsive>
                   <thead className="thead-light">
                     <tr>
-                      <th scope="col">Page name</th>
+                      <th scope="col">Post Title</th>
                       <th scope="col">Topic</th>
                       <th scope="col">Visitors</th>
                       <th scope="col">Number of Comments</th>
@@ -214,10 +491,10 @@ export function DashBoard() {
         <tr key={post.postId}>
           <th scope="row">{post.topic}</th>
           <td>{post.topic}</td>
-          <td>-</td>
+          <td>{calculateTotalView(postViewList, post.postId)}</td>
           <td>{post.commentCount}</td>
           <td><i className="nc-icon nc-satisfied mr-3" />
-          {post.rating.toString()}</td> {/* Convert rating to a string */}
+          {averageRating(post.rating)}</td> {/* Convert rating to a string */}
         </tr>
       ))}
                   </tbody>

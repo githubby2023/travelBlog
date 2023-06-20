@@ -4,6 +4,7 @@ import "components/Post/Post.scss";
 import PostHeader from "components/Post/PostHeader";
 import { BiCommentDetail } from "react-icons/bi";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
+import { IoMdSend } from "react-icons/io";
 import {
   Button,
   Carousel,
@@ -20,6 +21,7 @@ import {
   queryBlogComments,
   deleteBlog,
   setBlogRating,
+  writeComment,
 } from "../../api/queryBlog";
 import { writePostView } from "api/post_view_wr";
 import { Timestamp } from "firebase/firestore";
@@ -35,7 +37,8 @@ const PostPage = (props) => {
   const [suggestions, setSuggestions] = React.useState([]);
   const [carousellItems, setCarousellItems] = React.useState([{}]);
   const [postComments, setPostComments] = React.useState([{}]);
-  const [currentUser, setCurrentUser] = React.useState({});
+  const [currentUser, setCurrentUser] = React.useState({ uid: "" });
+  const [currentComment, setCurrentComment] = React.useState("");
 
   React.useEffect(() => {
     setCurrentBlog(blog);
@@ -139,6 +142,35 @@ const PostPage = (props) => {
     const match = key.match(/\d+/); // Extract numeric digits from the key
     return match ? parseInt(match[0]) : 0; // Convert the extracted digits to an integer
   }
+
+  const sendCommment = (comment) => {
+    if (comment !== "") {
+      if (currentUser.uid !== "") {
+        console.log("Comment is " + comment);
+        const newComment = {
+          user_id: currentUser.uid,
+          commentor_name: currentUser.username,
+          commentor_pic: currentUser.profilepic,
+          comment: comment,
+          comment_timestamp: Timestamp.now(),
+        };
+        writeComment(currentBlog.postId, newComment).then(() => {
+          console.log("Comment added");
+          // window.location.reload(true);
+          setCurrentComment("");
+          const commentTextField = document.getElementById("commentTxt");
+          commentTextField.value = "";
+          queryBlogComments(currentBlog.postId).then((queryComments) => {
+            if (queryComments) {
+              setPostComments(queryComments);
+            }
+          });
+        });
+      } else {
+        window.location.href = "/signin";
+      }
+    }
+  };
 
   return (
     <>
@@ -282,6 +314,45 @@ const PostPage = (props) => {
                 </div>
               </div>
               <div className="divider" />
+              <div className="comment-section">
+                <h5 className="bold">Comments</h5>
+                <div className="comment-input">
+                  {/* <img
+                    alt="Profile"
+                    className="img-circle img-no-padding img-responsive"
+                    src={
+                      user.profilepic === ""
+                        ? require("assets/img/faces/noImage.png")
+                        : user.profilepic
+                    }
+                  /> */}
+                  <div className="comment-profile-pic">
+                    <img
+                      alt="Profile"
+                      className="img-circle img-no-padding img-responsive my-auto"
+                      src={
+                        user.profilepic === ""
+                          ? require("assets/img/faces/noImage.png")
+                          : user.profilepic
+                      }
+                    />
+                  </div>
+                  <input
+                    className="input-text"
+                    placeholder="Type Your Comment Here"
+                    type="text"
+                    id="commentTxt"
+                    onChange={(event) => {
+                      setCurrentComment(event.target.value);
+                    }}
+                  />
+                  <IoMdSend
+                    className="send-icon"
+                    onClick={() => sendCommment(currentComment)}
+                  />
+                </div>
+              </div>
+
               {postComments &&
                 postComments.map((comment) => <Comment comment={comment} />)}
             </div>
@@ -312,7 +383,6 @@ const PostPage = (props) => {
                   className="btn-round mr-1"
                   color="primary"
                   type="button"
-                  onClick={() => {}}
                 >
                   <Link
                     className="white-text"
@@ -370,15 +440,6 @@ const Rating = ({ blog, currentUser }) => {
           console.log("Error updating rating", error);
         });
     } else {
-      const userTemp = JSON.parse(localStorage.getItem("currentUser"));
-    // if (userTemp) {
-    //   setCurrentUser(userTemp);
-    //   if (userTemp.uid === currentBlog.author_id) {
-    //     setIsSender(true);
-    //   }
-    // } else {
-    //   setIsSender(false);
-    // }
       window.location.href = "/signin";
     }
   };

@@ -1,3 +1,7 @@
+import {  getPostsWithCommentCount, fetchTagCounts  } from "api/analysis";
+
+
+
 let labels = ["Food", "Transport", "Attraction", "Accomodation", "Others"];
 
 const colors = [
