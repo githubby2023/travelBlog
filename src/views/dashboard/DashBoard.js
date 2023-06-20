@@ -143,7 +143,6 @@ for (const view of viewData) {
   const labelDay = Object.keys(dailyPostCounts).map(day => parseInt(day));
   const PostValueDay = Object.values(dailyPostCounts);
   const viewValueDay = Object.values(dailyViewCounts);
-  console.log(PostValueDay);
   let labels = labelDay;
 
   const dataLine = {
@@ -166,68 +165,7 @@ for (const view of viewData) {
 
   return dataLine;
 };
-const generateDataLineByMonth = (dataPost, viewData) => {
-  const monthlyPostCounts = {}; // Object to store the count of posts for each month
-  const monthlyViewCounts = {};
 
-    // Initialize dayCounts object with day numbers as keys and initial count of 0
-    for (let m = 1; m <= currentMonth; m++) {
-      monthlyPostCounts = 0; // Object to store the count of posts for each month
-      monthlyViewCounts = 0;
-    }
-
-  dataPost.forEach((obj) => {
-    const timePost = parseTimestamp(obj.timestamp);
-
-    if (timePost[0] === currentYear) {
-      const month = timePost[1]; // Get the month
-
-      if (monthlyPostCounts.hasOwnProperty(month)) {
-        monthlyPostCounts[month]++;
-      } else {
-        monthlyPostCounts[month] = 1;
-      }
-    }
-  });
-
-  for (const view of viewData) {
-    const timeView = parseTimestamp(view.timestamp);
-
-    if (timeView[0] === currentYear) {
-      const month = timeView[1]; // Get the month
-
-      if (monthlyViewCounts.hasOwnProperty(month)) {
-        monthlyViewCounts[month]++;
-      } else {
-        monthlyViewCounts[month] = 1;
-      }
-    }
-  }
-
-  const labels = Object.keys(monthlyPostCounts).map((month) => parseInt(month));
-  const postValues = Object.values(monthlyPostCounts);
-  const viewValues = Object.values(monthlyViewCounts);
-
-  const dataLine = {
-    labels,
-    datasets: [
-      {
-        label: 'Number of Created Post',
-        data: postValues,
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-      },
-      {
-        label: 'Page Views',
-        data: viewValues,
-        borderColor: 'rgb(53, 162, 235)',
-        backgroundColor: 'rgba(53, 162, 235, 0.5)',
-      },
-    ],
-  };
-
-  return dataLine;
-};
 
 const generateDataDoughnut = (pageViews) => {
   const genders = pageViews.map((pageView) => pageView.viewer_gender);
@@ -360,12 +298,9 @@ export function DashBoard() {
   
   const [postList, setPostList] = useState([]);
   const [postViewList, setPostView] = useState([]);
-  const [showAnotherChart, setShowAnotherChart] = useState(false);
  
- // Function to handle the toggle
- const handleToggle = () => {
-  setShowAnotherChart(!showAnotherChart);
-};
+ 
+
 
   useEffect(() => {
     const fetchAllData = async () => {
@@ -456,54 +391,12 @@ export function DashBoard() {
                       <h2 className=" mb-0">Blog Insight </h2>
                     </div>
                     <div className="col">
-                    <Nav className="justify-content-end" pills>
-              <NavItem>
-                <NavLink
-                  className={!showAnotherChart ? 'active' : ''}
-                  onClick={() => setShowAnotherChart(false)}
-                >
-                  <span className="d-none d-md-block">This Month</span>
-                  <span className="d-md-none">M</span>
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink
-                  className={showAnotherChart ? 'active' : ''}
-                  onClick={() => setShowAnotherChart(true)}
-                >
-                  <span className="d-none d-md-block">This Year</span>
-                  <span className="d-md-none">W</span>
-                </NavLink>
-              </NavItem>
-            </Nav>
-                      {/* <Nav className="justify-content-end" pills>
-                      <NavItem>
-                        <NavLink
-                          
-                        >
-                          <span className="d-none d-md-block">This Month</span>
-                          <span className="d-md-none">M</span>
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          
-                        >
-                          <span className="d-none d-md-block">This Year</span>
-                          <span className="d-md-none">W</span>
-                        </NavLink>
-                      </NavItem>
-                    </Nav> */}
+          
                     </div>
                   </Row>
                 </CardHeader>
                 <CardBody>
-                {showAnotherChart ? (
-          <Line options={options} data={generateDataLineByMonth(postList,postViewList)} />
-        ) : (
-          <Line options={options} data={generateDataLine(postList, postViewList)} />
-        )}
-                  
+                  <Line options={options} data={generateDataLine(postList, postViewList)} />
                 </CardBody>
               </Card>
             </Col>
@@ -539,7 +432,7 @@ export function DashBoard() {
                   <thead className="thead-light">
                     <tr>
                       <th scope="col">Post Title</th>
-                      <th scope="col">Topic</th>
+                      <th scope="col">Location</th>
                       <th scope="col">Visitors</th>
                       <th scope="col">Number of Comments</th>
                       <th scope="col">Rating</th>
@@ -550,7 +443,7 @@ export function DashBoard() {
                   {postList.map((post) => (
         <tr key={post.postId}>
           <th scope="row">{post.topic}</th>
-          <td>{post.topic}</td>
+          <td>{post.location}</td>
           <td>{calculateTotalView(postViewList, post.postId)}</td>
           <td>{post.commentCount}</td>
           <td><i className="nc-icon nc-satisfied mr-3" />
