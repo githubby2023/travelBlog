@@ -27,6 +27,7 @@ const CreatePage = (props) => {
   const [tag, setTag] = React.useState([]);
   const [isAlertOpened, setAlert] = React.useState(false);
   const [alertContent, setAlertContent] = React.useState("");
+  const [isEdit, setIsEdit] = React.useState(false);
 
   const tagText = [
     "Food",
@@ -53,6 +54,7 @@ const CreatePage = (props) => {
       setTopic(blog.topic);
       setLocation(blog.location);
       setTag(blog.tag);
+      setIsEdit(true);
     }
   }, [blog]);
 
@@ -185,7 +187,7 @@ const CreatePage = (props) => {
         <div className="container" lg="12">
           <div className="row">
             <div className="create-post-container col-md-9 mx-auto">
-              <h1>Create Post</h1>
+              {isEdit ? <h1>Edit Post</h1> : <h1>Create Post</h1>}
               <label className="label-text">
                 <h4>Write a catchy topic 😎</h4>
                 <input
@@ -405,7 +407,7 @@ const CreatePage = (props) => {
                 type="submit"
                 onClick={() => createBlog()}
               >
-                <h6>Post</h6>
+                {isEdit ? <h6>Update</h6> : <h6>Post</h6>}
               </button>
               <Alert
                 style={{ marginTop: 10 }}

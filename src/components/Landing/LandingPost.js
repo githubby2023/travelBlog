@@ -23,7 +23,6 @@ const LandingPost = ({ user, blog }) => {
   }, [blog.postId]);
 
   return (
-    
     <div className="container" lg="12">
       <div className="row">
         <div className="post-card-container mx-auto col-md-6">
@@ -89,7 +88,11 @@ const LandingPost = ({ user, blog }) => {
             </Link>
           </div>
           <div className="divider" />
-          {comments.length > 0 && comments.map((comment, index) => <Comment key={index} comment={comment} />)}
+          {comments.length > 0 && (
+            <>
+              <Comment comment={comments[0]} />
+            </>
+          )}
         </div>
       </div>
     </div>
