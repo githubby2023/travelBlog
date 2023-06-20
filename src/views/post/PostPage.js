@@ -304,7 +304,7 @@ const PostPage = (props) => {
                     <Rating currentUser={currentUser} blog={currentBlog} />
                   </div>
                   <div className="comment-number number my-auto">
-                    <BiCommentDetail /> {postComments.length ?? 0}
+                    <BiCommentDetail /> {postComments.length-1 ?? 0}
                   </div>
                 </div>
                 <div className="tag-container">
@@ -352,7 +352,6 @@ const PostPage = (props) => {
                   />
                 </div>
               </div>
-
               {postComments &&
                 postComments.map((comment) => <Comment comment={comment} />)}
             </div>
