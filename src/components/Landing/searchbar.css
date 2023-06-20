@@ -59,6 +59,11 @@ input:focus {
   }
 }
 
+@media screen and (max-width: 768px) {
+  .searchIcon {
+    display: none;
+  }
+}
   
   input:focus {
     outline: none;
