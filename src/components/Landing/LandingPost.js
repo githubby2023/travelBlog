@@ -89,11 +89,14 @@ const LandingPost = ({ user, blog }) => {
             </Link>
           </div>
           <div className="divider" />
-          {comments.length > 0 && (
-            <>
-              <Comment comment={comments[0]} />
-            </>
-          )}
+          {comments.length > 0 &&
+            comments.map((comment, index) => (
+              <>
+                {index < 3 && (
+                  <Comment key={comment.commentId} comment={comment} />
+                )}
+              </>
+            ))}
         </div>
       </div>
     </div>

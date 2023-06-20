@@ -402,8 +402,10 @@ const PostPage = (props) => {
                   <h5 className="bold suggestion-title">
                     Other posts from author
                   </h5>
-                  {suggestions.map((blog) => (
-                    <SuggestionBlogs blog={blog} user={user} />
+                  {suggestions.map((blog, index) => (
+                    <>
+                      {index < 3 && <SuggestionBlogs blog={blog} user={user} />}
+                    </>
                   ))}
                 </>
               ) : (
@@ -442,10 +444,10 @@ const Rating = ({ blog, currentUser, setCurrentBlog }) => {
         .catch((error) => {
           // console.log("Error updating rating", error);
         });
-        setCurrentBlog({
-          ...blog,
-          rating: { ...blog.rating, [currentUser.uid]: index + 1 },
-        });
+      setCurrentBlog({
+        ...blog,
+        rating: { ...blog.rating, [currentUser.uid]: index + 1 },
+      });
     } else {
       window.location.href = "/signin";
     }

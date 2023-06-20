@@ -26,14 +26,14 @@ const Comment = ({ comment }) => {
               <div className="comment-text my-auto">
                 <h6>{currentComment.commentor_name}</h6>
                 <p>{currentComment.comment}</p>
-                <p className="comment-time">
+                {/* <p className="comment-time"> */}
                   {/* {new Intl.DateTimeFormat("en-US", {
                   month: "long",
                   day: "2-digit",
                   hour: "2-digit",
                   minute: "2-digit",
                 }).format(currentComment.comment_timestamp.toDate())} */}
-                </p>
+                {/* </p> */}
               </div>
             </div>
           </div>
