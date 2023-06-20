@@ -1,8 +1,11 @@
-import {
-  onAuthStateChanged,
-} from "firebase/auth";
+import { onAuthStateChanged , getAuth} from "firebase/auth";
 import { auth } from "../../api/firebaseconfig";
-import { signInWithGoogle, registerWithEmail,queryUser,writeUserData } from "../../api/authentication";
+import {
+  signInWithGoogle,
+  registerWithEmail,
+  queryUser,
+  writeUserData,
+} from "../../api/authentication";
 import React, { useState, useEffect } from "react";
 import "./Register.scss";
 import {
@@ -17,7 +20,6 @@ import {
 } from "reactstrap";
 import { useHistory } from "react-router-dom";
 
-
 const Register = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [registerEmail, setRegisterEmail] = useState("");
@@ -30,6 +32,9 @@ const Register = () => {
   const [user, setUser] = useState({});
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [addressError, setAddressError] = useState("");
+  const [registerError, setRegisterError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [disabled, setDisabled] = useState(true);
   const history = useHistory();
@@ -44,10 +49,24 @@ const Register = () => {
   const [nationalityFormClassName, setNationalityFormClassName] =
     useState("register-form");
 
-  const [registerInput, setRegisterInput] = useState({email:"", password: "", confirmpassword: "", name: "", address:"",nationality:"",gender:""});
+  const [registerInput, setRegisterInput] = useState({
+    email: "",
+    password: "",
+    confirmpassword: "",
+    name: "",
+    address: "",
+    nationality: "",
+    gender: "",
+    emailError: "",
+    nameError: "",
+    addressError: "",
+    registerError: "",
+    disabled: true,
+  });
 
   useEffect(() => {
-    console.log("")
+    
+    // console.log("");
     // console.log("email :" +registerInput.email)
     // console.log("password :" +registerInput.password)
     // console.log("confirmpassword :" +registerInput.confirmpassword)
@@ -60,14 +79,53 @@ const Register = () => {
     setRegisterAddress(registerInput.address);
     setRegisterNationality(registerInput.nationality);
     setRegisterGender(registerInput.gender);
-
-    if(registerConfirmPassword !== registerPassword){
+    setEmailError(registerInput.emailError);
+    setNameError(registerInput.nameError);
+    setAddressError(registerInput.addressError);
+    setRegisterError(registerInput.registerError);
+    console.log(registerGender)
+    console.log(registerNationality)
+    if (registerConfirmPassword !== registerPassword) {
       setConfirmPasswordError("Not match password");
-    }
-    else{
+    } else {
       setConfirmPasswordError("");
     }
-  } , [registerInput,registerConfirmPassword,registerPassword,registerName,registerAddress,registerNationality,registerGender,registerEmail]);
+    if(registerEmail === ""){
+      setEmailError("Email is required");
+    }
+    else if(!/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(registerEmail)){
+      setEmailError("Invalid Email");
+    }
+    //set disabled = true if any of the input field is empty
+    if (
+      registerAddress === "" ||
+      registerEmail === "" ||
+      registerPassword === "" ||
+      registerConfirmPassword === "" ||
+      registerName === "" ||
+      !/^[\w\s-]{3,}$/.test(registerAddress) || // Regex for address validation
+      !/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(registerEmail) ||
+      registerPassword.length < 3 ||
+      registerConfirmPassword.length < 3
+    ) {
+      setDisabled(true);
+    } else {
+      setDisabled(false);
+    }
+    
+    
+    
+
+  }, [
+    registerInput,
+    registerConfirmPassword,
+    registerPassword,
+    registerName,
+    registerAddress,
+    registerNationality,
+    registerGender,
+    registerEmail,
+  ]);
 
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
@@ -93,7 +151,7 @@ const Register = () => {
                   currentUser.photoURL,
                   "",
                   "",
-                  "",
+                  ""
                 )
                   .then(() => {
                     // console.log("Document written successfully");
@@ -109,8 +167,7 @@ const Register = () => {
             });
           }
         });
-      }
-      else{
+      } else {
         // console.log("No user is signed in");
         localStorage.removeItem("currentUser");
       }
@@ -152,25 +209,54 @@ const Register = () => {
                     type="text"
                     error={emailError ? true : false}
                     onChange={(event) => {
-                      setRegisterInput({...registerInput, email: event.target.value});
-                      
+                      event.target.value === ""?
+                      setRegisterInput({
+                        ...registerInput,
+                        emailError: "Email is required",
+                        email: event.target.value,
+                        disabled: true,
+                      })
+                    : setRegisterInput({
+                        ...registerInput,
+                        emailError: "",
+                        email: event.target.value,
+                      })
+                      // setRegisterInput({
+                      //   ...registerInput,
+                      //   email: event.target.value,
+                      // });
+
                       // setRegisterEmail(event.target.value);
                       //condition to check if email is valid********************
-                      const emptyStringTrue = event.target.value === "" || event.target.value === null
-                      const withoutAllias = event.target.value.includes("@") === false
-                      const withoutDot = event.target.value.includes(".") === false || event.target.value.endsWith(".") === true
-                      const withoutTopLevelDomain = (event.target.value.endsWith('com') === false && event.target.value.endsWith('net') === false && event.target.value.endsWith('org') === false && event.target.value.endsWith('info') === false && event.target.value.endsWith('us') === false && event.target.value.endsWith('my') === false)
+                      const emptyStringTrue =
+                        event.target.value === "" ||
+                        event.target.value === null;
+                      const withoutAllias =
+                        event.target.value.includes("@") === false;
+                      const withoutDot =
+                        event.target.value.includes(".") === false ||
+                        event.target.value.endsWith(".") === true;
+                      const withoutTopLevelDomain =
+                        event.target.value.endsWith("com") === false &&
+                        event.target.value.endsWith("net") === false &&
+                        event.target.value.endsWith("org") === false &&
+                        event.target.value.endsWith("info") === false &&
+                        event.target.value.endsWith("us") === false &&
+                        event.target.value.endsWith("my") === false;
                       //********************************************************* */
-                      if (emptyStringTrue || withoutAllias || withoutDot || withoutTopLevelDomain)  {
+                      if (
+                        !/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(event.target.value)
+                      ) {
                         setEmailFormClassName("has-danger");
-                        setEmailError("Email is required");
+                        // setEmailError("Email is required");
                       } else {
                         setEmailFormClassName("has-success");
-                        setEmailError("");
+                        // setEmailError("");
                       }
                     }}
                   />
                 </Form>
+                {emailError && <div className="error"> {emailError} </div>}
                 <Form className={passwordFormClassName}>
                   <label>Password</label>
 
@@ -180,19 +266,29 @@ const Register = () => {
                     helperText={passwordError}
                     error={true}
                     onChange={(event) => {
-                      setRegisterInput({...registerInput, password: event.target.value});
+                      setRegisterInput({
+                        ...registerInput,
+                        password: event.target.value,
+                      });
                       // console.log("password :" + registerInput.password)
                       // console.log("email :" + registerInput.email)
                       setRegisterPassword(event.target.value);
-                      if (registerPassword === null || registerPassword.length < 3) {
-                        setPasswordError("Password must be at least 3 characters long");
+                      if (
+                        registerPassword === null ||
+                        registerPassword.length < 3
+                      ) {
+                        setPasswordError(
+                          "Password must be at least 3 characters long"
+                        );
                       } else {
                         setPasswordError("");
                       }
                     }}
                   />
                 </Form>
-                {passwordError && <div className="error"> {passwordError} </div>}
+                {passwordError && (
+                  <div className="error"> {passwordError} </div>
+                )}
                 <Form className={passwordFormClassName}>
                   <label>Confirm Password</label>
                   <Input
@@ -200,7 +296,10 @@ const Register = () => {
                     type="password"
                     helperText={confirmPasswordError}
                     onChange={(event) => {
-                      setRegisterInput({...registerInput, confirmpassword: event.target.value});
+                      setRegisterInput({
+                        ...registerInput,
+                        confirmpassword: event.target.value,
+                      });
                       // console.log(
                       //   "registerConfirmPassword: " + registerConfirmPassword
                       // );
@@ -226,15 +325,26 @@ const Register = () => {
                     }}
                   />
                 </Form>
-                {confirmPasswordError && <div className="error"> {confirmPasswordError} </div>}
+                {confirmPasswordError && (
+                  <div className="error"> {confirmPasswordError} </div>
+                )}
                 <Form className={nameFormClassName}>
                   <label>Name</label>
                   <Input
                     placeholder="Name"
                     type="text"
                     onChange={(event) => {
-                      setRegisterInput({...registerInput, name: event.target.value});
-                      setRegisterName(event.target.value);
+                      event.target.value === ""?
+                      setRegisterInput({
+                        ...registerInput,
+                        name: event.target.value,
+                        nameError: "Name is required",
+                      }): setRegisterInput({
+                        ...registerInput,
+                        name: event.target.value,
+                        nameError: "",
+                      })
+                      // setRegisterName(event.target.value);
                       if (event.target.value !== "") {
                         setNameFormClassName("has-success");
                       } else {
@@ -253,14 +363,25 @@ const Register = () => {
                     }}
                   />
                 </Form>
+                {nameError && <div className="error"> {nameError} </div>}
                 <Form className={addressFormClassName}>
                   <label>Address</label>
                   <Input
                     placeholder="Address"
                     type="text"
                     onChange={(event) => {
-                      setRegisterInput({...registerInput, address: event.target.value});
-                      setRegisterAddress(event.target.value);
+                      event.target.value === ""?
+                      setRegisterInput({
+                        ...registerInput,
+                        address: event.target.value,
+                        addressError: "Address is required",
+                      }):
+                      setRegisterInput({
+                        ...registerInput,
+                        address: event.target.value,
+                        addressError: "",
+                      })
+                      // setRegisterAddress(event.target.value);
                       // console.log(
                       //   "registerNationality: " + registerNationality
                       // );
@@ -289,12 +410,22 @@ const Register = () => {
                       }
                     }}
                   />
+                  
                 </Form>
-                <Form className={nationalityFormClassName}>
+                {addressError && <div className="error"> {addressError} </div>}
+                {/* <Form className={nationalityFormClassName}>
                   <label>Nationality</label>
-                  <Input type="select" name="select" id="inputState">
+                  <Input
+                    type="select"
+                    name="select"
+                    id="inputState"
+                    onChange={(event) => {
+                      setRegisterInput({...registerInput,registerNationality: event.target.value});
+                      // setRegisterNationality(event.target.value);
+                    }}
+                  >
                     <option>Malaysia</option>
-                    <option>United State of America</option>
+                    <option>United States of America</option>
                     <option>Japan</option>
                     <option>United Kingdom</option>
                     <option>China</option>
@@ -307,32 +438,41 @@ const Register = () => {
                     <option>Myanmar</option>
                     <option>South Korea</option>
                     <option>Brunei</option>
-                    onChange={(event) => {
-                      // console.log(event.target.value;
-                      // setRegisterInput(...registerInput, address: event.target.value});
-                      setRegisterNationality(event.target.value);
-                    }}
                   </Input>
                 </Form>
                 <Form className={genderFormClassName}>
                   <label>Gender</label>
-                  <Input type="select" name="select" id="inputState">
+                  <Input type="select" name="select" id="inputState" onChange=
+                    {(event) => {
+                      setRegisterInput({...registerInput,registerGender: event.target.value});
+                      // setRegisterGender(event.target.value);
+                    }}>
                     <option>Male</option>
                     <option>Female</option>
                     <option>Prefer not to say</option>
-                    onChange=
-                    {(event) => {
-                      setRegisterGender(event.target.value);
-                    }}
                   </Input>
-                </Form>
+                </Form> */}
+                
+                
                 <Button
                   block
                   className="registerBtn"
                   onClick={() => {
-                      registerWithEmail(registerEmail, registerPassword)? setErrorMessage(""): setErrorMessage("Email is already in use")
-                    }
-                  }
+                    registerWithEmail(registerEmail, registerPassword).then(() => {
+                      if (getAuth().currentUser) {
+                        setRegisterInput({
+                          ...registerInput,
+                          registerError: "",
+                        });
+                      } else {
+                        console.log("error");
+                        setRegisterInput({
+                          ...registerInput,
+                          registerError: "Register failed, has your email been registered?",
+                        });
+                      }
+                    });
+                  }}
                   disabled={disabled}
                   // color="primary"
                 >
@@ -347,7 +487,7 @@ const Register = () => {
                   <i className="fa fa-google" />
                   Register with Google
                 </Button>
-                {/* {registerErrorMessage && <div className="error"> {registerErrorMessage} </div>} */}
+                {registerError && <div className="error"> {registerError} </div>}
                 <div className="mx-auto">
                   <Button
                     className="signin btn-link mt-2"
