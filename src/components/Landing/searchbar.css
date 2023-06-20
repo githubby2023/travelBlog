@@ -59,6 +59,11 @@
     border-bottom: 1px solid lightgrey;
   }
   
+  .dataResult .dataItem:hover {
+    background-color: lightgray; /* Define the background color on hover */
+    cursor: pointer; /* Add cursor pointer on hover */
+  }
+
   .dataItem p {
     margin-left: 10px;
   }
