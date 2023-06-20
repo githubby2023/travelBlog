@@ -10,7 +10,7 @@ const Comment = ({ comment }) => {
   }, [comment]);
 
   return (
-    // console.log("Time is " + formatTime((currentComment.comment_timestamp))),
+    // console.log("Time is " + (currentComment.comment_timestamp.toDate())),
     (
       <>
         {currentComment.comment !== "" && (

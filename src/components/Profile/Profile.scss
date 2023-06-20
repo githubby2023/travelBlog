@@ -78,6 +78,7 @@
   display: inline-block;
   margin: 2rem;
   max-width: 280px;
+  min-width: 280px;
   cursor: pointer;
 
   @media only screen and (max-width: 500px) {

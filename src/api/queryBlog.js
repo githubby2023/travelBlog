@@ -8,6 +8,7 @@ import {
   limit,
   setDoc,
   addDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import { firestore } from "./firebaseconfig";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
@@ -77,7 +78,7 @@ export const queryBlogComments = async (postId) => {
 };
 
 export const deleteBlog = async (postId) => {
-  return await doc(firestore, "Post", postId).delete();
+  return await deleteDoc(doc(firestore, "Post", postId));
 };
 
 export const setBlogRating = async (postId, uid, rating) => {
