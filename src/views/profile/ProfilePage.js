@@ -14,9 +14,11 @@ import { useParams } from "react-router-dom";
 import { queryUser } from "api/authentication";
 import { GrFormAdd } from "react-icons/gr";
 
+
 const UserProfilePage = () => {
   const { id } = useParams();
-  const [currentUser, setCurrentUser] = React.useState({});
+  const [profileUser, setProfileUser] = React.useState({});
+  const [currentUser, setCurrentUser] = React.useState({ uid: "" });
   const [isModalOpened, setModal] = React.useState(false);
   const [isCoverModalOpened, setCoverModal] = React.useState(false);
   const [blogs, setBlogs] = React.useState([{}]);
@@ -30,16 +32,24 @@ const UserProfilePage = () => {
   }
 
   React.useEffect(() => {
+    const userTemp = JSON.parse(localStorage.getItem("currentUser"));
+    if (userTemp) {
+      setCurrentUser(userTemp);
+    }
+  }, []);
+
+  React.useEffect(() => {
     queryUser(id).then((user) => {
-      setCurrentUser(user);
+      setProfileUser(user);
     });
   }, [id]);
 
+
   React.useEffect(() => {
-    queryUserBlog(currentUser.uid).then((blogs) => {
+    queryUserBlog(profileUser.uid).then((blogs) => {
       setBlogs(blogs);
     });
-  }, [currentUser.uid]);
+  }, [profileUser.uid]);
 
   return (
     // console.log("Current User is " + JSON.stringify(currentUser)),
@@ -48,18 +58,18 @@ const UserProfilePage = () => {
       <ProfileModal
         isModalOpened={isModalOpened}
         toggleModal={toggleModal}
-        currentUser={currentUser}
+        currentUser={profileUser}
       />
       <ProfileCoverModal
         isModalCoverOpened={isCoverModalOpened}
         toggleCoverModal={toggleCoverModal}
-        uid={currentUser.uid}
+        uid={profileUser.uid}
       />
       <div className="section">
         <div
           style={{
             backgroundImage: `url(${
-              currentUser.cover || require("assets/img/fabio-mangione.jpg")
+              profileUser.cover || require("assets/img/fabio-mangione.jpg")
             })`,
           }}
           className="page-header"
@@ -71,18 +81,18 @@ const UserProfilePage = () => {
         </div>
         <div className="container" lg="12">
           <ProfileCard
-            uid={currentUser.uid}
-            name={currentUser.username}
-            nationality={currentUser.nationality}
-            issender={true}
+            uid={profileUser.uid}
+            name={profileUser.username}
+            nationality={profileUser.nationality}
+            isOwnProfile={currentUser.uid === profileUser.uid}
             toggleModal={toggleModal}
-            photoUrl={currentUser.profilepic}
+            photoUrl={profileUser.profilepic}
           />
           <div className="row">
             <div className="bio mx-auto col-md-4 text-center">
               <p>
-                {currentUser.bio
-                  ? currentUser.bio
+                {profileUser.bio
+                  ? profileUser.bio
                   : "Write some bio so that people can know you better!"}
               </p>
               {/* <p>encrypt {Encryption.encryptAES("lol")}</p> */}
@@ -115,7 +125,7 @@ const UserProfilePage = () => {
                   <h4 className="bold text-center">Lastest Blog</h4>
                 </div>
               </div>
-              <LatestBlogCard blog={blogs[0]} user={currentUser} />
+              <LatestBlogCard blog={blogs[0]} user={profileUser} />
             </>
           ) : (
             // When there are more than 1 blog
@@ -125,7 +135,7 @@ const UserProfilePage = () => {
                   <h4 className="bold text-center">Lastest Blog</h4>
                 </div>
               </div>
-              <LatestBlogCard blog={blogs[0]} user={currentUser} />
+              <LatestBlogCard blog={blogs[0]} user={profileUser} />
               <div className="row">
                 <div className="mx-auto col-md-12">
                   <h4 className="bold text-center">User Blog</h4>
@@ -134,7 +144,7 @@ const UserProfilePage = () => {
                       <PostedBlogCard
                         key={blog.postId}
                         blog={blog}
-                        user={currentUser}
+                        user={profileUser}
                       />
                     ))}
                   </ScrollContainer>

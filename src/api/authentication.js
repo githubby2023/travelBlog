@@ -6,7 +6,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
-import { doc, setDoc, getDoc, addDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, deleteDoc } from "firebase/firestore";
 import { firestore } from "./firebaseconfig";
 
 const provider = new GoogleAuthProvider();
@@ -16,14 +16,14 @@ export const registerWithEmail = async (registerEmail, registerPassword) => {
     const user = await createUserWithEmailAndPassword(
       auth,
       registerEmail,
-      registerPassword,
+      registerPassword
     );
     // try {
     //   await setDoc(doc(firestore, "User", user.user.uid), {address: registerAddress, age:"", bio: "", email: registerEmail, gender: registerGender, name: registerName, nationality: registerNationality, profilepic: "", username: registerName});
     // } catch (error) {
     //   console.log("\nThis is the register with email error: \n" + error + "\n");
     // }
-    
+
     console.log("registerWithEmail: " + user);
   } catch (error) {
     console.log(error);
@@ -41,7 +41,6 @@ export const loginWithEmail = async (loginEmail, loginPassword) => {
   } catch (error) {
     console.log(error);
   }
-  
 };
 
 export const logout = async () => {
@@ -85,7 +84,6 @@ export const writeUserData = async (
     bio: bio ?? "",
     cover: cover ?? "",
     age: age ?? "",
-
   };
   return setDoc(doc(firestore, "User", uid), user);
 };
@@ -108,4 +106,8 @@ export const queryUser = async (uid) => {
         return false;
       }
     });
+};
+
+export const deleteUser = async (uid) => {
+  return deleteDoc(doc(firestore, "User", uid));
 };
