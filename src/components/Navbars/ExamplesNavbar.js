@@ -144,7 +144,7 @@ function ExamplesNavbar({ isTransparent = true }) {
         <div className="navbar-translate">
           <NavbarBrand
             data-placement="bottom"
-            to="/landing-page"
+            to="/index"
             title="Coded by GitHubby"
             tag={Link}
           >

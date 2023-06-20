@@ -72,6 +72,7 @@
   .searchResult{
     color: black;
     font-size: 1.0em;
+    font-weight: 300;
     margin-top: 10px;
     margin-bottom: 0;
     text-align: left;
