@@ -132,6 +132,11 @@ export const writeBlog = async (blog, imageFiles) => {
   }
 };
 
+export function writeComment(postId, comment) {
+  const commentCollectionRef = collection(firestore, "Post", postId, "comment");
+  return addDoc(commentCollectionRef, comment);
+}
+
 function handleUpload(files, blog, postId) {
   return new Promise((resolve, reject) => {
     if (!files) {
@@ -181,3 +186,5 @@ function handleUpload(files, blog, postId) {
       });
   });
 }
+
+
