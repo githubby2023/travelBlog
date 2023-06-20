@@ -21,6 +21,8 @@ import {
   deleteBlog,
   setBlogRating,
 } from "../../api/queryBlog";
+import { writePostView } from "api/post_view_wr";
+import { Timestamp } from "firebase/firestore";
 
 //TODO: rating and timestamp
 const PostPage = (props) => {
@@ -37,6 +39,7 @@ const PostPage = (props) => {
 
   React.useEffect(() => {
     setCurrentBlog(blog);
+    writePostView(blog.author_id, Timestamp.now(), blog.postId, blog.location, currentUser.uid, currentUser.gender, currentUser.age, currentUser.nationality);
   }, [blog]);
 
   //Check if the current user is the sender of the post
