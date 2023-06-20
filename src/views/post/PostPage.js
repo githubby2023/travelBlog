@@ -42,7 +42,16 @@ const PostPage = (props) => {
 
   React.useEffect(() => {
     setCurrentBlog(blog);
-    writePostView(blog.author_id, Timestamp.now(), blog.postId, blog.location, currentUser.uid, currentUser.gender, currentUser.age, currentUser.nationality);
+    writePostView(
+      blog.author_id,
+      Timestamp.now(),
+      blog.postId,
+      blog.location,
+      currentUser.uid,
+      currentUser.gender,
+      currentUser.age,
+      currentUser.nationality
+    );
   }, [blog]);
 
   //Check if the current user is the sender of the post
@@ -146,7 +155,7 @@ const PostPage = (props) => {
   const sendCommment = (comment) => {
     if (comment !== "") {
       if (currentUser.uid !== "") {
-        console.log("Comment is " + comment);
+        // console.log("Comment is " + comment);
         const newComment = {
           user_id: currentUser.uid,
           commentor_name: currentUser.username,
@@ -155,7 +164,7 @@ const PostPage = (props) => {
           comment_timestamp: Timestamp.now(),
         };
         writeComment(currentBlog.postId, newComment).then(() => {
-          console.log("Comment added");
+          // console.log("Comment added");
           // window.location.reload(true);
           setCurrentComment("");
           const commentTextField = document.getElementById("commentTxt");
@@ -301,10 +310,14 @@ const PostPage = (props) => {
               <div className="post-footer">
                 <div className="post-status">
                   <div className="rating-number number my-auto">
-                    <Rating currentUser={currentUser} blog={currentBlog} />
+                    <Rating
+                      currentUser={currentUser}
+                      blog={currentBlog}
+                      setCurrentBlog={setCurrentBlog}
+                    />
                   </div>
                   <div className="comment-number number my-auto">
-                    <BiCommentDetail /> {postComments.length-1 ?? 0}
+                    <BiCommentDetail /> {postComments.length - 1 ?? 0}
                   </div>
                 </div>
                 <div className="tag-container">
@@ -317,23 +330,14 @@ const PostPage = (props) => {
               <div className="comment-section">
                 <h5 className="bold">Comments</h5>
                 <div className="comment-input">
-                  {/* <img
-                    alt="Profile"
-                    className="img-circle img-no-padding img-responsive"
-                    src={
-                      user.profilepic === ""
-                        ? require("assets/img/faces/noImage.png")
-                        : user.profilepic
-                    }
-                  /> */}
                   <div className="comment-profile-pic">
                     <img
                       alt="Profile"
                       className="img-circle img-no-padding img-responsive my-auto"
                       src={
-                        user.profilepic === ""
+                        currentUser.profilepic === ""
                           ? require("assets/img/faces/noImage.png")
-                          : user.profilepic
+                          : currentUser.profilepic
                       }
                     />
                   </div>
@@ -414,7 +418,7 @@ const PostPage = (props) => {
   );
 };
 
-const Rating = ({ blog, currentUser }) => {
+const Rating = ({ blog, currentUser, setCurrentBlog }) => {
   const maxRating = 5;
   const [selectedStar, setSelectedStar] = React.useState(-1);
 
@@ -430,13 +434,17 @@ const Rating = ({ blog, currentUser }) => {
   const handleStarClick = (index) => {
     if (currentUser) {
       setSelectedStar(index);
-      console.log("Selected Star Index:", index);
+      // console.log("Selected Star Index:", index);
       setBlogRating(blog.postId, currentUser.uid, index + 1)
         .then(() => {
-          console.log("Rating updated");
+          // console.log("Rating updated");
         })
         .catch((error) => {
-          console.log("Error updating rating", error);
+          // console.log("Error updating rating", error);
+        });
+        setCurrentBlog({
+          ...blog,
+          rating: { ...blog.rating, [currentUser.uid]: index + 1 },
         });
     } else {
       window.location.href = "/signin";

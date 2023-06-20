@@ -48,7 +48,7 @@ const ProfilePictureModal = ({
       () => {
         // download url
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-            console.log("URL is " + url);
+            // console.log("URL is " + url);
           serCurrentUser({ ...user, profilepic: url });
           writeUserData(
             user.uid,
@@ -61,7 +61,7 @@ const ProfilePictureModal = ({
             user.bio,
             user.cover
           ).then(() => {
-            console.log("Upload photo success");
+            // console.log("Upload photo success");
             localStorage.setItem("currentUser", JSON.stringify(user));
             togglePictureModal();
             window.location.reload(true);

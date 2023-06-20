@@ -16,13 +16,9 @@ import {
   Label,
 } from "reactstrap";
 import { useHistory } from "react-router-dom";
-import { useDispatch,useSelector } from "react-redux";
-import { setRegisterErrorMessage } from "actions/setRegisterErrorMessage";
 
 
 const Register = () => {
-  const dispatch = useDispatch();
-  const registerErrorMessage = useSelector(state => state.registerErrorMessage);
   const [errorMessage, setErrorMessage] = useState("");
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
@@ -52,11 +48,11 @@ const Register = () => {
 
   useEffect(() => {
     console.log("")
-    console.log("email :" +registerInput.email)
-    console.log("password :" +registerInput.password)
-    console.log("confirmpassword :" +registerInput.confirmpassword)
-    console.log("name :" +registerInput.name)
-    console.log("address :" +registerInput.address)
+    // console.log("email :" +registerInput.email)
+    // console.log("password :" +registerInput.password)
+    // console.log("confirmpassword :" +registerInput.confirmpassword)
+    // console.log("name :" +registerInput.name)
+    // console.log("address :" +registerInput.address)
     setRegisterEmail(registerInput.email);
     setRegisterPassword(registerInput.password);
     setRegisterConfirmPassword(registerInput.confirmpassword);
@@ -185,8 +181,8 @@ const Register = () => {
                     error={true}
                     onChange={(event) => {
                       setRegisterInput({...registerInput, password: event.target.value});
-                      console.log("password :" + registerInput.password)
-                      console.log("email :" + registerInput.email)
+                      // console.log("password :" + registerInput.password)
+                      // console.log("email :" + registerInput.email)
                       setRegisterPassword(event.target.value);
                       if (registerPassword === null || registerPassword.length < 3) {
                         setPasswordError("Password must be at least 3 characters long");
@@ -205,10 +201,10 @@ const Register = () => {
                     helperText={confirmPasswordError}
                     onChange={(event) => {
                       setRegisterInput({...registerInput, confirmpassword: event.target.value});
-                      console.log(
-                        "registerConfirmPassword: " + registerConfirmPassword
-                      );
-                      console.log("registerPassword: " + registerPassword);
+                      // console.log(
+                      //   "registerConfirmPassword: " + registerConfirmPassword
+                      // );
+                      // console.log("registerPassword: " + registerPassword);
                       setRegisterConfirmPassword(event.target.value);
                       if (event.target.value === registerPassword) {
                         setPasswordFormClassName("has-success");
@@ -265,17 +261,17 @@ const Register = () => {
                     onChange={(event) => {
                       setRegisterInput({...registerInput, address: event.target.value});
                       setRegisterAddress(event.target.value);
-                      console.log(
-                        "registerNationality: " + registerNationality
-                      );
-                      console.log("registerGender: " + registerGender);
-                      console.log("registerAddress: " + registerAddress);
-                      console.log("registerName: " + registerName);
-                      console.log(
-                        "registerConfirmPassword: " + registerConfirmPassword
-                      );
-                      console.log("registerPassword: " + registerPassword);
-                      console.log("registerEmail: " + registerEmail);
+                      // console.log(
+                      //   "registerNationality: " + registerNationality
+                      // );
+                      // console.log("registerGender: " + registerGender);
+                      // console.log("registerAddress: " + registerAddress);
+                      // console.log("registerName: " + registerName);
+                      // console.log(
+                      //   "registerConfirmPassword: " + registerConfirmPassword
+                      // );
+                      // console.log("registerPassword: " + registerPassword);
+                      // console.log("registerEmail: " + registerEmail);
                       if (event.target.value !== "") {
                         setAddressFormClassName("has-success");
                       } else {
@@ -334,8 +330,7 @@ const Register = () => {
                   block
                   className="registerBtn"
                   onClick={() => {
-                      dispatch(setRegisterErrorMessage());
-                      registerWithEmail(registerEmail, registerPassword)? setErrorMessage({registerErrorMessage}): setErrorMessage("Email is already in use")
+                      registerWithEmail(registerEmail, registerPassword)? setErrorMessage(""): setErrorMessage("Email is already in use")
                     }
                   }
                   disabled={disabled}
@@ -352,7 +347,7 @@ const Register = () => {
                   <i className="fa fa-google" />
                   Register with Google
                 </Button>
-                {registerErrorMessage && <div className="error"> {registerErrorMessage} </div>}
+                {/* {registerErrorMessage && <div className="error"> {registerErrorMessage} </div>} */}
                 <div className="mx-auto">
                   <Button
                     className="signin btn-link mt-2"

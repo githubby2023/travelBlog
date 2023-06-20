@@ -35,8 +35,8 @@ import {
           posts.push({ ...post, commentCount });
         }
       }
-      console.log(currentUser.uid);
-      console.log(posts);
+      // console.log(currentUser.uid);
+      // console.log(posts);
       return posts;
     } catch (error) {
       console.error('Error fetching posts with comment count:', error);
@@ -63,7 +63,7 @@ import {
     
         if (tag && Array.isArray(tag)) {
           tag.forEach((tagName) => {
-            console.log(tagName);
+            // console.log(tagName);
             if (tagName in tagCounts) {
               tagCounts[tagName] += 1;
             } else {

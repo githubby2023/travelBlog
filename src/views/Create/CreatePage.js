@@ -119,10 +119,10 @@ const CreatePage = (props) => {
       tag: tag,
     };
     if (currentBlog.postId) {
-      console.log(newBlog);
+      // console.log(newBlog);
       updateBlog(currentBlog.postId, newBlog, imageFiles)
         .then(() => {
-          console.log("Update blog success");
+          // console.log("Update blog success");
           history.push("/index");
         })
         .catch((error) => {
@@ -139,7 +139,7 @@ const CreatePage = (props) => {
 
       writeBlog(newNewBlog, imageFiles)
         .then(() => {
-          console.log("Write blog success");
+          // console.log("Write blog success");
           history.push("/index");
         })
         .catch((error) => {

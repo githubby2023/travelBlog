@@ -57,7 +57,8 @@ const ProfileCard = ({
               onError={handleImageError}
             />
           )}
-          <AiOutlinePlus className="plus" onClick={togglePictureModal} />
+          {isOwnProfile &&
+          <AiOutlinePlus className="plus" onClick={togglePictureModal} />}
         </div>
         <div className="name">
           <div className="name-container">

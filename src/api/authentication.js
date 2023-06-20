@@ -24,7 +24,7 @@ export const registerWithEmail = async (registerEmail, registerPassword) => {
     //   console.log("\nThis is the register with email error: \n" + error + "\n");
     // }
 
-    console.log("registerWithEmail: " + user);
+    // console.log("registerWithEmail: " + user);
   } catch (error) {
     console.log(error);
   }
@@ -37,7 +37,7 @@ export const loginWithEmail = async (loginEmail, loginPassword) => {
       loginEmail,
       loginPassword
     );
-    console.log("loginWithEmail: " + user);
+    // console.log("loginWithEmail: " + user);
   } catch (error) {
     console.log(error);
   }
@@ -50,10 +50,10 @@ export const logout = async () => {
 export const signInWithGoogle = async () => {
   try {
     const user = await signInWithPopup(auth, provider);
-    console.log("signInWithGoogle: " + user.user.displayName);
+    // console.log("signInWithGoogle: " + user.user.displayName);
 
     if (user.user) {
-      console.log("Sign in Success");
+      // console.log("Sign in Success");
       return user.user;
     }
   } catch (error) {

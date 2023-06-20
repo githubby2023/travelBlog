@@ -11,7 +11,7 @@ function SearchBar2({ placeholder, data }) {
   const handleFilter = (event) => {
     const searchWord = event.target.value;
     setWordEntered(searchWord);
-    console.log(data);
+    // console.log(data);
     const lowerCaseSearchWord = searchWord.toLowerCase();
     
 

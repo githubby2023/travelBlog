@@ -1,12 +1,5 @@
 import React from "react";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import "./Landing.scss";
-import {
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  UncontrolledDropdown,
-} from "reactstrap";
 import Comment from "./Comment";
 import { queryBlogComments } from "../../api/queryBlog";
 import { Link } from "react-router-dom";
@@ -26,24 +19,30 @@ const LandingPost = ({ user, blog }) => {
     <div className="container" lg="12">
       <div className="row">
         <div className="post-card-container mx-auto col-md-6">
-          <div className="post-card-header">
-            <div className="post-profile">
-              <div className="post-profile-pic">
-                <img
-                  alt="..."
-                  className="img-circle img-no-padding img-responsive my-auto"
-                  src={
-                    user.profilepic ?? require("assets/img/faces/noImage.png")
-                  }
-                />
+          <Link
+            className="white-text"
+            to={{
+              pathname: `/profile/${user.uid}`,
+            }}
+          >
+            <div className="post-card-header">
+              <div className="post-profile">
+                <div className="post-profile-pic">
+                  <img
+                    alt="..."
+                    className="img-circle img-no-padding img-responsive my-auto"
+                    src={
+                      user.profilepic ?? require("assets/img/faces/noImage.png")
+                    }
+                  />
+                </div>
+                <div className="post-header-text my-auto">
+                  <h6>{user.username}</h6>
+                  <p>{user.nationality}</p>
+                </div>
               </div>
-              <div className="post-header-text my-auto">
-                <h6>{user.username}</h6>
-                <p>{user.nationality}</p>
-              </div>
-            </div>
-            {/* Right 3 dots menu */}
-            {/* <UncontrolledDropdown className="dropdown my-auto">
+              {/* Right 3 dots menu */}
+              {/* <UncontrolledDropdown className="dropdown my-auto">
               <DropdownToggle
                 className="toggle"
                 color="#ffffff"
@@ -65,7 +64,9 @@ const LandingPost = ({ user, blog }) => {
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown> */}
-          </div>
+            </div>
+          </Link>
+
           <div className="post-card-content">
             <img
               alt="..."

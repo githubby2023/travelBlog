@@ -5,14 +5,11 @@ import LandingPost from "components/Landing/LandingPost";
 import LandingCreate from "components/Landing/LandingCreate";
 import { queryAllBlogs } from "../api/queryBlog";
 import { queryUser } from "api/authentication";
-import { onAuthStateChanged } from "firebase/auth";
 import { useHistory } from "react-router-dom";
-// import { auth } from "api/firebaseconfig";
 
 function Index() {
   const history = useHistory();
   const [landingPosts, setLandingPosts] = React.useState([]);
-
 
   document.documentElement.classList.remove("nav-open");
   React.useEffect(() => {

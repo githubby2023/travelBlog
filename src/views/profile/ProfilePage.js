@@ -77,7 +77,8 @@ const UserProfilePage = () => {
           // ref={pageHeader}
         >
           <div className="filter" />
-          <BiEdit className="editCoverIcon" onClick={toggleCoverModal} />
+          {currentUser.uid === profileUser.uid &&
+          <BiEdit className="editCoverIcon" onClick={toggleCoverModal} />}
         </div>
         <div className="container" lg="12">
           <ProfileCard
@@ -95,8 +96,6 @@ const UserProfilePage = () => {
                   ? profileUser.bio
                   : "Write some bio so that people can know you better!"}
               </p>
-              {/* <p>encrypt {Encryption.encryptAES("lol")}</p> */}
-              {/* <p>bruh {Encryption.decryptAES("sPqsda9NhISgRa8Zn4ktig==")}</p> */}
             </div>
           </div>
 
