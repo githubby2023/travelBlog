@@ -51,6 +51,12 @@ const Register = () => {
   const [registerInput, setRegisterInput] = useState({email:"", password: "", confirmpassword: "", name: "", address:"",nationality:"",gender:""});
 
   useEffect(() => {
+    console.log("")
+    console.log("email :" +registerInput.email)
+    console.log("password :" +registerInput.password)
+    console.log("confirmpassword :" +registerInput.confirmpassword)
+    console.log("name :" +registerInput.name)
+    console.log("address :" +registerInput.address)
     setRegisterEmail(registerInput.email);
     setRegisterPassword(registerInput.password);
     setRegisterConfirmPassword(registerInput.confirmpassword);
@@ -62,7 +68,10 @@ const Register = () => {
     if(registerConfirmPassword !== registerPassword){
       setConfirmPasswordError("Not match password");
     }
-  } , [registerInput]);
+    else{
+      setConfirmPasswordError("");
+    }
+  } , [registerInput,registerConfirmPassword,registerPassword,registerName,registerAddress,registerNationality,registerGender,registerEmail]);
 
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
@@ -105,6 +114,10 @@ const Register = () => {
           }
         });
       }
+      else{
+        // console.log("No user is signed in");
+        localStorage.removeItem("currentUser");
+      }
       // setUser(currentUser);
       // if (currentUser != null) {
       //   history.push("/index");
@@ -144,21 +157,21 @@ const Register = () => {
                     error={emailError ? true : false}
                     onChange={(event) => {
                       setRegisterInput({...registerInput, email: event.target.value});
-                      console.log("email :" +registerInput.email)
+                      
                       // setRegisterEmail(event.target.value);
-                      // //condition to check if email is valid********************
-                      // const emptyStringTrue = event.target.value === "" || event.target.value === null
-                      // const withoutAllias = event.target.value.includes("@") === false
-                      // const withoutDot = event.target.value.includes(".") === false || event.target.value.endsWith(".") === true
-                      // const withoutTopLevelDomain = (event.target.value.endsWith('com') === false && event.target.value.endsWith('net') === false && event.target.value.endsWith('org') === false && event.target.value.endsWith('info') === false && event.target.value.endsWith('us') === false && event.target.value.endsWith('my') === false)
-                      // //********************************************************* */
-                      // if (emptyStringTrue || withoutAllias || withoutDot || withoutTopLevelDomain)  {
-                      //   setEmailFormClassName("has-danger");
-                      //   setEmailError("Email is required");
-                      // } else {
-                      //   setEmailFormClassName("has-success");
-                      //   setEmailError("");
-                      // }
+                      //condition to check if email is valid********************
+                      const emptyStringTrue = event.target.value === "" || event.target.value === null
+                      const withoutAllias = event.target.value.includes("@") === false
+                      const withoutDot = event.target.value.includes(".") === false || event.target.value.endsWith(".") === true
+                      const withoutTopLevelDomain = (event.target.value.endsWith('com') === false && event.target.value.endsWith('net') === false && event.target.value.endsWith('org') === false && event.target.value.endsWith('info') === false && event.target.value.endsWith('us') === false && event.target.value.endsWith('my') === false)
+                      //********************************************************* */
+                      if (emptyStringTrue || withoutAllias || withoutDot || withoutTopLevelDomain)  {
+                        setEmailFormClassName("has-danger");
+                        setEmailError("Email is required");
+                      } else {
+                        setEmailFormClassName("has-success");
+                        setEmailError("");
+                      }
                     }}
                   />
                 </Form>
@@ -174,12 +187,12 @@ const Register = () => {
                       setRegisterInput({...registerInput, password: event.target.value});
                       console.log("password :" + registerInput.password)
                       console.log("email :" + registerInput.email)
-                      // setRegisterPassword(event.target.value);
-                      // if (registerPassword === null || registerPassword.length < 3) {
-                      //   setPasswordError("Password must be at least 3 characters long");
-                      // } else {
-                      //   setPasswordError("");
-                      // }
+                      setRegisterPassword(event.target.value);
+                      if (registerPassword === null || registerPassword.length < 3) {
+                        setPasswordError("Password must be at least 3 characters long");
+                      } else {
+                        setPasswordError("");
+                      }
                     }}
                   />
                 </Form>
@@ -191,28 +204,29 @@ const Register = () => {
                     type="password"
                     helperText={confirmPasswordError}
                     onChange={(event) => {
-                      // console.log(
-                      //   "registerConfirmPassword: " + registerConfirmPassword
-                      // );
-                      // console.log("registerPassword: " + registerPassword);
-                      // setRegisterConfirmPassword(event.target.value);
-                      // if (event.target.value === registerPassword) {
-                      //   setPasswordFormClassName("has-success");
-                      // } else {
-                      //   setPasswordFormClassName("has-danger");
-                      // }
-                      // if (
-                      //   event.target.value !== registerPassword ||
-                      //   registerName === "" ||
-                      //   registerAddress === "" ||
-                      //   registerEmail === ""
-                      // ) {
-                      //   setDisabled(true);
-                      //   setConfirmPasswordError("Not match password");
-                      // } else {
-                      //   setDisabled(false);
-                      //   setConfirmPasswordError("");
-                      // }
+                      setRegisterInput({...registerInput, confirmpassword: event.target.value});
+                      console.log(
+                        "registerConfirmPassword: " + registerConfirmPassword
+                      );
+                      console.log("registerPassword: " + registerPassword);
+                      setRegisterConfirmPassword(event.target.value);
+                      if (event.target.value === registerPassword) {
+                        setPasswordFormClassName("has-success");
+                      } else {
+                        setPasswordFormClassName("has-danger");
+                      }
+                      if (
+                        event.target.value !== registerPassword ||
+                        registerName === "" ||
+                        registerAddress === "" ||
+                        registerEmail === ""
+                      ) {
+                        setDisabled(true);
+                        setConfirmPasswordError("Not match password");
+                      } else {
+                        setDisabled(false);
+                        setConfirmPasswordError("");
+                      }
                     }}
                   />
                 </Form>
@@ -223,22 +237,23 @@ const Register = () => {
                     placeholder="Name"
                     type="text"
                     onChange={(event) => {
-                      // setRegisterName(event.target.value);
-                      // if (event.target.value !== "") {
-                      //   setNameFormClassName("has-success");
-                      // } else {
-                      //   setNameFormClassName("has-danger");
-                      // }
-                      // if (
-                      //   registerConfirmPassword !== registerPassword ||
-                      //   registerName === "" ||
-                      //   registerAddress === "" ||
-                      //   registerEmail === ""
-                      // ) {
-                      //   setDisabled(true);
-                      // } else {
-                      //   setDisabled(false);
-                      // }
+                      setRegisterInput({...registerInput, name: event.target.value});
+                      setRegisterName(event.target.value);
+                      if (event.target.value !== "") {
+                        setNameFormClassName("has-success");
+                      } else {
+                        setNameFormClassName("has-danger");
+                      }
+                      if (
+                        registerConfirmPassword !== registerPassword ||
+                        registerName === "" ||
+                        registerAddress === "" ||
+                        registerEmail === ""
+                      ) {
+                        setDisabled(true);
+                      } else {
+                        setDisabled(false);
+                      }
                     }}
                   />
                 </Form>
@@ -248,33 +263,34 @@ const Register = () => {
                     placeholder="Address"
                     type="text"
                     onChange={(event) => {
-                      // setRegisterAddress(event.target.value);
-                      // console.log(
-                      //   "registerNationality: " + registerNationality
-                      // );
-                      // console.log("registerGender: " + registerGender);
-                      // console.log("registerAddress: " + registerAddress);
-                      // console.log("registerName: " + registerName);
-                      // console.log(
-                      //   "registerConfirmPassword: " + registerConfirmPassword
-                      // );
-                      // console.log("registerPassword: " + registerPassword);
-                      // console.log("registerEmail: " + registerEmail);
-                      // if (event.target.value !== "") {
-                      //   setAddressFormClassName("has-success");
-                      // } else {
-                      //   setAddressFormClassName("has-danger");
-                      // }
-                      // if (
-                      //   registerConfirmPassword !== registerPassword ||
-                      //   registerName === "" ||
-                      //   registerAddress === "" ||
-                      //   registerEmail === ""
-                      // ) {
-                      //   setDisabled(true);
-                      // } else {
-                      //   setDisabled(false);
-                      // }
+                      setRegisterInput({...registerInput, address: event.target.value});
+                      setRegisterAddress(event.target.value);
+                      console.log(
+                        "registerNationality: " + registerNationality
+                      );
+                      console.log("registerGender: " + registerGender);
+                      console.log("registerAddress: " + registerAddress);
+                      console.log("registerName: " + registerName);
+                      console.log(
+                        "registerConfirmPassword: " + registerConfirmPassword
+                      );
+                      console.log("registerPassword: " + registerPassword);
+                      console.log("registerEmail: " + registerEmail);
+                      if (event.target.value !== "") {
+                        setAddressFormClassName("has-success");
+                      } else {
+                        setAddressFormClassName("has-danger");
+                      }
+                      if (
+                        registerConfirmPassword !== registerPassword ||
+                        registerName === "" ||
+                        registerAddress === "" ||
+                        registerEmail === ""
+                      ) {
+                        setDisabled(true);
+                      } else {
+                        setDisabled(false);
+                      }
                     }}
                   />
                 </Form>
@@ -295,9 +311,10 @@ const Register = () => {
                     <option>Myanmar</option>
                     <option>South Korea</option>
                     <option>Brunei</option>
-                    onChange=
-                    {(event) => {
-                      // setRegisterNationality(event.target.value);
+                    onChange={(event) => {
+                      // console.log(event.target.value;
+                      // setRegisterInput(...registerInput, address: event.target.value});
+                      setRegisterNationality(event.target.value);
                     }}
                   </Input>
                 </Form>
@@ -309,7 +326,7 @@ const Register = () => {
                     <option>Prefer not to say</option>
                     onChange=
                     {(event) => {
-                      // setRegisterGender(event.target.value);
+                      setRegisterGender(event.target.value);
                     }}
                   </Input>
                 </Form>
@@ -317,11 +334,10 @@ const Register = () => {
                   block
                   className="registerBtn"
                   onClick={() => {
-                      // dispatch(setRegisterErrorMessage());
+                      dispatch(setRegisterErrorMessage());
                       registerWithEmail(registerEmail, registerPassword)? setErrorMessage({registerErrorMessage}): setErrorMessage("Email is already in use")
                     }
                   }
-                  // onClick={() => {console.log("nihao")}}
                   disabled={disabled}
                   // color="primary"
                 >

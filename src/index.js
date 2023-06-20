@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
 import allReducers from "./reducers/allReducers";
+import {
+  onAuthStateChanged,
+} from "firebase/auth";
+import { auth } from "api/firebaseconfig";
+import {queryUser,writeUserData } from "api/authentication";
+import { useHistory } from "react-router-dom";
+
 
 // styles
 import "bootstrap/scss/bootstrap.scss";
@@ -26,7 +33,40 @@ const store = createStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
+
+
 function Application() {
+  // const history = useHistory();
+
+  // useEffect(() => {
+  //   onAuthStateChanged(auth, (currentUser) => {
+  //     if (currentUser) {
+  //       // dispatch(updateUser(currentUser.displayName));
+  //       currentUser.getIdToken().then((token) => {
+  //         if (token) {
+  //           queryUser(currentUser.uid).then((user) => {
+  //             if (user) {
+  //               //User ady in the database
+  //               localStorage.setItem("currentUser", JSON.stringify(user));
+  //               history.push("/index");
+  //             } else {
+  //                     history.push("/login");
+  //             }
+  //           });
+  //         }
+  //       });
+  //     }
+  //     else{
+  //       localStorage.removeItem("currentUser");
+  //       history.push("/login");
+  //     }
+      // setUser(currentUser);
+      // if (currentUser != null) {
+      //   history.push("/index");
+      // }
+  //   });
+  // }, []);
+  
   return (
     <BrowserRouter>
       <Switch>
@@ -39,7 +79,7 @@ function Application() {
         <Route path="/dashboard" render={(props) => <DashBoard {...props} />} />
         <Route path="/create" render={(props) => <CreatePage {...props} />} />
         {/* <Route path="/nu" render={(props) => <NucleoIcons {...props} />} /> */}
-        <Redirect to="/index" />
+        <Redirect to="/signin"/>
       </Switch>
     </BrowserRouter>
   );

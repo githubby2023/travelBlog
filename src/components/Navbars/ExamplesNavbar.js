@@ -120,7 +120,9 @@ function ExamplesNavbar({ isTransparent = true }) {
 
             <NavItem>
               <NavLink
-                onClick={() => signOut(getAuth())}
+                onClick={() => {
+                  localStorage.removeItem("currentUser");
+                  signOut(getAuth())}}
                 href="/signin"
                 // target="_blank"
               >
