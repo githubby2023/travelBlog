@@ -80,5 +80,45 @@ import {
     }
   };
 
- 
+const currentDate = new Date();
+const currentMonth = currentDate.toLocaleDateString('en-US', { month: 'long' });
+const currentYear = currentDate.getFullYear();
+
+const parseTimestamp = (timestamp) => {
+  const date = timestamp.toDate();
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  const formattedDate = date.toLocaleDateString('en-US', options);
+
+  const [month, day, year] = formattedDate.split(' ');
+
+  return {
+    year: parseInt(year),
+    month,
+    day: parseInt(day),
+  };
+};
+
+
+   //return an array of postView
+   export const fetchPostView= async () => {
+
+    try {
+      let q = query(collection(firestore, "Post_View"), where("author_id", "==", currentUser.uid));
+      let querySnapshot = await getDocs(q);
+  
+      const postView = [];
+  
+      for (const postViewDoc of querySnapshot.docs) {
+        if (postViewDoc.exists()) {
+          const view = postViewDoc.data();
+          postView.push(view);
+        }
+      }
+      return postView;
+
+    } catch (error) {
+      console.error("Error fetching page views:", error);
+      return [];
+    }
+  };
   

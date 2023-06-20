@@ -2,7 +2,7 @@ import React, { useEffect, useState }  from "react";
 import "components/Dashboard/Dashboard.scss";
 import { dataYear } from "./LineChartData";
 import { dataBar } from "./BarChartData";
-import {  getPostsWithCommentCount, fetchTagCounts  } from "api/analysis";
+import {  getPostsWithCommentCount, fetchTagCounts ,fetchPostView } from "api/analysis";
 
 
 import {
@@ -55,6 +55,7 @@ export const options = {
 };
 
 const currentDate = new Date();
+const currentDay = currentDate.getDate();
 const currentMonth = currentDate.toLocaleDateString('en-US', { month: 'long' });
 const currentYear = currentDate.getFullYear();
 
@@ -65,11 +66,7 @@ const parseTimestamp = (timestamp) => {
 
   const [month, day, year] = formattedDate.split(' ');
 
-  return {
-    year: parseInt(year),
-    month,
-    day: parseInt(day),
-  };
+  return [parseInt(year), month, parseInt(day)];
 };
 
 
@@ -101,39 +98,52 @@ const generateDataBar = (data) => {
   return dataBar;
 };
 
-const generateDataLine = (data) => {
+const generateDataLine = (dataPost,viewData) => {
 
-  const dayCounts = {}; // Object to store the count of posts for each day
+  const dailyPostCounts = {}; // Object to store the count of posts for each day
+  const dailyViewCounts = {};
 
   // Initialize dayCounts object with day numbers as keys and initial count of 0
-  for (let day = 1; day <= 28; day++) {
-    dayCounts[day] = 0;
+  for (let day = 1; day <= currentDay; day++) {
+    dailyPostCounts [day] = 0;
+    dailyViewCounts [day] = 0;
   }
 
-  data.forEach(obj => {
+  dataPost.forEach(obj => {
     
-    const { year, month, day } = parseTimestamp(obj.timestamp);
-    console.log(month);
-
-  if (year == currentYear && month == currentMonth){
+    const timePost = parseTimestamp(obj.timestamp);
+  if (timePost[0] == currentYear && timePost[1]  == currentMonth){
     // Increment the count for the corresponding day
-   if ( dayCounts.hasOwnProperty(day)) {
-    dayCounts[day]++;
+   if ( dailyPostCounts.hasOwnProperty(timePost[2])) {
+    dailyPostCounts[timePost[2]]++;
   } else {
-    dayCounts[day] = 1;
+    dailyPostCounts[timePost[2]] = 1;
   }
   }
    
 });
+console.log("asjhajsa");
+console.log(viewData);
+for (const view of viewData) {
+   const timeView = parseTimestamp(view.timestamp);
+   if (timeView[0] == currentYear && timeView[1] == currentMonth) {
+    // Increment the count for the corresponding day
+    let day = timeView[2];
+     if (dailyViewCounts.hasOwnProperty(day)) {
+       dailyViewCounts[day]++;
+     } else {
+       dailyViewCounts[day] = 1;
+     }
+   }
+}
 
-  const labelDay = Object.keys(dayCounts).map(day => parseInt(day));
-  const PostValueDay = Object.values(dayCounts);
-  console.log (labelDay );
+
+
+  const labelDay = Object.keys(dailyPostCounts).map(day => parseInt(day));
+  const PostValueDay = Object.values(dailyPostCounts);
+  const viewValueDay = Object.values(dailyViewCounts);
   console.log(PostValueDay);
-  console.log([...Array(30)].map(() => Math.floor(Math.random() * 1000)))
   let labels = labelDay;
-
-
 
   const dataLine = {
     labels,
@@ -143,6 +153,12 @@ const generateDataLine = (data) => {
       data: PostValueDay,
       borderColor: "rgb(255, 99, 132)",
       backgroundColor: "rgba(255, 99, 132, 0.5)",
+    },
+    {
+      label: "Post Views",
+      data: viewValueDay,
+      borderColor: "rgb(53, 162, 235)",
+      backgroundColor: "rgba(53, 162, 235, 0.5)",
     }
   ],
   };
@@ -155,16 +171,21 @@ export function DashBoard() {
   
   const [postList, setPostList] = useState([]);
   const [favouriteTag, setFavouriteTag] = useState({});
+  const [postViewList, setPostView] = useState([]);
 
   useEffect(() => {
     const fetchAllData = async () => {
       try {
         const fetchedPostList = await getPostsWithCommentCount (); 
         const fecthFavourite = await fetchTagCounts();
+        const fecthPostView = await fetchPostView();
 
-        console.log(fecthFavourite);
+      
         setPostList(fetchedPostList);
         setFavouriteTag(fecthFavourite);
+        setPostView(fecthPostView);
+        console.log("weyhhh");
+        console.log(fecthPostView);
 
       } catch (error) {
         console.error('Error fetching post list:', error);
@@ -267,7 +288,7 @@ export function DashBoard() {
                   </Row>
                 </CardHeader>
                 <CardBody>
-                  <Line options={options} data={generateDataLine(postList)} />
+                  <Line options={options} data={generateDataLine(postList,postViewList)} />
                 </CardBody>
               </Card>
             </Col>
