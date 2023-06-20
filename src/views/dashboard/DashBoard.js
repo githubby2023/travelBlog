@@ -15,7 +15,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { Line, Bar } from "react-chartjs-2";
+import { Line, Bar, Doughnut } from "react-chartjs-2";
 
 // reactstrap components
 import {
@@ -146,7 +146,7 @@ for (const view of viewData) {
     labels,
   datasets: [
     {
-      label: "Number of Post",
+      label: "Number of Created Post",
       data: PostValueDay,
       borderColor: "rgb(255, 99, 132)",
       backgroundColor: "rgba(255, 99, 132, 0.5)",
@@ -163,6 +163,39 @@ for (const view of viewData) {
   return dataLine;
 };
 
+const generateDataDoughnut = (data) => {
+
+  const labels = Object.keys(data);
+  const values = Object.values(data);
+
+  const dataDoughnut = {
+    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+    datasets: [
+      {
+        label: '# of Votes',
+        data: [12, 19, 3, 5, 2, 3],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+  return dataDoughnut;
+};
 //calculate a rating for a post
 const averageRating = (post_rating) => {
   const values = Object.values(post_rating);
@@ -213,26 +246,100 @@ const calculateTotalView = (postViewList, post_id) => {
   return totalViews;
 };
 
+const calculateReach = (postViewList) => {
+  // Create a Set to store unique viewer IDs
+  const uniqueViewers = new Set();
+
+  // Iterate through each post view object
+  for (const postView of postViewList) {
+    const viewerId = postView.viewer_id;
+    uniqueViewers.add(viewerId); // Add viewer ID to the Set
+  }
+
+  // Calculate the reach as the number of unique viewers
+  const reach = uniqueViewers.size;
+
+  return reach;
+};
+
+
+const calculateTrafficRate = (postViewList) => {
+  const trafficRate = {};
+  const hourCounts = {};
+
+  // Count the number of views for each hour
+  for (const view of postViewList) {
+    const timestamp = new Date(view.timestamp);
+    const hour = timestamp.getHours();
+
+    if (hourCounts.hasOwnProperty(hour)) {
+      hourCounts[hour]++;
+    } else {
+      hourCounts[hour] = 1;
+    }
+  }
+
+  // Calculate the traffic rate for each hour
+  for (const hour in hourCounts) {
+    const count = hourCounts[hour];
+    const rate = Math.round((count / postViewList.length) * 100);
+    trafficRate[hour] = rate;
+  }
+
+  // Calculate the average traffic rate
+  const totalRate = Object.values(trafficRate).reduce((sum, rate) => sum + rate, 0);
+  const averageRate = Math.round(totalRate / Object.keys(trafficRate).length);
+
+  return averageRate;
+};
+
+
+const countTags = (postList, pageViewList) => {
+  const tagCounts = {};
+
+  for (const view of pageViewList) {
+    
+    const postId = view.post_id;
+    const post = postList.find((post) => post.postId === postId);
+
+    if (post) {
+      const tags = post.tag;
+
+      for (const tag of tags) {
+        if (tagCounts.hasOwnProperty(tag)) {
+          tagCounts[tag]++;
+        } else {
+          tagCounts[tag] = 1;
+        }
+      }
+    }
+  }
+ 
+
+  return tagCounts;
+};
+
+
+
+
 export function DashBoard() {
 
   
   const [postList, setPostList] = useState([]);
-  const [favouriteTag, setFavouriteTag] = useState({});
   const [postViewList, setPostView] = useState([]);
+ 
+
 
   useEffect(() => {
     const fetchAllData = async () => {
       try {
         const fetchedPostList = await getPostsWithCommentCount (); 
-        const fecthFavourite = await fetchTagCounts();
         const fecthPostView = await fetchPostView();
 
       
         setPostList(fetchedPostList);
-        setFavouriteTag(fecthFavourite);
         setPostView(fecthPostView);
-        console.log("weyhhh");
-        console.log(fecthPostView);
+      
 
       } catch (error) {
         console.error('Error fetching post list:', error);
@@ -255,8 +362,8 @@ export function DashBoard() {
                     <i className="nc-icon nc-chart-bar-32" />
                   </div>
                   <div className="description">
-                    <h4 className="info-title">Highest Traffic</h4>
-                    <span className="h2 font-weight-bold">350,897</span>
+                    <h4 className="info-title">Average Traffic</h4>
+                    <span className="h2 font-weight-bold">{calculateTrafficRate (postViewList)}</span>
                     <br></br>
                     <span className="h5">per hour</span>
                   </div>
@@ -281,9 +388,10 @@ export function DashBoard() {
                     <i className="nc-icon nc-single-02" />
                   </div>
                   <div className="description">
-                    <h4 className="info-title">Subscribers</h4>
-                    <span className="h2 font-weight-bold mb-2">4023</span>
+                    <h4 className="info-title">Reach</h4>
+                    <span className="h2 font-weight-bold mb-2">{calculateReach(postViewList)}</span>
                     <br></br>
+                    <span className="h5">users</span>
                   </div>
                 </div>
               </Col>
@@ -349,7 +457,7 @@ export function DashBoard() {
                       </h6>
                       <h2 className="mb-0">Topic Engagement </h2>
                      </div>
-                    <Bar data={generateDataBar(favouriteTag)} />
+                    <Bar data={generateDataBar(countTags(postList,postViewList))} />
                   </Row>
               </CardHeader>
                 <CardBody></CardBody>
