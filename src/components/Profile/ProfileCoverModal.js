@@ -44,12 +44,12 @@ const ProfileCoverModal = ({ isModalCoverOpened, toggleCoverModal, uid }) => {
       () => {
         // download url
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-          console.log("URL is " + url);
+          // console.log("URL is " + url);
           setUser({ ...user, cover: url });
-          console.log("Current User is " + JSON.stringify(user));
+          // console.log("Current User is " + JSON.stringify(user));
 
           uploadCoverPhoto(user.uid, url).then(() => {
-            console.log("Upload cover success");
+            // console.log("Upload cover success");
             localStorage.setItem("currentUser", JSON.stringify(user));
             toggleCoverModal();
             window.location.reload(true);

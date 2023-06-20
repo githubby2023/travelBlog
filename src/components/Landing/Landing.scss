@@ -23,6 +23,14 @@
     flex-direction: row;
     justify-content: space-between;
     margin: 0.5rem 0;
+    color: #000;
+    transition: all 0.2s ease-in-out;
+    border-radius: 10px;
+
+    &:hover {
+      background-color: #f2f2f2;
+      transition: all 0.2s ease-in-out;
+    }
 
     .post-profile {
       display: flex;
@@ -114,7 +122,6 @@
         background-color: #f2f2f2;
         border-radius: 10px;
         padding: 0.5rem 1rem;
-        
       }
 
       .comment-time {
@@ -123,8 +130,6 @@
         font-weight: 500;
         margin-bottom: 50px;
       }
-
-      
     }
   }
 }

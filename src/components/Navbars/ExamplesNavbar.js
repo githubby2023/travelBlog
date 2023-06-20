@@ -63,8 +63,8 @@ function ExamplesNavbar({ isTransparent = true }) {
               user,
             }));
             setPostArray(Posts);
-            console.log(postArray);
-            console.log(postsData);
+            // console.log(postArray);
+            // console.log(postsData);
           })
           .catch((error) => {
             console.error(error);

@@ -12,7 +12,7 @@ const SearchBar = () => {
   useEffect(() => {
     queryAllBlogs().then((blogs) => {
       blogs.forEach(element => {
-        console.log(element);
+        // console.log(element);
       });
     
     });
@@ -30,7 +30,7 @@ const SearchBar = () => {
                     <i className="nc-icon nc-zoom-split"></i>
                     onChange={(event) => {
                       if(event.target.value.length > 0){
-                        console.log(event.target.value);
+                        // console.log(event.target.value);
                       }
                     }}
                   </InputGroupText>

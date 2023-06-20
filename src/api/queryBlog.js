@@ -129,7 +129,7 @@ export const writeBlog = async (blog, imageFiles) => {
     const commentCollectionRef = collection(newDocRef, "comment");
     await addDoc(commentCollectionRef, { comment: "" });
   } catch (error) {
-    console.log("Wrtie Blog" + error);
+    // console.log("Wrtie Blog" + error);
   }
 };
 
@@ -164,7 +164,7 @@ function handleUpload(files, blog, postId) {
             async () => {
               try {
                 const url = await getDownloadURL(uploadTask.snapshot.ref);
-                console.log("URL is " + url);
+                // console.log("URL is " + url);
                 resolve(url);
               } catch (error) {
                 console.log(error);
@@ -178,7 +178,7 @@ function handleUpload(files, blog, postId) {
 
     Promise.all(uploadPromises)
       .then((urlLists) => {
-        console.log("File list is " + JSON.stringify(urlLists));
+        // console.log("File list is " + JSON.stringify(urlLists));
         resolve(urlLists);
       })
       .catch((error) => {

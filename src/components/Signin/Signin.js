@@ -19,8 +19,6 @@ import {
 } from "../../api/authentication";
 import { getAuth, onAuthStateChanged, sendPasswordResetEmail } from "firebase/auth";
 import { useHistory } from "react-router-dom";
-import { updateUser } from "../../actions/userAction";
-import { useDispatch } from "react-redux";
 
 const Signin = () => {
   const [loginEmail, setLoginEmail] = useState("");
@@ -52,7 +50,6 @@ const Signin = () => {
     };
   });
 
-  const dispatch = useDispatch();
 
   useEffect(() => {
     setLoginEmail(signinInputfields.loginEmail);
@@ -75,7 +72,6 @@ const Signin = () => {
               if (user) {
                 //User ady in the database
                 localStorage.setItem("currentUser", JSON.stringify(user));
-                dispatch(updateUser(currentUser.uid));
                 history.push("/index");
               } else {
                 // No user is found in database, create a new user in firestore
