@@ -22,7 +22,6 @@ import { post } from "jquery";
 import { queryBlogComments } from "../../api/queryBlog";
 
 function ExamplesNavbar({ isTransparent = true }) {
-  const [blogs, setBlogs] = React.useState();
   const [navbarColor, setNavbarColor] = React.useState("");
   const [navbarCollapse, setNavbarCollapse] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({uid: ""});
