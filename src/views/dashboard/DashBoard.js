@@ -14,6 +14,7 @@ import {
   BarElement,
   Tooltip,
   Legend,
+  ArcElement
 } from "chart.js";
 import { Line, Bar, Doughnut } from "react-chartjs-2";
 
@@ -38,7 +39,8 @@ ChartJS.register(
   LineElement,
   BarElement,
   Tooltip,
-  Legend
+  Legend,
+  ArcElement
 );
 
 export const options = {
@@ -163,39 +165,34 @@ for (const view of viewData) {
   return dataLine;
 };
 
-const generateDataDoughnut = (data) => {
+const generateDataDoughnut = (pageViews) => {
+  const genders = pageViews.map((pageView) => pageView.viewer_gender);
 
-  const labels = Object.keys(data);
-  const values = Object.values(data);
+  const maleCount = genders.filter((gender) => gender === 'male').length;
+  const femaleCount = genders.filter((gender) => gender === 'female').length;
 
   const dataDoughnut = {
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+    labels: ['Male', 'Female'],
     datasets: [
       {
         label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
+        data: [maleCount, femaleCount],
         backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
           'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
+          'rgba(255, 99, 132, 0.2)',
         ],
         borderColor: [
-          'rgba(255, 99, 132, 1)',
           'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)',
+          'rgba(255, 99, 132, 1)',
         ],
         borderWidth: 1,
       },
     ],
   };
+
   return dataDoughnut;
 };
+
 //calculate a rating for a post
 const averageRating = (post_rating) => {
   const values = Object.values(post_rating);
@@ -362,10 +359,9 @@ export function DashBoard() {
                     <i className="nc-icon nc-chart-bar-32" />
                   </div>
                   <div className="description">
-                    <h4 className="info-title">Average Traffic</h4>
-                    <span className="h2 font-weight-bold">{calculateTrafficRate (postViewList)}</span>
+                    <h4 className="info-title">Total Page Views</h4>
+                    <span className="h2 font-weight-bold">{postViewList.length}</span>
                     <br></br>
-                    <span className="h5">per hour</span>
                   </div>
                 </div>
               </Col>
@@ -375,10 +371,9 @@ export function DashBoard() {
                     <i className="nc-icon nc-alert-circle-i" />
                   </div>
                   <div className="description">
-                    <h4 className="info-title">Page Views</h4>
-                    <span className="h2 font-weight-bold mb-0">12045</span>
+                    <h4 className="info-title">Total Post</h4>
+                    <span className="h2 font-weight-bold mb-0">{postList.length}</span>
                     <br></br>
-                    <span className="h5">for today</span>
                   </div>
                 </div>
               </Col>
@@ -418,7 +413,7 @@ export function DashBoard() {
                   <Row className="align-items-center">
                     <div className="col">
                       <h6 className="text-uppercase  ls-1 mb-1">Overview</h6>
-                      <h2 className=" mb-0">Blog Insight</h2>
+                      <h2 className=" mb-0">Blog Insight This Month</h2>
                     </div>
                     <div className="col">
                       {/* <Nav className="justify-content-end" pills>
@@ -455,9 +450,9 @@ export function DashBoard() {
                     <h6 className="text-uppercase text-muted ls-1 mb-1">
                        Analysis
                       </h6>
-                      <h2 className="mb-0">Topic Engagement </h2>
+                      <h2 className="mb-0">Viewer Breakdown by Gender </h2>
                      </div>
-                    <Bar data={generateDataBar(countTags(postList,postViewList))} />
+                     <Doughnut data={generateDataDoughnut(postViewList)} />
                   </Row>
               </CardHeader>
                 <CardBody></CardBody>
@@ -502,83 +497,20 @@ export function DashBoard() {
               </Card>
             </Col>
             <Col xl="4">
-              <Card className="shadow">
-                <CardHeader className="border-0">
-                  <Row className="align-items-center">
-                    <div className="col">
-                      <h3 className="mb-0">Social traffic</h3>
-                    </div>
-                    <div className="col text-right"></div>
+            <Card className="shadow">
+              <CardHeader className="bg-transparent">
+                <Row className="align-items-center">
+                  <div className="col">
+                    <h6 className="text-uppercase text-muted ls-1 mb-1">
+                       Analysis
+                      </h6>
+                      <h2 className="mb-0">Topic Engagement </h2>
+                     </div>
+                     <Bar data={generateDataBar(countTags(postList,postViewList))} />
                   </Row>
-                </CardHeader>
-                <Table className="align-items-center table-flush" responsive>
-                  <thead className="thead-light">
-                    <tr>
-                      <th scope="col">Referral</th>
-                      <th scope="col"> Total Share</th>
-                      <th scope="col" />
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">Facebook</th>
-                      <td>5,480</td>
-                      <td>
-                        <div className="progress-container progress-primary">
-                          <span className="progress-badge">60%</span>
-                          <Progress
-                            max="100"
-                            value="60"
-                            barClassName="progress-bar-primary"
-                          />
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Google</th>
-                      <td>4,807</td>
-                      <td>
-                        <div className="progress-container progress-danger">
-                          <span className="progress-badge">50%</span>
-                          <Progress
-                            max="100"
-                            value="50"
-                            barClassName="progress-bar-danger"
-                          />
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Instagram</th>
-                      <td>3,678</td>
-                      <td>
-                        <div className="progress-container progress-warning">
-                          <span className="progress-badge">77%</span>
-                          <Progress
-                            max="100"
-                            value="77"
-                            barClassName="progress-bar-warning"
-                          />
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">twitter</th>
-                      <td>2,645</td>
-                      <td>
-                        <div className="progress-container progress-success">
-                          <span className="progress-badge">46%</span>
-                          <Progress
-                            max="100"
-                            value="46"
-                            barClassName="progress-bar-success"
-                          />
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </Table>
-              </Card>
+              </CardHeader>
+                <CardBody></CardBody>
+            </Card>
             </Col>
           </Row>
         </Container>
