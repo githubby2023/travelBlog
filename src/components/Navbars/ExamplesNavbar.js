@@ -139,6 +139,7 @@ function ExamplesNavbar({ isTransparent = true }) {
       className={classnames("fixed-top", navbarColor)}
       color-on-scroll="300"
       expand="lg"
+      style={{ maxHeight: "100px" }}
     >
       <Container>
         <div className="navbar-translate">

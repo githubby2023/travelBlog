@@ -13,24 +13,25 @@ function SearchBar2({ placeholder, data }) {
     setWordEntered(searchWord);
     console.log(data);
     const lowerCaseSearchWord = searchWord.toLowerCase();
-
-    const newFilter = data.filter((obj) =>
-      obj.blog.topic.toLowerCase().includes(lowerCaseSearchWord) ||
-      obj.user.username.toLowerCase().includes(lowerCaseSearchWord)
-    );
     
-  
-    // const newFilter = data.map(data => data)
-    console.log(newFilter);
-    // const newFilter = data.forEach((element) => {
-    //   element.filter((value) => {
-    //     console.log(value + " topic here")
-    //     return value.topic.toLowerCase().includes(searchWord.toLowerCase());
-    // })});
-    // const newFilter = data.filter((value) => {
-    //     console.log(value + " topic here")
-    //   return value.topic.toLowerCase().includes(searchWord.toLowerCase());
-    // });
+
+    const newFilter = data.filter((obj) => {
+      const lowerCaseSearchWord = searchWord.toLowerCase();
+      const lowerCaseTags = obj.blog.tag.map((tag) => tag.toLowerCase());
+    
+      const ratings = Object.values(obj.blog.rating);
+      const ratingSum = ratings.reduce((acc, rating) => acc + rating, 0);
+      const ratingCount = Object.keys(obj.blog.rating).length;
+      const averageRating = ratingCount ? ratingSum / ratingCount : 0;
+    
+      return (
+        obj.blog.topic.toLowerCase().includes(lowerCaseSearchWord) ||
+        obj.user.username.toLowerCase().includes(lowerCaseSearchWord) ||
+        obj.blog.location.toLowerCase().includes(lowerCaseSearchWord) ||
+        lowerCaseTags.some((tag) => tag.includes(lowerCaseSearchWord)) ||
+        averageRating.toString().includes(lowerCaseSearchWord)
+      );
+    });
 
     if (searchWord === "") {
       setFilteredData([]);
@@ -67,7 +68,13 @@ function SearchBar2({ placeholder, data }) {
           {filteredData.slice(0, filteredData.length).map((value, key) => {
             const user = value.user;
             const blog = value.blog;
-            console.log(user + " this is the user " + user.uid);
+            var sum = 0;
+            const ratings = Object.values(blog.rating);
+            const totalRatings = ratings.length;
+            const sumRatings = ratings.reduce((acc, rating) => acc + rating, 0);
+            const averageRating =
+              totalRatings > 0 ? sumRatings / totalRatings : 0;
+
             const comments = value.comments;
             return (
               <Link
@@ -76,7 +83,10 @@ function SearchBar2({ placeholder, data }) {
                   state: { blog, user, comments },
                 }}
               >
-                <div className="searchResult"> {value.blog.topic} {user.username} </div>
+                <div className="dataItem">
+                  {" "}
+                  {value.blog.topic} | Rating:{averageRating}{" "}
+                </div>
               </Link>
               //   <button className="dataItem" target="_blank">
               //     <p>{value.topic} </p>
