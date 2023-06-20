@@ -79,7 +79,7 @@ function Index() {
               <div className="title-brand">
                 <h1 className="presentation-title">Travel Blog</h1>
               </div>
-              <h2 className="presentation-subtitle text-center">
+              <h2 className="presentation-subtitle text-center" style={{marginBottom:"2rem"}}>
                 Explore the world
               </h2>
             </div>
