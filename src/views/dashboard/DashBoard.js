@@ -54,6 +54,26 @@ export const options = {
   },
 };
 
+const currentDate = new Date();
+const currentMonth = currentDate.toLocaleDateString('en-US', { month: 'long' });
+const currentYear = currentDate.getFullYear();
+
+const parseTimestamp = (timestamp) => {
+  const date = timestamp.toDate();
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  const formattedDate = date.toLocaleDateString('en-US', options);
+
+  const [month, day, year] = formattedDate.split(' ');
+
+  return {
+    year: parseInt(year),
+    month,
+    day: parseInt(day),
+  };
+};
+
+
+
 const generateDataBar = (data) => {
 
   const labels = Object.keys(data);
@@ -79,6 +99,55 @@ const generateDataBar = (data) => {
   };
 
   return dataBar;
+};
+
+const generateDataLine = (data) => {
+
+  const dayCounts = {}; // Object to store the count of posts for each day
+
+  // Initialize dayCounts object with day numbers as keys and initial count of 0
+  for (let day = 1; day <= 28; day++) {
+    dayCounts[day] = 0;
+  }
+
+  data.forEach(obj => {
+    
+    const { year, month, day } = parseTimestamp(obj.timestamp);
+    console.log(month);
+
+  if (year == currentYear && month == currentMonth){
+    // Increment the count for the corresponding day
+   if ( dayCounts.hasOwnProperty(day)) {
+    dayCounts[day]++;
+  } else {
+    dayCounts[day] = 1;
+  }
+  }
+   
+});
+
+  const labelDay = Object.keys(dayCounts).map(day => parseInt(day));
+  const PostValueDay = Object.values(dayCounts);
+  console.log (labelDay );
+  console.log(PostValueDay);
+  console.log([...Array(30)].map(() => Math.floor(Math.random() * 1000)))
+  let labels = labelDay;
+
+
+
+  const dataLine = {
+    labels,
+  datasets: [
+    {
+      label: "Number of Post",
+      data: PostValueDay,
+      borderColor: "rgb(255, 99, 132)",
+      backgroundColor: "rgba(255, 99, 132, 0.5)",
+    }
+  ],
+  };
+
+  return dataLine;
 };
 
 export function DashBoard() {
@@ -198,7 +267,7 @@ export function DashBoard() {
                   </Row>
                 </CardHeader>
                 <CardBody>
-                  <Line options={options} data={dataYear} />
+                  <Line options={options} data={generateDataLine(postList)} />
                 </CardBody>
               </Card>
             </Col>
