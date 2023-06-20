@@ -30,11 +30,27 @@ function ExamplesNavbar({ isTransparent = true }) {
   const [createRoute, setCreateRoute] = React.useState("/signin");
   const [dashboardRoute, setDashboardRoute] = React.useState("/signin");
   const [postArray, setPostArray] = React.useState([]);
+  const [isVertical, setIsVertical] = React.useState(false);
 
   const toggleNavbarCollapse = () => {
     setNavbarCollapse(!navbarCollapse);
     document.documentElement.classList.toggle("nav-open");
   };
+
+  React.useEffect(() => {
+    const handleOrientationChange = () => {
+      setIsVertical(window.matchMedia("(orientation: portrait)").matches);
+    };
+
+    handleOrientationChange();
+
+    window.addEventListener("resize", handleOrientationChange);
+
+    return () => {
+      window.removeEventListener("resize", handleOrientationChange);
+    };
+  }, []);
+
 
   React.useEffect(() => {
     // queryAllBlogs().then((blogs) => {
@@ -139,7 +155,7 @@ function ExamplesNavbar({ isTransparent = true }) {
       className={classnames("fixed-top", navbarColor)}
       color-on-scroll="300"
       expand="lg"
-      style={{ maxHeight: "100px" }}
+      style={{ maxHeight: isVertical ? "100px" : "none" }}
     >
       <Container>
         <div className="navbar-translate">

@@ -1,29 +1,64 @@
+/* Default styles for search inputs */
 .searchInputs {
-    margin-top: 10px;
-    display: flex;
-    border: 1px solid lightgrey;
-    margin-top: 12px;
+  margin-top: 10px;
+  display: flex;
+  border: 1px solid lightgrey;
+  margin-top: 12px;
+}
+
+.search input {
+  background-color: white;
+  border: 0;
+  border-radius: 2px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  font-size: 14px;
+  padding: 20px;
+  height: 30px;
+  width: 300px;
+}
+
+.searchIcon {
+  height: 40px;
+  width: 50px;
+  background-color: white;
+  display: grid;
+  place-items: center;
+}
+
+input:focus {
+  outline: none;
+}
+
+.searchIcon svg {
+  font-size: 35px;
+}
+
+/* Styles for vertical screen orientation */
+@media screen and (orientation: portrait) {
+  .searchInputs {
+    flex-direction: column;
+    align-items: stretch;
   }
-  
+
   .search input {
-    background-color: white;
-    border: 0;
-    border-radius: 2px;
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
-    font-size: 14px;
-    padding: 20px;
-    height: 30px;
-    width: 300px;
+    width: 100%;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
   }
-  
+
   .searchIcon {
-    height: 40px;
-    width: 50px;
-    background-color: white;
-    display: grid;
-    place-items: center;
+    height: auto;
+    width: 100%;
+    justify-content: center;
   }
+
+  /* Add margin-bottom to create spacing between SearchBar and other NavItems */
+  .searchInputs + .nav-item {
+    margin-top: 10px;
+  }
+}
+
   
   input:focus {
     outline: none;
