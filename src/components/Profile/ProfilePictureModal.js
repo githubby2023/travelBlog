@@ -2,7 +2,7 @@ import React from "react";
 import { storage } from "../../api/firebaseconfig";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { Button, Modal } from "reactstrap";
-import { writeUserData } from "api/authentication";
+import { uploadProfilePhoto } from "api/authentication";
 
 const ProfilePictureModal = ({
   isModalPictureOpened,
@@ -48,24 +48,12 @@ const ProfilePictureModal = ({
       () => {
         // download url
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-            // console.log("URL is " + url);
-          serCurrentUser({ ...user, profilepic: url });
-          writeUserData(
-            user.uid,
-            user.username,
-            user.nationality,
-            user.email,
-            user.gender,
-            user.address,
-            user.profilepic,
-            user.bio,
-            user.cover
-          ).then(() => {
-            // console.log("Upload photo success");
+          console.log("URL is " + url);
+          uploadProfilePhoto(user.uid, url).then(() => {
+            console.log("Upload photo success");
             localStorage.setItem("currentUser", JSON.stringify(user));
             togglePictureModal();
             window.location.reload(true);
-
           });
         });
       }
@@ -97,7 +85,9 @@ const ProfilePictureModal = ({
           <div className="row">
             <div className="col">
               {/* Body */}
-              {!isProgressShown && <input type="file" onChange={handleChange} accept="/image/*" />}
+              {!isProgressShown && (
+                <input type="file" onChange={handleChange} accept="/image/*" />
+              )}
               {isProgressShown && <progress value={percent} max="100" />}
             </div>
           </div>

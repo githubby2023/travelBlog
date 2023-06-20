@@ -96,6 +96,14 @@ export const uploadCoverPhoto = async (uid, cover) => {
   return setDoc(doc(firestore, "User", uid), user, { merge: true });
 };
 
+export const uploadProfilePhoto = async (uid, profilepic) => {
+  let user = {
+    uid: uid ?? "",
+    profilepic: profilepic ?? "",
+  };
+  return setDoc(doc(firestore, "User", uid), user, { merge: true });
+};
+
 export const queryUser = async (uid) => {
   return getDoc(doc(firestore, "User", uid)) // return a promise
     .then((doc) => {
