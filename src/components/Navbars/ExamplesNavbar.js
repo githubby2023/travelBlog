@@ -13,15 +13,23 @@ import {
   Nav,
   Container,
 } from "reactstrap";
-import SearchBar from "components/Landing/searchBar";
+import SearchBar2 from "components/Landing/searchBar2";
+import { queryAllBlogs } from "api/queryBlog";
+import { queryUser } from "api/authentication";
+import LandingPost from "components/Landing/LandingPost";
+import postsData from "./postData"
+import { post } from "jquery";
+import { queryBlogComments } from "../../api/queryBlog";
 
 function ExamplesNavbar({ isTransparent = true }) {
+  const [blogs, setBlogs] = React.useState();
   const [navbarColor, setNavbarColor] = React.useState("");
   const [navbarCollapse, setNavbarCollapse] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({uid: ""});
   const [profileRoute, setProfileRoute] = React.useState("/signin");
   const [createRoute, setCreateRoute] = React.useState("/signin");
   const [dashboardRoute, setDashboardRoute] = React.useState("/signin");
+  const [postArray, setPostArray] = React.useState([]);
 
   const toggleNavbarCollapse = () => {
     setNavbarCollapse(!navbarCollapse);
@@ -29,6 +37,69 @@ function ExamplesNavbar({ isTransparent = true }) {
   };
 
   React.useEffect(() => {
+    // queryAllBlogs().then((blogs) => {
+    //   setBlogs(Object.values(JSON.stringify(blogs)));
+    // });
+    // console.log(blogs + "blogs");
+
+    queryAllBlogs().then((blogs) => {
+      if (blogs) {
+        Promise.all(
+          blogs.map((blog) =>
+            Promise.all([
+              queryUser(blog.author_id),
+              queryBlogComments(blog.postId)
+            ]).then(([user, comments]) => ({
+              blog,
+              comments,
+              user,
+            }))
+          )
+        )
+          .then((results) => {
+            const Posts = results.map(({ blog, comments, user }) => ({
+              blog,
+              comments,
+              user,
+            }));
+            setPostArray(Posts);
+            console.log(postArray);
+            console.log(postsData);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+    });
+
+    // queryAllBlogs().then((blogs) => {
+    //   if (blogs) {
+    //     Promise.all(
+    //       blogs.map((blog) =>
+    //         queryUser(blog.author_id).then((user) => ({
+    //           blog,
+    //           user,
+    //         }))
+    //       )
+    //     )
+    //       .then((results) => {
+    //         //create a new array of objects with blog and user
+            
+            
+    //         const Posts = results.map(({ blog, user }) => (
+    //             {blog, user}
+    //         ));
+    //         // setPostArray(Array.from(Posts));
+    //         setPostArray(Posts);
+    //         console.log(postArray)
+    //         console.log(postsData)
+    //       })
+    //       .catch((error) => {
+    //         console.error(error);
+    //       });
+    //   }
+    // });
+
     const userTemp = JSON.parse(localStorage.getItem("currentUser"));
     if (userTemp) {
       setCurrentUser(userTemp);
@@ -73,7 +144,7 @@ function ExamplesNavbar({ isTransparent = true }) {
         <div className="navbar-translate">
           <NavbarBrand
             data-placement="bottom"
-            to="/landing-page"
+            to="/index"
             title="Coded by GitHubby"
             tag={Link}
           >
@@ -99,7 +170,7 @@ function ExamplesNavbar({ isTransparent = true }) {
         >
           <Nav navbar>
             <NavItem>
-              <SearchBar />
+              <SearchBar2 placeholder="Search" data={postArray}/>
             </NavItem>
 
             <NavItem>

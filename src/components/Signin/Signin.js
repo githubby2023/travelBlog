@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
 import "./Signin.scss";
-import { Button, Card, Form, Input, Container, Row, Col } from "reactstrap";
+import {
+  Button,
+  Card,
+  Form,
+  Input,
+  Container,
+  Row,
+  Col,
+  Modal,
+} from "reactstrap";
 import { auth } from "../../api/firebaseconfig";
 import {
   signInWithGoogle,
@@ -8,7 +17,7 @@ import {
   queryUser,
   loginWithEmail,
 } from "../../api/authentication";
-import { onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged, sendPasswordResetEmail } from "firebase/auth";
 import { useHistory } from "react-router-dom";
 import { updateUser } from "../../actions/userAction";
 import { useDispatch } from "react-redux";
@@ -16,7 +25,22 @@ import { useDispatch } from "react-redux";
 const Signin = () => {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [emailErrorMessage, setEmailErrorMessage] = useState("");
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+  const [liveDemo, setLiveDemo] = React.useState(false);
+  const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
+  const [buttonDisabled, setButtonDisabled] = useState(true);
+  const [loginError, setLoginError] = useState("");
+
+  const [signinInputfields, setSigninInputfields] = useState({
+    loginEmail: "",
+    loginPassword: "",
+    emailErrorMessage: "",
+    passwordErrorMessage: "",
+    liveDemo: false,
+    forgotPasswordEmail: "",
+    loginError: "",
+  });
 
   const history = useHistory();
 
@@ -29,11 +53,21 @@ const Signin = () => {
   });
 
   const dispatch = useDispatch();
-  
+
+  useEffect(() => {
+    setLoginEmail(signinInputfields.loginEmail);
+    setLoginPassword(signinInputfields.loginPassword);
+    setLiveDemo(signinInputfields.liveDemo);
+    setForgotPasswordEmail(signinInputfields.forgotPasswordEmail);
+    setLoginError(signinInputfields.loginError);
+    setEmailErrorMessage(signinInputfields.emailErrorMessage);
+    setPasswordErrorMessage(signinInputfields.passwordErrorMessage);
+  }, [signinInputfields]);
+
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
-        setErrorMessage("");
+        setEmailErrorMessage("");
         // dispatch(updateUser(currentUser.displayName));
         currentUser.getIdToken().then((token) => {
           if (token) {
@@ -70,14 +104,14 @@ const Signin = () => {
             });
           }
         });
+      } else {
+        localStorage.removeItem("currentUser");
       }
     });
   }, []);
 
   return (
     <>
-      {/* <ExamplesNavbar /> */}
-
       <div
         className="page-header"
         style={{
@@ -96,35 +130,148 @@ const Signin = () => {
                     placeholder="Email"
                     type="text"
                     onChange={(event) => {
-                      setLoginEmail(event.target.value);
+                      event.target.value ===""
+                          ? setSigninInputfields({
+                              ...signinInputfields,
+                              emailErrorMessage: "Email is required",
+                              loginEmail: event.target.value,
+                            })
+                          : setSigninInputfields({
+                              ...signinInputfields,
+                              emailErrorMessage: "",
+                              loginEmail: event.target.value,
+                            })
                     }}
                   />
+                  {emailErrorMessage && (<div className="error"> {emailErrorMessage} 
+                  </div>
+                  )}
                   <label>Password</label>
                   <Input
                     placeholder="Password"
                     type="password"
                     onChange={(event) => {
-                      setLoginPassword(event.target.value);
+                      event.target.value ===""
+                          ? setSigninInputfields({
+                              ...signinInputfields,
+                              passwordErrorMessage: "Password is required",
+                              loginPassword: event.target.value,
+                            })
+                          : setSigninInputfields({
+                              ...signinInputfields,
+                              passwordErrorMessage: "",
+                              loginPassword: event.target.value,
+                            })
                     }}
                   />
+                  {passwordErrorMessage && (<div className="error"> {passwordErrorMessage} 
+                  </div>
+                  )}
                   <div className="forgot d-flex justify-content-end">
                     <Button
                       className="btn-link pr-0 mt-1"
                       color="warning"
                       href="#pablo"
-                      onClick={(e) => console.log("Forgot password?")}
+                      onClick={() =>
+                        setSigninInputfields({
+                          ...signinInputfields,
+                          liveDemo: true,
+                        })
+                      }
                     >
                       Forgot password?
                     </Button>
+                    <Modal
+                      isOpen={liveDemo}
+                      toggle={() =>
+                        setSigninInputfields({
+                          ...signinInputfields,
+                          liveDemo: false,
+                        })
+                      }
+                    >
+                      <div className="modal-header">
+                        <h5 className="modal-title" id="exampleModalLiveLabel">
+                          Forgot Password
+                        </h5>
+                        <button
+                          aria-label="Close"
+                          className="close"
+                          data-dismiss="modal"
+                          type="button"
+                          onClick={() =>
+                            setSigninInputfields({
+                              ...signinInputfields,
+                              liveDemo: false,
+                            })
+                          }
+                        >
+                          <span aria-hidden={true}>×</span>
+                        </button>
+                      </div>
+                      <div className="modal-body">
+                        <Form className="register-form">
+                          <label>Email</label>
+                          <Input
+                            placeholder="Email to receive password reset link"
+                            type="text"
+                            onChange={(event) => {
+                              setSigninInputfields({
+                                ...signinInputfields,
+                                forgotPasswordEmail: event.target.value,
+                              });
+                            }}
+                          />
+                        </Form>
+                      </div>
+                      <div className="modal-footer">
+                        <div className="left-side">
+                          <Button
+                            className="btn-link"
+                            color="default"
+                            data-dismiss="modal"
+                            type="button"
+                            onClick={() =>
+                              sendPasswordResetEmail(
+                                auth,
+                                forgotPasswordEmail
+                              ).then(() => setLiveDemo(false))
+                            }
+                          >
+                            Renew Password
+                          </Button>
+                        </div>
+                        <div className="divider" />
+                        <div className="right-side">
+                          <Button
+                            className="btn-link"
+                            color="danger"
+                            type="button"
+                            onClick={() => setLiveDemo(false)}
+                          >
+                            I Remember My Password
+                          </Button>
+                        </div>
+                      </div>
+                    </Modal>
                   </div>
                   <Button
                     block
                     className="signinBtn"
-                    // color="primary"
                     onClick={() => {
-                      loginWithEmail(loginEmail, loginPassword)
-                        ? setErrorMessage("Invalid email or password")
-                        : setErrorMessage("");
+                      loginWithEmail(loginEmail, loginPassword).then(() => {
+                        if (getAuth().currentUser) {
+                          setSigninInputfields({
+                            ...signinInputfields,
+                            loginError: "",
+                          });
+                        } else {
+                          setSigninInputfields({
+                            ...signinInputfields,
+                            loginError: "Invalid email or password",
+                          });
+                        }
+                      });
                     }}
                   >
                     Sign in
@@ -138,10 +285,8 @@ const Signin = () => {
                     <i className="fa fa-google" />
                     Sign in with Google
                   </Button>
-                  {errorMessage && (
-                    <div className="error"> {errorMessage} </div>
-                  )}
                 </Form>
+                {loginError && <div className="error"> {loginError} </div>}
                 <div className="mx-auto">
                   <Button
                     className="signup btn-link mt-2"

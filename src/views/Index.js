@@ -13,6 +13,7 @@ function Index() {
   const history = useHistory();
   const [landingPosts, setLandingPosts] = React.useState([]);
 
+
   document.documentElement.classList.remove("nav-open");
   React.useEffect(() => {
     if (localStorage.getItem("currentUser") === null) {
@@ -51,6 +52,7 @@ function Index() {
                 blog={blog}
               />
             ));
+            
             setLandingPosts(Posts);
           })
           .catch((error) => {
