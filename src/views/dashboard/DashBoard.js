@@ -122,8 +122,7 @@ const generateDataLine = (dataPost,viewData) => {
   }
    
 });
-console.log("asjhajsa");
-console.log(viewData);
+
 for (const view of viewData) {
    const timeView = parseTimestamp(view.timestamp);
    if (timeView[0] == currentYear && timeView[1] == currentMonth) {
@@ -136,8 +135,6 @@ for (const view of viewData) {
      }
    }
 }
-
-
 
   const labelDay = Object.keys(dailyPostCounts).map(day => parseInt(day));
   const PostValueDay = Object.values(dailyPostCounts);
@@ -155,7 +152,7 @@ for (const view of viewData) {
       backgroundColor: "rgba(255, 99, 132, 0.5)",
     },
     {
-      label: "Post Views",
+      label: "Page Views",
       data: viewValueDay,
       borderColor: "rgb(53, 162, 235)",
       backgroundColor: "rgba(53, 162, 235, 0.5)",
@@ -164,6 +161,56 @@ for (const view of viewData) {
   };
 
   return dataLine;
+};
+
+//calculate a rating for a post
+const averageRating = (post_rating) => {
+  const values = Object.values(post_rating);
+
+  if (values.length === 0) {
+    return 0; // Handle the case when the object is empty
+  }
+
+  const sum = values.reduce((acc, value) => acc + value, 0);
+  const average = sum / values.length;
+  const roundedAverage = average.toFixed(1); // Round to 1 decimal point
+
+  return Number(roundedAverage); // Convert back to a number
+}
+
+//avergae for overall rating
+const calculateOverallRating = (post_list) =>{
+  if (post_list.length === 0) {
+    return 0; // Handle the case when the array is empty
+  }
+  
+
+  let sum = 0;
+  let existedRating =0;
+  for (let i = 0; i < post_list.length; i++) {
+    let avePost = averageRating( post_list[i].rating);
+    if (avePost > 0){
+      existedRating++;
+      sum += avePost;
+    }
+  }
+
+  const average = sum / existedRating;
+
+  
+  return  average.toFixed(1);
+}
+
+const calculateTotalView = (postViewList, post_id) => {
+  let totalViews = 0;
+
+  for (const viewPage of postViewList) {
+    if (viewPage.post_id === post_id) {
+      totalViews += 1;
+    }
+  }
+
+  return totalViews;
 };
 
 export function DashBoard() {
@@ -247,7 +294,7 @@ export function DashBoard() {
                   </div>
                   <div className="description">
                     <h4 className="info-title">Overall Rating</h4>
-                    <span className="h2 font-weight-bold mb-0">4.5/5.0</span>
+                    <span className="h2 font-weight-bold mb-0">{calculateOverallRating(postList)}/5.0</span>
                   </div>
                 </div>
               </Col>
@@ -323,7 +370,7 @@ export function DashBoard() {
                 <Table className="align-items-center table-flush" responsive>
                   <thead className="thead-light">
                     <tr>
-                      <th scope="col">Page name</th>
+                      <th scope="col">Post Title</th>
                       <th scope="col">Topic</th>
                       <th scope="col">Visitors</th>
                       <th scope="col">Number of Comments</th>
@@ -336,10 +383,10 @@ export function DashBoard() {
         <tr key={post.postId}>
           <th scope="row">{post.topic}</th>
           <td>{post.topic}</td>
-          <td>-</td>
+          <td>{calculateTotalView(postViewList, post.postId)}</td>
           <td>{post.commentCount}</td>
           <td><i className="nc-icon nc-satisfied mr-3" />
-          {post.rating.toString()}</td> {/* Convert rating to a string */}
+          {averageRating(post.rating)}</td> {/* Convert rating to a string */}
         </tr>
       ))}
                   </tbody>
