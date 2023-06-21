@@ -30,7 +30,7 @@ import {
           const commentQuerySnapshot = await getDocs(
             collection(firestore, "Post", postId, "comment")
           );
-          const commentCount = commentQuerySnapshot.size;
+          const commentCount = (commentQuerySnapshot.size)-1;
   
           posts.push({ ...post, commentCount });
         }
