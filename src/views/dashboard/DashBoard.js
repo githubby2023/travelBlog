@@ -1,7 +1,5 @@
 import React, { useEffect, useState }  from "react";
 import "components/Dashboard/Dashboard.scss";
-import { dataYear } from "./LineChartData";
-import { dataBar } from "./BarChartData";
 import {  getPostsWithCommentCount, fetchTagCounts ,fetchPostView } from "api/analysis";
 
 
