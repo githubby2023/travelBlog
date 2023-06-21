@@ -216,9 +216,8 @@ const calculateOverallRating = (post_list) =>{
     return 0; // Handle the case when the array is empty
   }
   
-
   let sum = 0;
-  let existedRating =0;
+  let existedRating =1;
   for (let i = 0; i < post_list.length; i++) {
     let avePost = averageRating( post_list[i].rating);
     if (avePost > 0){
@@ -408,7 +407,7 @@ export function DashBoard() {
                     <h6 className="text-uppercase text-muted ls-1 mb-1">
                        Analysis
                       </h6>
-                      <h2 className="mb-0">Viewer Gender Breakdown </h2>
+                      <h2 className="mb-0">Post View based on gender </h2>
                      </div>
                      <Doughnut data={generateDataDoughnut(postViewList)} />
                   </Row>
