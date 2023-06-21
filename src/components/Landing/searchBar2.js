@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./searchbar.css";
+import "./searchbar.scss";
 import { Link } from "react-router-dom";
 // import SearchIcon from "@material-ui/icons/Search";
 // import CloseIcon from "@material-ui/icons/Close";

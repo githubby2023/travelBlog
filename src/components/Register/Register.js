@@ -50,7 +50,7 @@ const Register = () => {
     useState("register-form");
 
   const [registerInput, setRegisterInput] = useState({
-    email: "",
+    email: "/;'[]+-",
     password: "",
     confirmpassword: "",
     name: "",
@@ -90,7 +90,10 @@ const Register = () => {
     } else {
       setConfirmPasswordError("");
     }
-    if(registerEmail === ""){
+    if(registerEmail === "/;'[]+-"){
+      setEmailError("");
+    }
+    else if(registerEmail === ""){
       setEmailError("Email is required");
     }
     else if(!/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(registerEmail)){
@@ -196,6 +199,7 @@ const Register = () => {
         }}
       >
         <h1 className="presentation-title-2">Travel Blog</h1>
+        
         <Container>
           <Row>
             <Col className="mx-auto" lg="6">

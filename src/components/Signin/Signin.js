@@ -245,7 +245,7 @@ const Signin = () => {
                             type="button"
                             onClick={() => setLiveDemo(false)}
                           >
-                            I Remember My Password
+                            Close
                           </Button>
                         </div>
                       </div>
