@@ -33,5 +33,12 @@ import {
         viewer_age: viewer_age ?? "",
         viewer_nationality: viewer_nationality ?? "",
     };
-    return addDoc(collection(firestore, "Post_View"), postView);
+    try {
+      const result = await addDoc(collection(firestore, "Post_View"), postView);
+      console.log(result)
+      return result;
+    } catch (error) {
+      return console.log(error);
+    }
+    
   };

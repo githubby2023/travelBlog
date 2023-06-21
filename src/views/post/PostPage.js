@@ -40,19 +40,7 @@ const PostPage = (props) => {
   const [currentUser, setCurrentUser] = React.useState({ uid: "" });
   const [currentComment, setCurrentComment] = React.useState("");
 
-  React.useEffect(() => {
-    setCurrentBlog(blog);
-    writePostView(
-      blog.author_id,
-      Timestamp.now(),
-      blog.postId,
-      blog.location,
-      currentUser.uid,
-      currentUser.gender,
-      currentUser.age,
-      currentUser.nationality
-    );
-  }, [blog]);
+
 
   //Check if the current user is the sender of the post
   //If yes, show the edit and delete button
@@ -104,6 +92,23 @@ const PostPage = (props) => {
     }
     setCarousellItems(temp);
   }, [currentBlog.image]);
+
+  React.useEffect(() => {
+    setCurrentBlog(blog);
+    writePostView(
+      blog.author_id,
+      Timestamp.now(),
+      blog.postId,
+      blog.location,
+      currentUser.uid,
+      currentUser.gender,
+      currentUser.age,
+      currentUser.nationality
+    ).then((result) => {
+      console.log("Post View added");
+      console.log(result);
+    });
+  }, [blog]);
 
   //Carousell
   const [activeIndex, setActiveIndex] = React.useState(0);
