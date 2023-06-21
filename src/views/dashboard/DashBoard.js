@@ -21,13 +21,10 @@ import {
   Card,
   CardHeader,
   CardBody,
-  Progress,
   Table,
   Container,
   Row,
-  Col,Nav, 
-  NavItem, 
-  NavLink
+  Col
 } from "reactstrap";
 import ExamplesNavbar from "components/Navbars/ExamplesNavbar";
 import Footer from "components/Footers/Footer";
